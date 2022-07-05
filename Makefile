@@ -170,6 +170,19 @@ $(BIN)/test/ihs_solver_test : $(BIN)/instance/instance.o \
 
 ihs_solver_test : $(BIN)/test/ihs_solver_test
 
+$(BIN)/exec/ihs_solver_exec : $(BIN)/instance/instance.o \
+                              $(BIN)/solution/solution.o \
+                              $(BIN)/solver/solver.o \
+                              $(BIN)/solver/ihs/problem.o \
+                              $(BIN)/solver/ihs/ihs_solver.o \
+                              $(BIN)/utils/argument_parser.o \
+                              $(BIN)/exec/ihs_solver_exec.o
+	@echo "--> Linking objects..."
+	$(CPP) -o $@ $^ $(CARGS) $(INC)
+	@echo
+
+ihs_solver_exec : $(BIN)/exec/ihs_solver_exec
+
 tests : instance_test \
         solution_test \
         nsga2_solver_test \
@@ -181,6 +194,7 @@ tests : instance_test \
 execs : nsga2_solver_exec \
         nspso_solver_exec \
         moead_solver_exec \
-        mhaco_solver_exec
+        mhaco_solver_exec \
+		ihs_solver_exec
 
 all : tests execs
