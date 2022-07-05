@@ -114,6 +114,19 @@ $(BIN)/test/moead_solver_test : $(BIN)/instance/instance.o \
 
 moead_solver_test : $(BIN)/test/moead_solver_test
 
+$(BIN)/exec/moead_solver_exec : $(BIN)/instance/instance.o \
+                                $(BIN)/solution/solution.o \
+                                $(BIN)/solver/solver.o \
+                                $(BIN)/solver/moead/problem.o \
+                                $(BIN)/solver/moead/moead_solver.o \
+                                $(BIN)/utils/argument_parser.o \
+                                $(BIN)/exec/moead_solver_exec.o
+	@echo "--> Linking objects..."
+	$(CPP) -o $@ $^ $(CARGS) $(INC)
+	@echo
+
+moead_solver_exec : $(BIN)/exec/moead_solver_exec
+
 tests : instance_test \
         solution_test \
         nsga2_solver_test \
@@ -121,6 +134,7 @@ tests : instance_test \
         moead_solver_test
 
 execs : nsga2_solver_exec \
-        nspso_solver_exec
+        nspso_solver_exec \
+        moead_solver_exec
 
 all : tests execs
