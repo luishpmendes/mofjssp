@@ -73,7 +73,7 @@ nsga2_solver_exec : $(BIN)/exec/nsga2_solver_exec
 
 tests : instance_test \
         solution_test \
-        nsga2_solver_test
+        nsga2_solver_test \
 
 execs : nsga2_solver_exec
 
