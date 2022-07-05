@@ -99,10 +99,26 @@ $(BIN)/exec/nspso_solver_exec : $(BIN)/instance/instance.o \
 
 nspso_solver_exec : $(BIN)/exec/nspso_solver_exec
 
+$(BIN)/test/moead_solver_test : $(BIN)/instance/instance.o \
+                                $(BIN)/solution/solution.o \
+                                $(BIN)/solver/solver.o \
+                                $(BIN)/solver/moead/problem.o \
+                                $(BIN)/solver/moead/moead_solver.o \
+                                $(BIN)/test/moead_solver_test.o
+	@echo "--> Linking objects..."
+	$(CPP) -o $@ $^ $(CARGS) $(INC)
+	@echo
+	@echo "--> Running test..."
+	$(BIN)/test/moead_solver_test
+	@echo
+
+moead_solver_test : $(BIN)/test/moead_solver_test
+
 tests : instance_test \
         solution_test \
         nsga2_solver_test \
-        nspso_solver_test
+        nspso_solver_test \
+        moead_solver_test
 
 execs : nsga2_solver_exec \
         nspso_solver_exec
