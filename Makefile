@@ -127,11 +127,27 @@ $(BIN)/exec/moead_solver_exec : $(BIN)/instance/instance.o \
 
 moead_solver_exec : $(BIN)/exec/moead_solver_exec
 
+$(BIN)/test/mhaco_solver_test : $(BIN)/instance/instance.o \
+                                $(BIN)/solution/solution.o \
+                                $(BIN)/solver/solver.o \
+                                $(BIN)/solver/mhaco/problem.o \
+                                $(BIN)/solver/mhaco/mhaco_solver.o \
+                                $(BIN)/test/mhaco_solver_test.o
+	@echo "--> Linking objects..."
+	$(CPP) -o $@ $^ $(CARGS) $(INC)
+	@echo
+	@echo "--> Running test..."
+	$(BIN)/test/mhaco_solver_test
+	@echo
+
+mhaco_solver_test : $(BIN)/test/mhaco_solver_test
+
 tests : instance_test \
         solution_test \
         nsga2_solver_test \
         nspso_solver_test \
-        moead_solver_test
+        moead_solver_test \
+        mhaco_solver_test
 
 execs : nsga2_solver_exec \
         nspso_solver_exec \
