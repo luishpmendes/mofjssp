@@ -211,6 +211,15 @@ $(BIN)/exec/nsbrkga_solver_exec : $(BIN)/instance/instance.o \
 
 nsbrkga_solver_exec : $(BIN)/exec/nsbrkga_solver_exec
 
+$(BIN)/exec/hypervolume_calculator_exec : $(BIN)/instance/instance.o \
+                                          $(BIN)/utils/argument_parser.o \
+                                          $(BIN)/exec/hypervolume_calculator_exec.o
+	@echo "--> Linking objects..."
+	$(CPP) -o $@ $^ $(CARGS) $(INC)
+	@echo
+
+hypervolume_calculator_exec : $(BIN)/exec/hypervolume_calculator_exec
+
 tests : instance_test \
         solution_test \
         nsga2_solver_test \
@@ -225,6 +234,7 @@ execs : nsga2_solver_exec \
         moead_solver_exec \
         mhaco_solver_exec \
 		ihs_solver_exec \
-		nsbrkga_solver_exec
+		nsbrkga_solver_exec \
+        hypervolume_calculator_exec
 
 all : tests execs
