@@ -4,13 +4,13 @@ import matplotlib
 import matplotlib.pyplot as plt
 import os
 import seaborn as sns
-from math import floor, sqrt
+from math import ceil, floor, sqrt
 from plotter_definitions import *
 
 matplotlib.use('agg')
 
 num_rows = floor(sqrt(len(solvers)))
-num_cols = int((len(solvers)) / num_rows)
+num_cols = ceil((len(solvers)) / num_rows)
 
 for instance in instances:
     for version in versions:

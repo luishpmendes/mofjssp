@@ -40,7 +40,7 @@ for i in range(len(instances)):
             for row in data:
                 x.append(float(row[0]))
         xs.append(x)
-    bp = ax.boxplot(xs, labels = [solver_labels[solver] for solver in solvers], patch_artist=True)
+    bp = ax.boxplot(xs, labels = [solver_labels[solver] for solver in solvers], patch_artist = True)
     for j in range(len(solvers)) :
         bp["boxes"][j].set_facecolor(colors[j])
         bp["medians"][j].set_color("black")
@@ -69,7 +69,7 @@ plt.figure()
 plt.title("MOFJSSP", fontsize = "xx-large")
 plt.xlabel("Solver", fontsize = "x-large")
 plt.ylabel("Hypervolume", fontsize = "x-large")
-bp = plt.boxplot(hypervolume, labels = [solver_labels[solver] for solver in solvers], patch_artist=True)
+bp = plt.boxplot(hypervolume, labels = [solver_labels[solver] for solver in solvers], patch_artist = True)
 for i in range(len(solvers)) :
     bp["boxes"][i].set_facecolor(colors[i])
     bp["medians"][i].set_color("black")
@@ -105,7 +105,7 @@ for i in range(len(solvers)):
     y = []
     for num_jobs in nums_jobs:
         y.append(stats.mean(hypervolume_per_num_jobs[solvers[i]][num_jobs]))
-    plt.plot(nums_jobs, y, label = solver_labels[solvers[i]], marker = (i + 3, 2, 0), color = colors[i], alpha = 0.8)
+    plt.plot(nums_jobs, y, label = solver_labels[solvers[i]], marker = (i + 3, 2, 0), color = colors[i], alpha = 0.80)
 plt.xlim(left = max(min(nums_jobs) - 1, 0), right = max(nums_jobs) + 1)
 plt.ylim(bottom = min_hypervolume, top = max_hypervolume)
 plt.legend(loc = 'best', fontsize = "large")
@@ -165,7 +165,7 @@ for i in range(len(solvers)):
     y = []
     for num_machines in nums_machines:
         y.append(stats.mean(hypervolume_per_num_machines[solvers[i]][num_machines]))
-    plt.plot(nums_machines, y, label = solver_labels[solvers[i]], marker = (i + 3, 2, 0), color = colors[i], alpha = 0.8)
+    plt.plot(nums_machines, y, label = solver_labels[solvers[i]], marker = (i + 3, 2, 0), color = colors[i], alpha = 0.80)
 plt.xlim(left = max(min(nums_machines) - 1, 0), right = max(nums_machines) + 1)
 plt.ylim(bottom = min_hypervolume, top = max_hypervolume)
 plt.legend(loc = 'best', fontsize = "x-large")

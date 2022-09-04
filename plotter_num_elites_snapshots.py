@@ -5,7 +5,7 @@ from plotter_definitions import *
 
 for instance in instances:
     for version in versions:
-        plt.figure(figsize = (5, 5))
+        plt.figure()
         plt.title(instance, fontsize = "xx-large")
         plt.xlabel("Time (s)", fontsize = "x-large")
         plt.ylabel("Number of elites", fontsize = "x-large")
@@ -23,6 +23,6 @@ for instance in instances:
                     plt.plot(x, y, label = solver_labels[solver])
         plt.xlim(left = 0)
         plt.ylim(bottom = 0)
-        plt.legend(loc = 'best')
+        plt.legend(loc = 'best', fontsize = "large")
         plt.savefig("num_elites_snapshots/" + instance + "_" + version + ".png", format = "png")
         plt.close()

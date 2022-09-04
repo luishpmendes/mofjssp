@@ -46,8 +46,8 @@ for instance in instances:
                         next(csv_file)
                         data = csv.reader(csv_file, delimiter = " ")
                         for row in data:
-                            for k in range(m):
-                                ys[k].append(float(row[k]))
+                            for j in range(m):
+                                ys[j].append(float(row[j]))
                         csv_file.close()
                     for j in range(m):
                         axs[j][j].set_xlim(left = min_ys[j], right = max_ys[j])
@@ -55,7 +55,7 @@ for instance in instances:
                         axs[j][j].set_yticks([])
                         axs[j][j].set_ylabel(ylabel = "Density", fontsize = "x-large")
                         sns.kdeplot(data = ys[j], ax = axs[j][j], color = colors[i], label = solver_labels[solvers[i]], marker = (i + 3, 2, 0), alpha = 0.80)
-                        axs[j][j].legend(loc = "best")
+                        axs[j][j].legend(loc = "best", fontsize = "large")
                         for k in range(m):
                             if (j != k):
                                 axs[j][k].set_xlim(left = min_ys[k], right = max_ys[k])
@@ -63,6 +63,6 @@ for instance in instances:
                                 axs[j][k].set_xlabel(xlabel = "$f_{" + str(k + 1) + "}$", fontsize = "x-large")
                                 axs[j][k].set_ylabel(ylabel = "$f_{" + str(j + 1) + "}$", fontsize = "x-large")
                                 axs[j][k].scatter(x = ys[k], y = ys[j], color = colors[i], label = solver_labels[solvers[i]], marker = (i + 3, 2, 0), alpha = 0.80)
-                                axs[j][k].legend(loc = "best")
+                                axs[j][k].legend(loc = "best", fontsize = "large")
             plt.subplots_adjust(wspace = 0.15 + 0.05 * m, hspace = 0.15 + 0.05 * m)
             plt.savefig("best_solutions_snapshots/" + instance + "_" + version + "_" + str(snapshot) + ".png", format = "png")

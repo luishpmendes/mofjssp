@@ -5,7 +5,7 @@ from plotter_definitions import *
 
 for instance in instances:
     for version in versions:
-        plt.figure(figsize = (5, 5))
+        plt.figure()
         plt.title(instance, fontsize = "xx-large")
         plt.xlabel("Time (s)", fontsize = "x-large")
         plt.ylabel("Non-dominated Fronts", fontsize = "x-large")
@@ -19,9 +19,9 @@ for instance in instances:
                     for row in data:
                         x.append(float(row[1]))
                         y.append(float(row[2]))
-                plt.plot(x, y, label = solver_labels[solvers[i]] + " ", color = colors[i], marker = (i + 3, 2, 0), alpha = 0.80)
+                plt.plot(x, y, label = solver_labels[solvers[i]], color = colors[i], marker = (i + 3, 2, 0), alpha = 0.80)
         plt.xlim(left = 0)
         plt.ylim(bottom = 0)
-        plt.legend(loc = 'best')
+        plt.legend(loc = 'best', fontsize = "large")
         plt.savefig("num_fronts_snapshots/" + instance + "_" + version + ".png", format = "png")
         plt.close()
