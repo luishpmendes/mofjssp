@@ -25,10 +25,11 @@ int main(int argc, char * argv[]) {
         std::vector<std::vector<double>> time_snapshots;
         std::vector<std::vector<std::vector<std::vector<double>>>>
             best_solutions_snapshots;
-        unsigned num_solvers, num_objectives = 3;
-        std::vector<double> min_value(num_objectives, std::numeric_limits<double>::max()),
-                            max_value = instance.upper_bound,
-                            reference_point(num_objectives, 1.1);
+        unsigned num_solvers;
+        std::vector<double> min_value(instance.num_objectives,
+                                      std::numeric_limits<double>::max()),
+                            max_value = instance.primal_bound,
+                            reference_point(instance.num_objectives, 1.1);
         double max_hypervolume = 1.0;
 
         for (const double & p : reference_point) {
@@ -61,9 +62,9 @@ int main(int argc, char * argv[]) {
                 if(ifs.is_open()) {
                     for(std::string line; std::getline(ifs, line);) {
                         std::istringstream iss(line);
-                        std::vector<double> value(num_objectives, 0.0);
+                        std::vector<double> value(instance.num_objectives, 0.0);
 
-                        for(unsigned j = 0; j < num_objectives; j++) {
+                        for(unsigned j = 0; j < instance.num_objectives; j++) {
                             iss >> value[j];
 
                             if(min_value[j] > value[j]) {
@@ -110,9 +111,9 @@ int main(int argc, char * argv[]) {
 
                         for(std::string line; std::getline(ifs, line);) {
                             std::istringstream iss(line);
-                            std::vector<double> value(num_objectives, 0.0);
+                            std::vector<double> value(instance.num_objectives, 0.0);
 
-                            for(unsigned j = 0; j < num_objectives; j++) {
+                            for(unsigned j = 0; j < instance.num_objectives; j++) {
                                 iss >> value[j];
 
                                 if(min_value[j] > value[j]) {
@@ -144,7 +145,7 @@ int main(int argc, char * argv[]) {
                 for(unsigned j = 0; j < paretos[i].size(); j++) {
                     normalized_pareto[j] = std::vector<double>(
                             paretos[i][j].size(), 0.0);
-                    for(unsigned k = 0; k < num_objectives; k++) {
+                    for(unsigned k = 0; k < instance.num_objectives; k++) {
                         normalized_pareto[j][k] =
                             (paretos[i][j][k] - min_value[k]) /
                             (max_value[k] - min_value[k]);
@@ -193,7 +194,7 @@ int main(int argc, char * argv[]) {
                         k++) {
                         normalized_pareto_snapshot[k] = std::vector<double>(
                                 best_solutions_snapshots[i][j][k].size(), 0.0);
-                        for(unsigned l = 0; l < num_objectives; l++) {
+                        for(unsigned l = 0; l < instance.num_objectives; l++) {
                             normalized_pareto_snapshot[k][l] =
                                 (best_solutions_snapshots[i][j][k][l] -
                                  min_value[l]) / (max_value[l] - min_value[l]);
