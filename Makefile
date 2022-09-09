@@ -239,6 +239,15 @@ $(BIN)/exec/reference_pareto_front_calculator_exec : $(BIN)/instance/instance.o 
 
 reference_pareto_front_calculator_exec : $(BIN)/exec/reference_pareto_front_calculator_exec
 
+$(BIN)/exec/modified_generational_distance_calculator_exec : $(BIN)/instance/instance.o \
+													 		 $(BIN)/utils/argument_parser.o \
+                                                     		 $(BIN)/exec/modified_generational_distance_calculator_exec.o
+	@echo "--> Linking objects..."
+	$(CPP) -o $@ $^ $(CARGS) $(INC)
+	@echo
+
+modified_generational_distance_calculator_exec : $(BIN)/exec/modified_generational_distance_calculator_exec
+
 tests : instance_test \
         solution_test \
         nsga2_solver_test \
@@ -256,6 +265,7 @@ execs : nsga2_solver_exec \
 		nsbrkga_solver_exec \
         hypervolume_calculator_exec \
         results_aggregator_exec \
-		reference_pareto_front_calculator_exec
+		reference_pareto_front_calculator_exec \
+		modified_generational_distance_calculator_exec
 
 all : tests execs
