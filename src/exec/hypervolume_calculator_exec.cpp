@@ -6,9 +6,11 @@
 int main(int argc, char * argv[]) {
     Argument_Parser arg_parser(argc, argv);
 
-    if(arg_parser.option_exists("--instance")) {
+    if(arg_parser.option_exists("--instance") &&
+       arg_parser.option_exists("--reference-pareto")) {
         std::ifstream ifs;
         mofjssp::Instance instance;
+
         ifs.open(arg_parser.option_value("--instance"));
 
         if(ifs.is_open()) {
@@ -20,6 +22,7 @@ int main(int argc, char * argv[]) {
                     arg_parser.option_value("--instance") + " not found.");
         }
 
+        std::vector<std::vector<double>> reference_pareto;
         std::vector<std::vector<std::vector<double>>> paretos;
         std::vector<std::vector<unsigned>> iteration_snapshots;
         std::vector<std::vector<double>> time_snapshots;
@@ -31,6 +34,33 @@ int main(int argc, char * argv[]) {
                             max_value = instance.primal_bound,
                             reference_point(instance.num_objectives, 1.1);
         double max_hypervolume = 1.0;
+
+        ifs.open(arg_parser.option_value("--reference-pareto"));
+
+        if(ifs.is_open()) {
+            for(std::string line; std::getline(ifs, line);) {
+                std::istringstream iss(line);
+                std::vector<double> value(instance.num_objectives, 0.0);
+
+                for(unsigned j = 0; j < instance.num_objectives; j++) {
+                    iss >> value[j];
+
+                    if(min_value[j] > value[j]) {
+                        min_value[j] = value[j];
+                    }
+
+                    assert(value[j] <= max_value[j]);
+                }
+
+                reference_pareto.push_back(value);
+            }
+
+            ifs.close();
+        } else {
+            throw std::runtime_error("File " +
+                    arg_parser.option_value("--reference-pareto") +
+                    " not found.");
+        }
 
         for (const double & p : reference_point) {
             max_hypervolume *= p;
@@ -134,14 +164,37 @@ int main(int argc, char * argv[]) {
             }
         }
 
+        std::vector<std::vector<double>> normalized_pareto(
+                        reference_pareto.size());
+        for(unsigned i = 0; i < reference_pareto.size(); i++) {
+            normalized_pareto[i] = std::vector<double>(
+                    reference_pareto[i].size(), 0.0);
+            for(unsigned j = 0; j < instance.num_objectives; j++) {
+                normalized_pareto[i][j] =
+                    (reference_pareto[i][j] - min_value[j]) /
+                    (max_value[j] - min_value[j]);
+                assert(normalized_pareto[i][j] >= 0.0);
+                assert(normalized_pareto[i][j] <= 1.0);
+            }
+        }
+
+        pagmo::hypervolume hv(normalized_pareto);
+        double reference_hypervolume = hv.compute(reference_point);
+        assert(reference_hypervolume >= 0.0);
+        assert(reference_hypervolume <= max_hypervolume);
+        double normalized_reference_hypervolume = reference_hypervolume
+                                                / max_hypervolume;
+        assert(normalized_reference_hypervolume >= 0.0);
+        assert(normalized_reference_hypervolume <= 1.0);
+
         for(unsigned i = 0; i < num_solvers; i++) {
             std::ofstream ofs;
             ofs.open(arg_parser.option_value("--hypervolume-" +
                                              std::to_string(i)));
 
             if(ofs.is_open()) {
-                std::vector<std::vector<double>> normalized_pareto(
-                        paretos[i].size());
+                normalized_pareto.resize(paretos[i].size());
+
                 for(unsigned j = 0; j < paretos[i].size(); j++) {
                     normalized_pareto[j] = std::vector<double>(
                             paretos[i][j].size(), 0.0);
@@ -154,14 +207,18 @@ int main(int argc, char * argv[]) {
                     }
                 }
 
-                pagmo::hypervolume hv(normalized_pareto);
+                hv = pagmo::hypervolume(normalized_pareto);
                 double hypervolume = hv.compute(reference_point);
                 assert(hypervolume >= 0.0);
                 assert(hypervolume <= max_hypervolume);
                 double normalized_hypervolume = hypervolume / max_hypervolume;
                 assert(normalized_hypervolume >= 0.0);
                 assert(normalized_hypervolume <= 1.0);
-                ofs << normalized_hypervolume << std::endl;
+                double hypervolume_ratio = normalized_hypervolume /
+                                           normalized_reference_hypervolume;
+                assert(hypervolume_ratio >= 0.0);
+                assert(hypervolume_ratio <= 1.0);
+                ofs << hypervolume_ratio << std::endl;
 
                 if(ofs.eof() || ofs.fail() || ofs.bad()) {
                     throw std::runtime_error("Error writing file " +
@@ -179,6 +236,7 @@ int main(int argc, char * argv[]) {
 
         for(unsigned i = 0; i < num_solvers; i++) {
             std::ofstream ofs;
+
             ofs.open(arg_parser.option_value("--hypervolume-snapshots-" +
                                              std::to_string(i)));
 
@@ -203,7 +261,7 @@ int main(int argc, char * argv[]) {
                         }
                     }
 
-                    pagmo::hypervolume hv(normalized_pareto_snapshot);
+                    hv = pagmo::hypervolume(normalized_pareto_snapshot);
                     double hypervolume = hv.compute(reference_point);
                     assert(hypervolume >= 0.0);
                     assert(hypervolume <= max_hypervolume);
@@ -211,9 +269,13 @@ int main(int argc, char * argv[]) {
                         max_hypervolume;
                     assert(normalized_hypervolume >= 0.0);
                     assert(normalized_hypervolume <= 1.0);
+                    double hypervolume_ratio = normalized_hypervolume /
+                        normalized_reference_hypervolume;
+                    assert(hypervolume_ratio >= 0.0);
+                    assert(hypervolume_ratio <= 1.0);
                     ofs << iteration_snapshots[i][j] << ","
                         << time_snapshots[i][j] << ","
-                        << normalized_hypervolume << std::endl;
+                        << hypervolume_ratio << std::endl;
 
                     if(ofs.eof() || ofs.fail() || ofs.bad()) {
                         throw std::runtime_error("Error writing file " +
@@ -233,6 +295,7 @@ int main(int argc, char * argv[]) {
     } else {
         std::cerr << "./hypervolume_calculator_exec "
                   << "--instance <instance_filename> "
+                  << "--reference-pareto <reference_pareto_filename> "
                   << "--pareto-i <pareto_filename> "
                   << "--best-solutions-snapshots-i <best_solutions_snapshots_filename> "
                   << "--hypervolume-i <hypervolume_filename> "
