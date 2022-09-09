@@ -46,9 +46,10 @@ bool Solver::are_termination_criteria_met() const {
 }
 
 bool Solver::update_best_individuals(
+            std::vector<std::pair<std::vector<double>, std::vector<double>>> & best_individuals,
             const std::vector<
-                std::pair<std::vector<double>,
-                          std::vector<double>>> & new_individuals) {
+                std::pair<std::vector<double>, std::vector<double>>> & new_individuals,
+            const std::vector<BRKGA::Sense> & senses) {
     bool result = false;
 
     if (new_individuals.empty()) {
@@ -56,19 +57,18 @@ bool Solver::update_best_individuals(
     }
 
     auto non_dominated_new_individuals =
-        BRKGA::Population::nonDominatedSort<std::vector<double>>(
-                new_individuals,
-                this->senses).front();
+        BRKGA::Population::nonDominatedSort<std::vector<double>>(new_individuals,
+                                               senses).front();
 
     for (const auto & new_individual : non_dominated_new_individuals) {
         bool is_dominated_or_equal = false;
 
-        for (auto it  = this->best_individuals.begin();
-                 it != this->best_individuals.end();) {
+        for (auto it  = best_individuals.begin();
+                 it != best_individuals.end();) {
             auto individual = *it;
 
             if (Solution::dominates(new_individual.first, individual.first)) {
-                it = this->best_individuals.erase(it);
+                it = best_individuals.erase(it);
             } else {
                 if (Solution::dominates(individual.first,
                                         new_individual.first)
@@ -88,10 +88,22 @@ bool Solver::update_best_individuals(
         }
 
         if (!is_dominated_or_equal) {
-            this->best_individuals.push_back(new_individual);
+            best_individuals.push_back(new_individual);
             result = true;
         }
     }
+
+    return result;
+}
+
+bool Solver::update_best_individuals(
+            const std::vector<
+                std::pair<std::vector<double>,
+                          std::vector<double>>> & new_individuals) {
+    bool result = Solver::update_best_individuals(
+            this->best_individuals,
+            new_individuals,
+            this->senses);
 
     if (this->best_individuals.size() > this->max_num_solutions) {
         BRKGA::Population::crowdingSort<std::vector<double>>(
