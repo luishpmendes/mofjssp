@@ -4,12 +4,12 @@
 
 namespace mofjssp {
 
-void Instance::compute_upper_bound() {
+void Instance::compute_primal_bound() {
     double max_processing_time = 0.0;
     std::vector<double> working_time(this->num_machines, 0.0);
 
-    upper_bound.resize(this->num_objectives, 0.0);
-    upper_bound.assign(this->num_objectives, 0.0);
+    this->primal_bound.resize(this->num_objectives, 0.0);
+    this->primal_bound.assign(this->num_objectives, 0.0);
 
     for (const auto & [key, value] : this->processing_time) {
         const unsigned machine = std::get<2>(key);
@@ -18,19 +18,20 @@ void Instance::compute_upper_bound() {
         working_time[machine] += value;
     }
 
-    upper_bound[0] = this->total_num_operations * max_processing_time;
-    upper_bound[1] = this->num_jobs * this->total_num_operations * max_processing_time;
+    this->primal_bound[0] = this->total_num_operations * max_processing_time;
+    this->primal_bound[1] = this->num_jobs * this->total_num_operations * max_processing_time;
 
     for (unsigned machine = 0; machine < this->num_machines; machine++) {
-        upper_bound[2] = std::max(upper_bound[2], working_time[machine]);
-        upper_bound[3] += working_time[machine];
+        this->primal_bound[2] = std::max(this->primal_bound[2], working_time[machine]);
+        this->primal_bound[3] += working_time[machine];
     }
 }
 
 Instance::Instance(const std::map<std::tuple<unsigned, unsigned, unsigned>, double> & processing_time) : 
         processing_time(processing_time),
         num_objectives(4),
-        upper_bound(num_objectives, 0.0) {
+        senses(4, BRKGA::Sense::MINIMIZE),
+        primal_bound(num_objectives, 0.0) {
     std::vector<unsigned> jobs;
     std::vector<std::vector<unsigned>> operations;
     std::vector<unsigned> machines;
@@ -86,7 +87,7 @@ Instance::Instance(const std::map<std::tuple<unsigned, unsigned, unsigned>, doub
                                                                       operation));
     }
 
-    this->compute_upper_bound();
+    this->compute_primal_bound();
 }
 
 Instance::Instance(const Instance & instance) = default;
@@ -103,7 +104,8 @@ Instance Instance::operator = (const Instance & instance) {
     this->operations_of_machine = instance.operations_of_machine;
     this->processing_time = instance.processing_time;
     this->num_objectives = 4;
-    this->upper_bound = instance.upper_bound;
+    this->senses = std::vector<BRKGA::Sense>(4, BRKGA::Sense::MINIMIZE);
+    this->primal_bound = instance.primal_bound;
     return *this;
 }
 
@@ -212,11 +214,11 @@ bool Instance::is_valid() const {
         return false;
     }
 
-    if (this->upper_bound.size() != this->num_objectives) {
+    if (this->primal_bound.size() != this->num_objectives) {
         return false;
     }
 
-    for (const double & coordinate : this->upper_bound) {
+    for (const double & coordinate : this->primal_bound) {
         if (coordinate < 0.0) {
             return false;
         }
@@ -270,7 +272,7 @@ std::istream & operator >>(std::istream & is, Instance & instance) {
         }
     }
 
-    instance.compute_upper_bound();
+    instance.compute_primal_bound();
 
     return is;
 }

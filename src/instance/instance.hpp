@@ -1,5 +1,8 @@
 #pragma once
 
+#define NSBRKGA_MULTIPLE_INCLUSIONS
+
+#include "nsbrkga.hpp"
 #include <istream>
 #include <ostream>
 #include <map>
@@ -53,16 +56,21 @@ class Instance {
      ***************************/
     unsigned num_objectives;
 
+    /*********************************
+     * The optimization senses.
+     *********************************/
+    std::vector<BRKGA::Sense> senses;
+
     /********************************
-     * This instance upper bounds.
+     * This instance primal bounds.
      ********************************/
-    std::vector<double> upper_bound;
+    std::vector<double> primal_bound;
 
     private:
     /*********************************************
-     * Computes the upper bounds of the instance.
+     * Computes the primal bounds of the instance.
      *********************************************/
-    void compute_upper_bound();
+    void compute_primal_bound();
 
     public:
     /*********************************************************************************************
