@@ -410,8 +410,8 @@ bool Solution::is_feasible() const {
     }
 
     for (unsigned i = 0; i < this->instance.num_objectives; i++) {
-        if (this->value[i] > this->instance.upper_bound[i]) {
-            std::cout << this->value[i] << " > " << this->instance.upper_bound[i] << std::endl;
+        if (this->value[i] > this->instance.primal_bound[i]) {
+            std::cout << this->value[i] << " > " << this->instance.primal_bound[i] << std::endl;
             std::cout << "e" << std::endl;
             std::cout << "i: " << i << std::endl;
             return false;
