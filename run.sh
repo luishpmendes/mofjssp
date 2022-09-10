@@ -22,6 +22,8 @@ mkdir -p populations_snapshots
 mkdir -p num_elites_snapshots
 mkdir -p hypervolume
 mkdir -p hypervolume_snapshots
+mkdir -p igd_plus
+mkdir -p igd_plus_snapshots
 
 commands=()
 
@@ -169,6 +171,58 @@ do
             command+="--best-solutions-snapshots-${j} best_solutions_snapshots/${instance}_${solver}_${seed}_ "
             command+="--hypervolume-${j} hypervolume/${instance}_${solver}_${seed}.txt "
             command+="--hypervolume-snapshots-${j} hypervolume_snapshots/${instance}_${solver}_${seed}.txt "
+            j=$((j+1))
+        done
+    done
+    if [ $i -lt $num_processes ]
+    then
+        commands[$i]+="$command"
+    else
+        commands[$((i%num_processes))]+=" && $command"
+    fi
+    i=$((i+1))
+done
+
+for ((i=0;i<num_processes;i++))
+do
+    commands[$i]+=") &>> log_${i}.txt"
+done
+
+final_command=""
+
+for ((i=0;i<num_processes;i++))
+do
+    command=${commands[$i]}
+    final_command+="$command & "
+done
+
+eval $final_command
+
+wait
+
+commands=()
+
+for ((i=0;i<num_processes;i++))
+do
+    commands[$i]="("
+done
+
+i=0
+
+for instance in ${instances[@]}
+do
+    command="./bin/exec/modified_generational_distance_calculator_exec "
+    command+="--instance instances/${instance}.txt "
+    command+="--reference-pareto pareto/${instance}.txt "
+    j=0;
+    for solver in ${solvers[@]}
+    do
+        for seed in ${seeds[@]}
+        do
+            command+="--pareto-${j} pareto/${instance}_${solver}_${seed}.txt "
+            command+="--best-solutions-snapshots-${j} best_solutions_snapshots/${instance}_${solver}_${seed}_ "
+            command+="--igd-plus-${j} igd_plus/${instance}_${solver}_${seed}.txt "
+            command+="--igd-plus-snapshots-${j} igd_plus_snapshots/${instance}_${solver}_${seed}.txt "
             j=$((j+1))
         done
     done
