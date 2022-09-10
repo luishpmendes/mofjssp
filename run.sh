@@ -333,6 +333,8 @@ wait
 
 python3 plotter_hypervolume.py &
 python3 plotter_hypervolume_snapshots.py &
+python3 plotter_igd_plus.py &
+python3 plotter_igd_plus_snapshots.py &
 python3 plotter_num_non_dominated_snapshots.py &
 python3 plotter_num_fronts_snapshots.py &
 python3 plotter_num_elites_snapshots.py &
