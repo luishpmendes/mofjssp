@@ -33,7 +33,7 @@ for version in versions:
         col = i%num_cols
         figs[row][col].suptitle(instances[i], fontsize = "x-large")
         ax = figs[row][col].subplots()
-        ax.set_ylabel("Hypervolume x Time", fontsize = "large")
+        ax.set_ylabel("Hypervolume Ratio x Time", fontsize = "large")
         ax.set_xlabel("Time (s)", fontsize = "large")
         for j in range(len(solvers)):
             filename = "hypervolume_snapshots/" + instances[i] + "_" + solvers[j] + "_" + version + ".txt"
@@ -80,7 +80,7 @@ for instance in instances:
 plt.figure()
 plt.title("MOFJSSP", fontsize = "xx-large")
 plt.xlabel("Time (s)", fontsize = "x-large")
-plt.ylabel("Hypervolume", fontsize = "x-large")
+plt.ylabel("Hypervolume Ratio", fontsize = "x-large")
 for i in range(len(solvers)):
     x = []
     y = []
@@ -97,7 +97,7 @@ plt.close()
 plt.figure()
 plt.title("MOFJSSP", fontsize = "xx-large")
 plt.xlabel("Time (s)", fontsize = "x-large")
-plt.ylabel("Hypervolume", fontsize = "x-large")
+plt.ylabel("Hypervolume Ratio", fontsize = "x-large")
 for i in range(len(solvers)):
     x = []
     y0 = []

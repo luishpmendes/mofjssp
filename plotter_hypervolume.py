@@ -29,7 +29,7 @@ for i in range(len(instances)):
     col = i%num_cols
     figs[row][col].suptitle(instances[i], fontsize = "x-large")
     ax = figs[row][col].subplots()
-    ax.set_ylabel("Hypervolume", fontsize = "large")
+    ax.set_ylabel("Hypervolume Ratio", fontsize = "large")
     ax.set_xlabel("Solver", fontsize = "large")
     xs = []
     for solver in solvers:
@@ -68,7 +68,7 @@ for instance in instances:
 plt.figure()
 plt.title("MOFJSSP", fontsize = "xx-large")
 plt.xlabel("Solver", fontsize = "x-large")
-plt.ylabel("Hypervolume", fontsize = "x-large")
+plt.ylabel("Hypervolume Ratio", fontsize = "x-large")
 bp = plt.boxplot(hypervolume, labels = [solver_labels[solver] for solver in solvers], patch_artist = True)
 for i in range(len(solvers)) :
     bp["boxes"][i].set_facecolor(colors[i])
@@ -99,7 +99,7 @@ for num_jobs in nums_jobs:
 plt.figure()
 plt.title("MOFJSSP", fontsize = "xx-large")
 plt.xlabel("Number of Jobs", fontsize = "x-large")
-plt.ylabel("Hypervolume", fontsize = "x-large")
+plt.ylabel("Hypervolume Ratio", fontsize = "x-large")
 plt.xticks(nums_jobs)
 for i in range(len(solvers)):
     y = []
@@ -115,7 +115,7 @@ plt.close()
 plt.figure()
 plt.title("MOFJSSP", fontsize = "xx-large")
 plt.xlabel("Number of Jobs", fontsize = "x-large")
-plt.ylabel("Hypervolume", fontsize = "x-large")
+plt.ylabel("Hypervolume Ratio", fontsize = "x-large")
 plt.xticks(nums_jobs)
 for i in range(len(solvers)):
     y0 = []
@@ -159,7 +159,7 @@ for num_machines in nums_machines:
 plt.figure()
 plt.title("MOFJSSP", fontsize = "xx-large")
 plt.xlabel("Number of Machines", fontsize = "x-large")
-plt.ylabel("Hypervolume", fontsize = "x-large")
+plt.ylabel("Hypervolume Ratio", fontsize = "x-large")
 plt.xticks(nums_machines)
 for i in range(len(solvers)):
     y = []
@@ -175,7 +175,7 @@ plt.close()
 plt.figure()
 plt.title("MOFJSSP", fontsize = "xx-large")
 plt.xlabel("Number of Machines", fontsize = "x-large")
-plt.ylabel("Hypervolume", fontsize = "x-large")
+plt.ylabel("Hypervolume Ratio", fontsize = "x-large")
 plt.xticks(nums_machines)
 for i in range(len(solvers)):
     y0 = []
@@ -219,7 +219,7 @@ for total_num_operations in total_nums_operations:
 plt.figure()
 plt.title("MOFJSSP", fontsize = "xx-large")
 plt.xlabel("Total Number of Operations", fontsize = "x-large")
-plt.ylabel("Hypervolume", fontsize = "x-large")
+plt.ylabel("Hypervolume Ratio", fontsize = "x-large")
 plt.xticks(total_nums_operations)
 for i in range(len(solvers)):
     y = []
@@ -235,7 +235,7 @@ plt.close()
 plt.figure()
 plt.title("MOFJSSP", fontsize = "xx-large")
 plt.xlabel("Total Number of Operations", fontsize = "x-large")
-plt.ylabel("Hypervolume", fontsize = "x-large")
+plt.ylabel("Hypervolume Ratio", fontsize = "x-large")
 plt.xticks(total_nums_operations)
 for i in range(len(solvers)):
     y0 = []
