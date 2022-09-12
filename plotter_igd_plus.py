@@ -2,7 +2,6 @@ import csv
 import matplotlib.pyplot as plt
 import os
 import statistics as stats
-import itertools
 from math import ceil, floor, sqrt
 from plotter_definitions import *
 
@@ -80,9 +79,9 @@ plt.close()
 igd_plus_per_num_jobs = {}
 
 for solver in solvers:
-        igd_plus_per_num_jobs[solver] = {}
-        for nums_job in nums_jobs:
-            igd_plus_per_num_jobs[solver][nums_job] = []
+    igd_plus_per_num_jobs[solver] = {}
+    for nums_job in nums_jobs:
+        igd_plus_per_num_jobs[solver][nums_job] = []
 
 for num_jobs in nums_jobs:
     for instance in instances_per_num_jobs[num_jobs]:
@@ -133,7 +132,7 @@ for i in range(len(solvers)):
     plt.plot(nums_jobs, y1, label = solver_labels[solvers[i]], marker = (i + 3, 2, 0), color = colors[i], alpha = 0.75)
 plt.xlim(left = max(min(nums_jobs) - 1, 0), right = max(nums_jobs) + 1)
 plt.ylim(bottom = min_igd_plus, top = max_igd_plus)
-plt.legend(loc = 'best', fontsize = "x-large")
+plt.legend(loc = 'best', fontsize = "large")
 plt.savefig("igd_plus/igd_plus_quartiles_per_num_jobs.png", format = "png")
 plt.close()
 
@@ -159,7 +158,7 @@ for num_machines in nums_machines:
 plt.figure()
 plt.title("MOFJSSP", fontsize = "xx-large")
 plt.xlabel("Number of Machines", fontsize = "x-large")
-plt.ylabel("igd_plus", fontsize = "x-large")
+plt.ylabel("IGD+", fontsize = "x-large")
 plt.xticks(nums_machines)
 for i in range(len(solvers)):
     y = []
@@ -168,7 +167,7 @@ for i in range(len(solvers)):
     plt.plot(nums_machines, y, label = solver_labels[solvers[i]], marker = (i + 3, 2, 0), color = colors[i], alpha = 0.80)
 plt.xlim(left = max(min(nums_machines) - 1, 0), right = max(nums_machines) + 1)
 plt.ylim(bottom = min_igd_plus, top = max_igd_plus)
-plt.legend(loc = 'best', fontsize = "x-large")
+plt.legend(loc = 'best', fontsize = "large")
 plt.savefig("igd_plus/igd_plus_mean_per_num_machines.png", format = "png")
 plt.close()
 
@@ -193,8 +192,8 @@ for i in range(len(solvers)):
     plt.plot(nums_machines, y1, label = solver_labels[solvers[i]], marker = (i + 3, 2, 0), color = colors[i], alpha = 0.75)
 plt.xlim(left = max(min(nums_machines) - 1, 0), right = max(nums_machines) + 1)
 plt.ylim(bottom = min_igd_plus, top = max_igd_plus)
-plt.legend(loc = 'best', fontsize = "x-large")
-plt.savefig("igd_plus/igd_plus_quartile_per_num_machines.png", format = "png")
+plt.legend(loc = 'best', fontsize = "large")
+plt.savefig("igd_plus/igd_plus_quartiles_per_num_machines.png", format = "png")
 plt.close()
 
 igd_plus_per_total_num_operations = {}
@@ -228,7 +227,7 @@ for i in range(len(solvers)):
     plt.plot(total_nums_operations, y, label = solver_labels[solvers[i]], marker = (i + 3, 2, 0), color = colors[i], alpha = 0.8)
 plt.xlim(left = max(min(total_nums_operations) - 1, 0), right = max(total_nums_operations) + 1)
 plt.ylim(bottom = min_igd_plus, top = max_igd_plus)
-plt.legend(loc = 'best', fontsize = "x-large")
+plt.legend(loc = 'best', fontsize = "large")
 plt.savefig("igd_plus/igd_plus_mean_per_total_num_operations.png", format = "png")
 plt.close()
 
@@ -253,6 +252,6 @@ for i in range(len(solvers)):
     plt.plot(total_nums_operations, y1, label = solver_labels[solvers[i]], marker = (i + 3, 2, 0), color = colors[i], alpha = 0.75)
 plt.xlim(left = max(min(total_nums_operations) - 1, 0), right = max(total_nums_operations) + 1)
 plt.ylim(bottom = min_igd_plus, top = max_igd_plus)
-plt.legend(loc = 'best', fontsize = "x-large")
-plt.savefig("igd_plus/igd_plus_quartile_per_total_num_operations.png", format = "png")
+plt.legend(loc = 'best', fontsize = "large")
+plt.savefig("igd_plus/igd_plus_quartiles_per_total_num_operations.png", format = "png")
 plt.close()

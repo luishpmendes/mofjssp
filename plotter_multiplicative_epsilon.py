@@ -2,7 +2,6 @@ import csv
 import matplotlib.pyplot as plt
 import os
 import statistics as stats
-import itertools
 from math import ceil, floor, sqrt
 from plotter_definitions import *
 
@@ -80,9 +79,9 @@ plt.close()
 multiplicative_epsilon_per_num_jobs = {}
 
 for solver in solvers:
-        multiplicative_epsilon_per_num_jobs[solver] = {}
-        for nums_job in nums_jobs:
-            multiplicative_epsilon_per_num_jobs[solver][nums_job] = []
+    multiplicative_epsilon_per_num_jobs[solver] = {}
+    for nums_job in nums_jobs:
+        multiplicative_epsilon_per_num_jobs[solver][nums_job] = []
 
 for num_jobs in nums_jobs:
     for instance in instances_per_num_jobs[num_jobs]:
@@ -194,7 +193,7 @@ for i in range(len(solvers)):
 plt.xlim(left = max(min(nums_machines) - 1, 0), right = max(nums_machines) + 1)
 plt.ylim(bottom = min_multiplicative_epsilon, top = max_multiplicative_epsilon)
 plt.legend(loc = 'best', fontsize = "x-large")
-plt.savefig("multiplicative_epsilon/multiplicative_epsilon_quartile_per_num_machines.png", format = "png")
+plt.savefig("multiplicative_epsilon/multiplicative_epsilon_quartiles_per_num_machines.png", format = "png")
 plt.close()
 
 multiplicative_epsilon_per_total_num_operations = {}
@@ -254,5 +253,5 @@ for i in range(len(solvers)):
 plt.xlim(left = max(min(total_nums_operations) - 1, 0), right = max(total_nums_operations) + 1)
 plt.ylim(bottom = min_multiplicative_epsilon, top = max_multiplicative_epsilon)
 plt.legend(loc = 'best', fontsize = "x-large")
-plt.savefig("multiplicative_epsilon/multiplicative_epsilon_quartile_per_total_num_operations.png", format = "png")
+plt.savefig("multiplicative_epsilon/multiplicative_epsilon_quartiles_per_total_num_operations.png", format = "png")
 plt.close()

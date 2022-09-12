@@ -87,7 +87,7 @@ void NSBRKGA_Solver::solve() {
     params.pr_percentage = this->pr_percentage;
 
     BRKGA::NSBRKGA algorithm(decoder,
-                             this->senses,
+                             this->instance.senses,
                              this->seed,
                              2 * this->instance.total_num_operations,
                              params,

@@ -15,11 +15,6 @@ class Solver {
      ****************************/
     Instance instance;
 
-    /*********************************
-     * The optimization senses.
-     *********************************/
-    std::vector<BRKGA::Sense> senses;
-
     /****************************************************************
      * The seed for the pseudo-random numbers generator.
      ****************************************************************/

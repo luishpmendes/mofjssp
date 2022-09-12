@@ -4,17 +4,24 @@
 #include <fstream>
 
 static inline
-double modified_distance(const std::vector<double> & reference_point,
+double modified_distance(const std::vector<BRKGA::Sense> & senses,
+                         const std::vector<double> & reference_point,
                          const std::vector<double> & point) {
     double distance = 0.0, delta;
 
-    for (unsigned i = 0; i < reference_point.size(); i++) {
+    for(unsigned i = 0; i < senses.size(); i++) {
         delta = 0;
 
-        if (reference_point[i] > point[i]) {
-            delta = reference_point[i] - point[i];
+        if(senses[i] == BRKGA::Sense::MINIMIZE) {
+            if(reference_point[i] > point[i]) {
+                delta = reference_point[i] - point[i];
+            }
+        } else { // senses[i] == BRKGA::Sense::MAXIMIZE
+            if(point[i] > reference_point[i]) {
+                delta = point[i] - reference_point[i];
+            }
         }
-
+        
         distance += delta * delta;
     }
 
@@ -22,17 +29,21 @@ double modified_distance(const std::vector<double> & reference_point,
 }
 
 static inline
-double modified_inverted_generational_distance(const std::vector<std::vector<double>> & reference_front,
-                                               const std::vector<std::vector<double>> & front) {
+double modified_inverted_generational_distance(
+        const std::vector<BRKGA::Sense> & senses,
+        const std::vector<std::vector<double>> & reference_front,
+        const std::vector<std::vector<double>> & front) {
     double igd_plus = 0.0, min_distance, distance;
 
-    for (unsigned i = 0; i < reference_front.size(); i++) {
-        min_distance = modified_distance(reference_front[i], front.front());
+    for(unsigned i = 0; i < reference_front.size(); i++) {
+        min_distance = modified_distance(senses,
+                                         reference_front[i],
+                                         front.front());
 
-        for (unsigned j = 1; j < front.size(); j++) {
-            distance = modified_distance(reference_front[j], front[i]);
+        for(unsigned j = 1; j < front.size(); j++) {
+            distance = modified_distance(senses, reference_front[j], front[i]);
 
-            if (distance < min_distance) {
+            if(distance < min_distance) {
                 min_distance = distance;
             }
         }
@@ -179,9 +190,12 @@ int main(int argc, char * argv[]) {
 
                         for(std::string line; std::getline(ifs, line);) {
                             std::istringstream iss(line);
-                            std::vector<double> value(instance.num_objectives, 0.0);
+                            std::vector<double> value(instance.num_objectives,
+                                                      0.0);
 
-                            for(unsigned j = 0; j < instance.num_objectives; j++) {
+                            for(unsigned j = 0;
+                                j < instance.num_objectives;
+                                j++) {
                                 iss >> value[j];
 
                                 if(min_value[j] > value[j]) {
@@ -204,9 +218,11 @@ int main(int argc, char * argv[]) {
 
         std::vector<std::vector<double>> normalized_reference_pareto(
                         reference_pareto.size());
+
         for(unsigned i = 0; i < reference_pareto.size(); i++) {
             normalized_reference_pareto[i] = std::vector<double>(
                     reference_pareto[i].size(), 0.0);
+
             for(unsigned j = 0; j < instance.num_objectives; j++) {
                 normalized_reference_pareto[i][j] =
                     (reference_pareto[i][j] - min_value[j]) /
@@ -223,6 +239,7 @@ int main(int argc, char * argv[]) {
             for(unsigned j = 0; j < paretos[i].size(); j++) {
                 normalized_pareto[j] = std::vector<double>(
                         paretos[i][j].size(), 0.0);
+
                 for(unsigned k = 0; k < instance.num_objectives; k++) {
                     normalized_pareto[j][k] =
                         (paretos[i][j][k] - min_value[k]) /
@@ -233,7 +250,9 @@ int main(int argc, char * argv[]) {
             }
 
             double igd_plus = modified_inverted_generational_distance(
-                    normalized_reference_pareto, normalized_pareto);
+                    instance.senses,
+                    normalized_reference_pareto,
+                    normalized_pareto);
 
             assert(igd_plus >= 0.0);
 
@@ -251,11 +270,13 @@ int main(int argc, char * argv[]) {
                 std::vector<std::vector<double>>
                     normalized_pareto_snapshot(
                             best_solutions_snapshots[i][j].size());
+
                 for(unsigned k = 0;
                     k < best_solutions_snapshots[i][j].size();
                     k++) {
                     normalized_pareto_snapshot[k] = std::vector<double>(
                             best_solutions_snapshots[i][j][k].size(), 0.0);
+
                     for(unsigned l = 0; l < instance.num_objectives; l++) {
                         normalized_pareto_snapshot[k][l] =
                             (best_solutions_snapshots[i][j][k][l] -
@@ -266,8 +287,10 @@ int main(int argc, char * argv[]) {
                 }
 
                 double igd_plus = modified_inverted_generational_distance(
-                    normalized_reference_pareto, normalized_pareto_snapshot);
-                
+                        instance.senses,
+                        normalized_reference_pareto,
+                        normalized_pareto_snapshot);
+
                 assert(igd_plus >= 0.0);
 
                 igd_plus_snapshots[i].push_back(igd_plus);
@@ -275,7 +298,7 @@ int main(int argc, char * argv[]) {
                 if (max_igd_plus < igd_plus) {
                     max_igd_plus = igd_plus;
                 }
-           }
+            }
         }
 
         for(unsigned i = 0; i < num_solvers; i++) {

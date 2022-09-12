@@ -2,7 +2,6 @@ import csv
 import matplotlib.pyplot as plt
 import os
 import statistics as stats
-import itertools
 from math import ceil, floor, sqrt
 from plotter_definitions import *
 
@@ -80,9 +79,9 @@ plt.close()
 hypervolume_per_num_jobs = {}
 
 for solver in solvers:
-        hypervolume_per_num_jobs[solver] = {}
-        for nums_job in nums_jobs:
-            hypervolume_per_num_jobs[solver][nums_job] = []
+    hypervolume_per_num_jobs[solver] = {}
+    for nums_job in nums_jobs:
+        hypervolume_per_num_jobs[solver][nums_job] = []
 
 for num_jobs in nums_jobs:
     for instance in instances_per_num_jobs[num_jobs]:
@@ -168,7 +167,7 @@ for i in range(len(solvers)):
     plt.plot(nums_machines, y, label = solver_labels[solvers[i]], marker = (i + 3, 2, 0), color = colors[i], alpha = 0.80)
 plt.xlim(left = max(min(nums_machines) - 1, 0), right = max(nums_machines) + 1)
 plt.ylim(bottom = min_hypervolume, top = max_hypervolume)
-plt.legend(loc = 'best', fontsize = "x-large")
+plt.legend(loc = 'best', fontsize = "large")
 plt.savefig("hypervolume/hypervolume_mean_per_num_machines.png", format = "png")
 plt.close()
 
@@ -193,7 +192,7 @@ for i in range(len(solvers)):
     plt.plot(nums_machines, y1, label = solver_labels[solvers[i]], marker = (i + 3, 2, 0), color = colors[i], alpha = 0.75)
 plt.xlim(left = max(min(nums_machines) - 1, 0), right = max(nums_machines) + 1)
 plt.ylim(bottom = min_hypervolume, top = max_hypervolume)
-plt.legend(loc = 'best', fontsize = "x-large")
+plt.legend(loc = 'best', fontsize = "large")
 plt.savefig("hypervolume/hypervolume_quartile_per_num_machines.png", format = "png")
 plt.close()
 
@@ -228,7 +227,7 @@ for i in range(len(solvers)):
     plt.plot(total_nums_operations, y, label = solver_labels[solvers[i]], marker = (i + 3, 2, 0), color = colors[i], alpha = 0.8)
 plt.xlim(left = max(min(total_nums_operations) - 1, 0), right = max(total_nums_operations) + 1)
 plt.ylim(bottom = min_hypervolume, top = max_hypervolume)
-plt.legend(loc = 'best', fontsize = "x-large")
+plt.legend(loc = 'best', fontsize = "large")
 plt.savefig("hypervolume/hypervolume_mean_per_total_num_operations.png", format = "png")
 plt.close()
 
@@ -253,6 +252,6 @@ for i in range(len(solvers)):
     plt.plot(total_nums_operations, y1, label = solver_labels[solvers[i]], marker = (i + 3, 2, 0), color = colors[i], alpha = 0.75)
 plt.xlim(left = max(min(total_nums_operations) - 1, 0), right = max(total_nums_operations) + 1)
 plt.ylim(bottom = min_hypervolume, top = max_hypervolume)
-plt.legend(loc = 'best', fontsize = "x-large")
+plt.legend(loc = 'best', fontsize = "large")
 plt.savefig("hypervolume/hypervolume_quartile_per_total_num_operations.png", format = "png")
 plt.close()

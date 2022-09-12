@@ -141,9 +141,12 @@ int main(int argc, char * argv[]) {
 
                         for(std::string line; std::getline(ifs, line);) {
                             std::istringstream iss(line);
-                            std::vector<double> value(instance.num_objectives, 0.0);
+                            std::vector<double> value(instance.num_objectives,
+                                                      0.0);
 
-                            for(unsigned j = 0; j < instance.num_objectives; j++) {
+                            for(unsigned j = 0;
+                                j < instance.num_objectives;
+                                j++) {
                                 iss >> value[j];
 
                                 if(min_value[j] > value[j]) {
@@ -166,9 +169,11 @@ int main(int argc, char * argv[]) {
 
         std::vector<std::vector<double>> normalized_pareto(
                         reference_pareto.size());
+
         for(unsigned i = 0; i < reference_pareto.size(); i++) {
             normalized_pareto[i] = std::vector<double>(
                     reference_pareto[i].size(), 0.0);
+
             for(unsigned j = 0; j < instance.num_objectives; j++) {
                 normalized_pareto[i][j] =
                     (reference_pareto[i][j] - min_value[j]) /
@@ -179,9 +184,11 @@ int main(int argc, char * argv[]) {
         }
 
         pagmo::hypervolume hv(normalized_pareto);
+
         double reference_hypervolume = hv.compute(reference_point);
         assert(reference_hypervolume >= 0.0);
         assert(reference_hypervolume <= max_hypervolume);
+
         double normalized_reference_hypervolume = reference_hypervolume
                                                 / max_hypervolume;
         assert(normalized_reference_hypervolume >= 0.0);
@@ -189,6 +196,7 @@ int main(int argc, char * argv[]) {
 
         for(unsigned i = 0; i < num_solvers; i++) {
             std::ofstream ofs;
+
             ofs.open(arg_parser.option_value("--hypervolume-" +
                                              std::to_string(i)));
 
@@ -198,6 +206,7 @@ int main(int argc, char * argv[]) {
                 for(unsigned j = 0; j < paretos[i].size(); j++) {
                     normalized_pareto[j] = std::vector<double>(
                             paretos[i][j].size(), 0.0);
+
                     for(unsigned k = 0; k < instance.num_objectives; k++) {
                         normalized_pareto[j][k] =
                             (paretos[i][j][k] - min_value[k]) /
@@ -208,16 +217,20 @@ int main(int argc, char * argv[]) {
                 }
 
                 hv = pagmo::hypervolume(normalized_pareto);
+
                 double hypervolume = hv.compute(reference_point);
                 assert(hypervolume >= 0.0);
                 assert(hypervolume <= max_hypervolume);
+
                 double normalized_hypervolume = hypervolume / max_hypervolume;
                 assert(normalized_hypervolume >= 0.0);
                 assert(normalized_hypervolume <= 1.0);
+
                 double hypervolume_ratio = normalized_hypervolume /
                                            normalized_reference_hypervolume;
                 assert(hypervolume_ratio >= 0.0);
                 assert(hypervolume_ratio <= 1.0);
+
                 ofs << hypervolume_ratio << std::endl;
 
                 if(ofs.eof() || ofs.fail() || ofs.bad()) {
@@ -247,11 +260,13 @@ int main(int argc, char * argv[]) {
                     std::vector<std::vector<double>>
                         normalized_pareto_snapshot(
                                 best_solutions_snapshots[i][j].size());
+
                     for(unsigned k = 0;
                         k < best_solutions_snapshots[i][j].size();
                         k++) {
                         normalized_pareto_snapshot[k] = std::vector<double>(
                                 best_solutions_snapshots[i][j][k].size(), 0.0);
+
                         for(unsigned l = 0; l < instance.num_objectives; l++) {
                             normalized_pareto_snapshot[k][l] =
                                 (best_solutions_snapshots[i][j][k][l] -
@@ -262,17 +277,21 @@ int main(int argc, char * argv[]) {
                     }
 
                     hv = pagmo::hypervolume(normalized_pareto_snapshot);
+
                     double hypervolume = hv.compute(reference_point);
                     assert(hypervolume >= 0.0);
                     assert(hypervolume <= max_hypervolume);
+
                     double normalized_hypervolume = hypervolume /
                         max_hypervolume;
                     assert(normalized_hypervolume >= 0.0);
                     assert(normalized_hypervolume <= 1.0);
+
                     double hypervolume_ratio = normalized_hypervolume /
                         normalized_reference_hypervolume;
                     assert(hypervolume_ratio >= 0.0);
                     assert(hypervolume_ratio <= 1.0);
+
                     ofs << iteration_snapshots[i][j] << ","
                         << time_snapshots[i][j] << ","
                         << hypervolume_ratio << std::endl;

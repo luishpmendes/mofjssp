@@ -3,8 +3,7 @@
 namespace mofjssp {
 
 Solver::Solver(const Instance & instance)
-    : instance(instance),
-      senses(instance.num_objectives, BRKGA::Sense::MINIMIZE) {
+    : instance(instance) {
     this->set_seed(this->seed);
 }
 
@@ -58,7 +57,7 @@ bool Solver::update_best_individuals(
 
     auto non_dominated_new_individuals =
         BRKGA::Population::nonDominatedSort<std::vector<double>>(new_individuals,
-                                               senses).front();
+                                                                 senses).front();
 
     for (const auto & new_individual : non_dominated_new_individuals) {
         bool is_dominated_or_equal = false;
@@ -103,7 +102,7 @@ bool Solver::update_best_individuals(
     bool result = Solver::update_best_individuals(
             this->best_individuals,
             new_individuals,
-            this->senses);
+            this->instance.senses);
 
     if (this->best_individuals.size() > this->max_num_solutions) {
         BRKGA::Population::crowdingSort<std::vector<double>>(
@@ -149,7 +148,7 @@ void Solver::capture_snapshot(const pagmo::population & pop) {
 
     this->fronts = BRKGA::Population::nonDominatedSort<std::vector<double>>(
             current_individuals,
-            this->senses);
+            this->instance.senses);
 
     this->num_non_dominated_snapshots.push_back(std::make_tuple(
                 this->num_iterations,

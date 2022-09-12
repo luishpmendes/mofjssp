@@ -4,32 +4,38 @@
 #include <fstream>
 
 static inline
-double multiplicative_epsilon_indicator(const std::vector<std::vector<double>> & reference_front,
-                                        const std::vector<std::vector<double>> & front) {
+double multiplicative_epsilon_indicator(
+        const std::vector<BRKGA::Sense> & senses,
+        const std::vector<std::vector<double>> & reference_front,
+        const std::vector<std::vector<double>> & front) {
     double epsilon = 0.0, min_max_ratio, max_ratio, ratio;
 
-    for (unsigned i = 0; i < front.size(); i++) {
-        for (unsigned j = 0; j < reference_front.size(); j++) {
+    for(unsigned i = 0; i < front.size(); i++) {
+        for(unsigned j = 0; j < reference_front.size(); j++) {
             max_ratio = 0.0;
 
-            for (unsigned k = 0; k < front[i].size(); k++) {
-                ratio = reference_front[j][k] / front[i][k];
+            for(unsigned k = 0; k < senses.size(); k++) {
+                if(senses[k] == BRKGA::Sense::MINIMIZE) {
+                    ratio = reference_front[j][k] / front[i][k];
+                } else { // senses[k] == BRKGA::Sense::MAXIMIZE
+                    ratio = front[i][k] / reference_front[j][k];
+                }
 
-                if (max_ratio < ratio) {
+                if(max_ratio < ratio) {
                     max_ratio = ratio;
                 }
             }
 
-            if (j == 0) {
+            if(j == 0) {
                 min_max_ratio = max_ratio;
             } else if (min_max_ratio > max_ratio) {
                 min_max_ratio = max_ratio;
             }
         }
 
-        if (i == 0) {
+        if(i == 0) {
             epsilon = min_max_ratio;
-        } else if (epsilon < min_max_ratio) {
+        } else if(epsilon < min_max_ratio) {
             epsilon = min_max_ratio;
         }
     }
@@ -157,9 +163,12 @@ int main(int argc, char * argv[]) {
 
                         for(std::string line; std::getline(ifs, line);) {
                             std::istringstream iss(line);
-                            std::vector<double> value(instance.num_objectives, 0.0);
+                            std::vector<double> value(instance.num_objectives,
+                                                      0.0);
 
-                            for(unsigned j = 0; j < instance.num_objectives; j++) {
+                            for(unsigned j = 0;
+                                j < instance.num_objectives;
+                                j++) {
                                 iss >> value[j];
                             }
 
@@ -176,7 +185,7 @@ int main(int argc, char * argv[]) {
 
         for(unsigned i = 0; i < num_solvers; i++) {
             double multiplicative_epsilon = multiplicative_epsilon_indicator(
-                    reference_pareto, paretos[i]);
+                    instance.senses, reference_pareto, paretos[i]);
 
             assert(multiplicative_epsilon >= 0.0);
             assert(multiplicative_epsilon <= 1.0);
@@ -188,9 +197,12 @@ int main(int argc, char * argv[]) {
             for(unsigned j = 0;
                 j < best_solutions_snapshots[i].size();
                 j++) {
-                double multiplicative_epsilon = multiplicative_epsilon_indicator(
-                    reference_pareto, best_solutions_snapshots[i][j]);
-                
+                double multiplicative_epsilon
+                        = multiplicative_epsilon_indicator(
+                                instance.senses,
+                                reference_pareto,
+                                best_solutions_snapshots[i][j]);
+
                 assert(multiplicative_epsilon >= 0.0);
                 assert(multiplicative_epsilon >= 0.0);
 
