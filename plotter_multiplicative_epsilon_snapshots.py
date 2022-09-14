@@ -23,35 +23,35 @@ delta_multiplicative_epsilon = max_multiplicative_epsilon - min_multiplicative_e
 min_multiplicative_epsilon = max(min_multiplicative_epsilon - round(0.025 * delta_multiplicative_epsilon), 0.00)
 max_multiplicative_epsilon = min(max_multiplicative_epsilon + round(0.025 * delta_multiplicative_epsilon), 1.00)
 
-for version in versions:
-    num_rows = floor(sqrt(len(instances)))
-    num_cols = ceil(len(instances)/floor(sqrt(len(instances))))
-    fig = plt.figure(figsize = (5 * num_cols, 5 * num_rows), constrained_layout = True)
-    figs = fig.subfigures(nrows = num_rows, ncols = num_cols, wspace = 0.05, hspace = 0.05)
-    for i in range(len(instances)):
-        row = floor(i/num_cols)
-        col = i%num_cols
-        figs[row][col].suptitle(instances[i], fontsize = "x-large")
-        ax = figs[row][col].subplots()
-        ax.set_ylabel("Multiplicative Epsilon x Time", fontsize = "large")
-        ax.set_xlabel("Time (s)", fontsize = "large")
-        for j in range(len(solvers)):
-            filename = "multiplicative_epsilon_snapshots/" + instances[i] + "_" + solvers[j] + "_" + version + ".txt"
-            if os.path.exists(filename):
-                x = []
-                y = []
-                with open(filename) as csv_file:
-                    data = csv.reader(csv_file, delimiter = ",")
-                    for row in data:
-                        x.append(float(row[1]))
-                        y.append(float(row[2]))
-                ax.plot(x, y, label = solver_labels[solvers[j]], marker = (j + 3, 2, 0), color = colors[j], alpha = 0.80)
-        ax.set_xlim(left = 0.0, right = max_time)
-        ax.set_ylim(bottom = min_multiplicative_epsilon, top = max_multiplicative_epsilon)
-        ax.legend(loc = 'best')
-    fig.suptitle("MOFJSSP", fontsize = "xx-large")
-    plt.savefig("multiplicative_epsilon_snapshots/multiplicative_epsilon_snapshots_" + version + ".png", format = "png")
-    plt.close(fig)
+# for version in versions:
+#     num_rows = floor(sqrt(len(instances)))
+#     num_cols = ceil(len(instances)/floor(sqrt(len(instances))))
+#     fig = plt.figure(figsize = (5 * num_cols, 5 * num_rows), constrained_layout = True)
+#     figs = fig.subfigures(nrows = num_rows, ncols = num_cols, wspace = 0.05, hspace = 0.05)
+#     for i in range(len(instances)):
+#         row = floor(i/num_cols)
+#         col = i%num_cols
+#         figs[row][col].suptitle(instances[i], fontsize = "x-large")
+#         ax = figs[row][col].subplots()
+#         ax.set_ylabel("Multiplicative Epsilon x Time", fontsize = "large")
+#         ax.set_xlabel("Time (s)", fontsize = "large")
+#         for j in range(len(solvers)):
+#             filename = "multiplicative_epsilon_snapshots/" + instances[i] + "_" + solvers[j] + "_" + version + ".txt"
+#             if os.path.exists(filename):
+#                 x = []
+#                 y = []
+#                 with open(filename) as csv_file:
+#                     data = csv.reader(csv_file, delimiter = ",")
+#                     for row in data:
+#                         x.append(float(row[1]))
+#                         y.append(float(row[2]))
+#                 ax.plot(x, y, label = solver_labels[solvers[j]], marker = (j + 3, 2, 0), color = colors[j], alpha = 0.80)
+#         ax.set_xlim(left = 0.0, right = max_time)
+#         ax.set_ylim(bottom = min_multiplicative_epsilon, top = max_multiplicative_epsilon)
+#         ax.legend(loc = 'best')
+#     fig.suptitle("MOFJSSP", fontsize = "xx-large")
+#     plt.savefig("multiplicative_epsilon_snapshots/multiplicative_epsilon_snapshots_" + version + ".png", format = "png")
+#     plt.close(fig)
 
 multiplicative_epsilon_per_solver = {}
 time_per_solver = {}
