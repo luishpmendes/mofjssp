@@ -2,7 +2,7 @@
 
 instances=(mk01 mk02 mk03 mk04 mk05 mk06 mk07 mk08 mk09 mk10)
 solvers=(nsga2 nspso moead mhaco ihs nsbrkga)
-seeds=(898771522 281907270 611604354 798134460 126152880)
+seeds=(953144296 978387430 226105561 727358244 393093272)
 versions=(best median)
 
 num_processes=6
