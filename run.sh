@@ -87,7 +87,7 @@ done
 
 for ((i=0;i<num_processes;i++))
 do
-    commands[$i]+=") &> log_${i}.txt"
+    commands[$i]+=") &> ${path}/log_${i}.txt"
 done
 
 final_command=""
@@ -137,7 +137,7 @@ done
 
 for ((i=0;i<num_processes;i++))
 do
-    commands[$i]+=") &>> log_${i}.txt"
+    commands[$i]+=") &>> ${path}/log_${i}.txt"
 done
 
 final_command=""
@@ -189,7 +189,7 @@ done
 
 for ((i=0;i<num_processes;i++))
 do
-    commands[$i]+=") &>> log_${i}.txt"
+    commands[$i]+=") &>> ${path}/log_${i}.txt"
 done
 
 final_command=""
@@ -241,7 +241,7 @@ done
 
 for ((i=0;i<num_processes;i++))
 do
-    commands[$i]+=") &>> log_${i}.txt"
+    commands[$i]+=") &>> ${path}/log_${i}.txt"
 done
 
 final_command=""
@@ -293,7 +293,7 @@ done
 
 for ((i=0;i<num_processes;i++))
 do
-    commands[$i]+=") &>> log_${i}.txt"
+    commands[$i]+=") &>> ${path}/log_${i}.txt"
 done
 
 final_command=""
@@ -372,7 +372,7 @@ done
 
 for ((i=0;i<num_processes;i++))
 do
-    commands[$i]+=") &>> log_${i}.txt"
+    commands[$i]+=") &>> ${path}/log_${i}.txt"
 done
 
 final_command=""
