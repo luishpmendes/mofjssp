@@ -3,6 +3,8 @@ import matplotlib.pyplot as plt
 import os
 from plotter_definitions import *
 
+dirname = os.path.dirname(__file__)
+
 for instance in instances:
     for version in versions:
         plt.figure()
@@ -11,7 +13,7 @@ for instance in instances:
         plt.ylabel("Number of elites", fontsize = "x-large")
         for solver in solvers:
             if solver.startswith("nsbrkga"):
-                filename = "num_elites_snapshots/" + instance + "_" + solver + "_" + version + ".txt"
+                filename = os.path.join(dirname, "num_elites_snapshots/" + instance + "_" + solver + "_" + version + ".txt")
                 if os.path.exists(filename):
                     x = []
                     y = []
@@ -23,6 +25,7 @@ for instance in instances:
                     plt.plot(x, y, label = solver_labels[solver])
         plt.xlim(left = 0)
         plt.ylim(bottom = 0)
-        plt.legend(loc = 'best', fontsize = "large")
-        plt.savefig("num_elites_snapshots/" + instance + "_" + version + ".png", format = "png")
+        plt.legend(loc = "best", fontsize = "large")
+        filename = os.path.join(dirname, "num_elites_snapshots/" + instance + "_" + version + ".png")
+        plt.savefig(filename, format = "png")
         plt.close()

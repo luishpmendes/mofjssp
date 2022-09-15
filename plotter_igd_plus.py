@@ -5,11 +5,13 @@ import statistics as stats
 from math import ceil, floor, sqrt
 from plotter_definitions import *
 
+dirname = os.path.dirname(__file__)
+
 min_igd_plus = 1.0
 max_igd_plus = 0.0
 for instance in instances:
     for solver in solvers:
-        filename = "igd_plus/" + instance + "_" + solver + ".txt"
+        filename = os.path.join(dirname, "igd_plus/" + instance + "_" + solver + ".txt")
         with open(filename) as csv_file:
             data = csv.reader(csv_file)
             for row in data:
@@ -32,7 +34,7 @@ for i in range(len(instances)):
     ax.set_xlabel("Solver", fontsize = "large")
     xs = []
     for solver in solvers:
-        filename = "igd_plus/" + instances[i] + "_" + solver + ".txt"
+        filename = os.path.join(dirname, "igd_plus/" + instances[i] + "_" + solver + ".txt")
         x = []
         with open(filename) as csv_file:
             data = csv.reader(csv_file)
@@ -45,7 +47,8 @@ for i in range(len(instances)):
         bp["medians"][j].set_color("black")
     ax.set_ylim(bottom = min_igd_plus, top = max_igd_plus)
 fig.suptitle("MOFJSSP", fontsize = "xx-large")
-plt.savefig("igd_plus/igd_plus.png", format = "png")
+filename = os.path.join(dirname, "igd_plus/igd_plus.png")
+plt.savefig(filename, format = "png")
 plt.close(fig)
 
 igd_plus = []
@@ -56,7 +59,7 @@ for solver in solvers:
 for instance in instances:
     for i in range(len(solvers)):
         for seed in seeds:
-            filename = "igd_plus/" + instance + "_" + solvers[i] + "_" + str(seed) + ".txt"
+            filename = os.path.join(dirname, "igd_plus/" + instance + "_" + solvers[i] + "_" + str(seed) + ".txt")
             if os.path.exists(filename):
                 with open(filename) as csv_file:
                     data = csv.reader(csv_file, delimiter = ",")
@@ -73,7 +76,8 @@ for i in range(len(solvers)) :
     bp["boxes"][i].set_facecolor(colors[i])
     bp["medians"][i].set_color("black")
 plt.ylim(bottom = min_igd_plus, top = max_igd_plus)
-plt.savefig("igd_plus/igd_pluses.png", format = "png")
+filename = os.path.join(dirname, "igd_plus/igd_pluses.png")
+plt.savefig(filename, format = "png")
 plt.close()
 
 igd_plus_per_num_jobs = {}
@@ -87,7 +91,7 @@ for num_jobs in nums_jobs:
     for instance in instances_per_num_jobs[num_jobs]:
         for solver in solvers:
             for seed in seeds:
-                filename = "igd_plus/" + instance + "_" + solver + "_" + str(seed) + ".txt"
+                filename = os.path.join(dirname, "igd_plus/" + instance + "_" + solver + "_" + str(seed) + ".txt")
                 if os.path.exists(filename):
                     with open(filename) as csv_file:
                         data = csv.reader(csv_file, delimiter = ",")
@@ -107,8 +111,9 @@ for i in range(len(solvers)):
     plt.plot(nums_jobs, y, label = solver_labels[solvers[i]], marker = (i + 3, 2, 0), color = colors[i], alpha = 0.80)
 plt.xlim(left = max(min(nums_jobs) - 1, 0), right = max(nums_jobs) + 1)
 plt.ylim(bottom = min_igd_plus, top = max_igd_plus)
-plt.legend(loc = 'best', fontsize = "large")
-plt.savefig("igd_plus/igd_plus_mean_per_num_jobs.png", format = "png")
+plt.legend(loc = "best", fontsize = "large")
+filename = os.path.join(dirname, "igd_plus/igd_plus_mean_per_num_jobs.png")
+plt.savefig(filename, format = "png")
 plt.close()
 
 plt.figure()
@@ -132,8 +137,9 @@ for i in range(len(solvers)):
     plt.plot(nums_jobs, y1, label = solver_labels[solvers[i]], marker = (i + 3, 2, 0), color = colors[i], alpha = 0.75)
 plt.xlim(left = max(min(nums_jobs) - 1, 0), right = max(nums_jobs) + 1)
 plt.ylim(bottom = min_igd_plus, top = max_igd_plus)
-plt.legend(loc = 'best', fontsize = "large")
-plt.savefig("igd_plus/igd_plus_quartiles_per_num_jobs.png", format = "png")
+plt.legend(loc = "best", fontsize = "large")
+filename = os.path.join(dirname, "igd_plus/igd_plus_quartiles_per_num_jobs.png")
+plt.savefig(filename, format = "png")
 plt.close()
 
 igd_plus_per_num_machines = {}
@@ -147,7 +153,7 @@ for num_machines in nums_machines:
     for instance in instances_per_num_machines[num_machines]:
         for solver in solvers:
             for seed in seeds:
-                filename = "igd_plus/" + instance + "_" + solver + "_" + str(seed) + ".txt"
+                filename = os.path.join(dirname, "igd_plus/" + instance + "_" + solver + "_" + str(seed) + ".txt")
                 if os.path.exists(filename):
                     with open(filename) as csv_file:
                         data = csv.reader(csv_file, delimiter = ",")
@@ -167,8 +173,9 @@ for i in range(len(solvers)):
     plt.plot(nums_machines, y, label = solver_labels[solvers[i]], marker = (i + 3, 2, 0), color = colors[i], alpha = 0.80)
 plt.xlim(left = max(min(nums_machines) - 1, 0), right = max(nums_machines) + 1)
 plt.ylim(bottom = min_igd_plus, top = max_igd_plus)
-plt.legend(loc = 'best', fontsize = "large")
-plt.savefig("igd_plus/igd_plus_mean_per_num_machines.png", format = "png")
+plt.legend(loc = "best", fontsize = "large")
+filename = os.path.join(dirname, "igd_plus/igd_plus_mean_per_num_machines.png")
+plt.savefig(filename, format = "png")
 plt.close()
 
 plt.figure()
@@ -192,8 +199,9 @@ for i in range(len(solvers)):
     plt.plot(nums_machines, y1, label = solver_labels[solvers[i]], marker = (i + 3, 2, 0), color = colors[i], alpha = 0.75)
 plt.xlim(left = max(min(nums_machines) - 1, 0), right = max(nums_machines) + 1)
 plt.ylim(bottom = min_igd_plus, top = max_igd_plus)
-plt.legend(loc = 'best', fontsize = "large")
-plt.savefig("igd_plus/igd_plus_quartiles_per_num_machines.png", format = "png")
+plt.legend(loc = "best", fontsize = "large")
+filename = os.path.join(dirname, "igd_plus/igd_plus_quartiles_per_num_machines.png")
+plt.savefig(filename, format = "png")
 plt.close()
 
 igd_plus_per_total_num_operations = {}
@@ -207,7 +215,7 @@ for total_num_operations in total_nums_operations:
     for instance in instances_per_total_num_operations[total_num_operations]:
         for solver in solvers:
             for seed in seeds:
-                filename = "igd_plus/" + instance + "_" + solver + "_" + str(seed) + ".txt"
+                filename = os.path.join(dirname, "igd_plus/" + instance + "_" + solver + "_" + str(seed) + ".txt")
                 if os.path.exists(filename):
                     with open(filename) as csv_file:
                         data = csv.reader(csv_file, delimiter = ",")
@@ -224,11 +232,12 @@ for i in range(len(solvers)):
     y = []
     for total_num_operations in total_nums_operations:
         y.append(stats.mean(igd_plus_per_total_num_operations[solvers[i]][total_num_operations]))
-    plt.plot(total_nums_operations, y, label = solver_labels[solvers[i]], marker = (i + 3, 2, 0), color = colors[i], alpha = 0.8)
+    plt.plot(total_nums_operations, y, label = solver_labels[solvers[i]], marker = (i + 3, 2, 0), color = colors[i], alpha = 0.80)
 plt.xlim(left = max(min(total_nums_operations) - 1, 0), right = max(total_nums_operations) + 1)
 plt.ylim(bottom = min_igd_plus, top = max_igd_plus)
-plt.legend(loc = 'best', fontsize = "large")
-plt.savefig("igd_plus/igd_plus_mean_per_total_num_operations.png", format = "png")
+plt.legend(loc = "best", fontsize = "large")
+filename = os.path.join(dirname, "igd_plus/igd_plus_mean_per_total_num_operations.png")
+plt.savefig(filename, format = "png")
 plt.close()
 
 plt.figure()
@@ -252,6 +261,7 @@ for i in range(len(solvers)):
     plt.plot(total_nums_operations, y1, label = solver_labels[solvers[i]], marker = (i + 3, 2, 0), color = colors[i], alpha = 0.75)
 plt.xlim(left = max(min(total_nums_operations) - 1, 0), right = max(total_nums_operations) + 1)
 plt.ylim(bottom = min_igd_plus, top = max_igd_plus)
-plt.legend(loc = 'best', fontsize = "large")
-plt.savefig("igd_plus/igd_plus_quartiles_per_total_num_operations.png", format = "png")
+plt.legend(loc = "best", fontsize = "large")
+filename = os.path.join(dirname, "igd_plus/igd_plus_quartiles_per_total_num_operations.png")
+plt.savefig(filename, format = "png")
 plt.close()

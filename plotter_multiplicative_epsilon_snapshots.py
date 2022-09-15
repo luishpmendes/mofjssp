@@ -5,13 +5,15 @@ import statistics as stats
 from math import ceil, floor, sqrt
 from plotter_definitions import *
 
+dirname = os.path.dirname(__file__)
+
 min_multiplicative_epsilon = 1.0
 max_multiplicative_epsilon = 0.0
 max_time = 0.0
 for instance in instances:
     for solver in solvers:
         for seed in seeds:
-            filename = "multiplicative_epsilon_snapshots/" + instance + "_" + solver + "_" + str(seed) + ".txt"
+            filename = os.path.join(dirname, "multiplicative_epsilon_snapshots/" + instance + "_" + solver + "_" + str(seed) + ".txt")
             if os.path.exists(filename):
                 with open(filename) as csv_file:
                     data = csv.reader(csv_file, delimiter = ",")
@@ -36,7 +38,7 @@ max_multiplicative_epsilon = min(max_multiplicative_epsilon + round(0.025 * delt
 #         ax.set_ylabel("Multiplicative Epsilon x Time", fontsize = "large")
 #         ax.set_xlabel("Time (s)", fontsize = "large")
 #         for j in range(len(solvers)):
-#             filename = "multiplicative_epsilon_snapshots/" + instances[i] + "_" + solvers[j] + "_" + version + ".txt"
+#             filename = os.path.join(dirname, "multiplicative_epsilon_snapshots/" + instances[i] + "_" + solvers[j] + "_" + version + ".txt")
 #             if os.path.exists(filename):
 #                 x = []
 #                 y = []
@@ -48,9 +50,10 @@ max_multiplicative_epsilon = min(max_multiplicative_epsilon + round(0.025 * delt
 #                 ax.plot(x, y, label = solver_labels[solvers[j]], marker = (j + 3, 2, 0), color = colors[j], alpha = 0.80)
 #         ax.set_xlim(left = 0.0, right = max_time)
 #         ax.set_ylim(bottom = min_multiplicative_epsilon, top = max_multiplicative_epsilon)
-#         ax.legend(loc = 'best')
+#         ax.legend(loc = "best")
 #     fig.suptitle("MOFJSSP", fontsize = "xx-large")
-#     plt.savefig("multiplicative_epsilon_snapshots/multiplicative_epsilon_snapshots_" + version + ".png", format = "png")
+#     filename = os.path.join(dirname, "multiplicative_epsilon_snapshots/multiplicative_epsilon_snapshots_" + version + ".png")
+#     plt.savefig(filename, format = "png")
 #     plt.close(fig)
 
 multiplicative_epsilon_per_solver = {}
@@ -66,7 +69,7 @@ for solver in solvers:
 for instance in instances:
     for solver in solvers:
         for seed in seeds:
-            filename = "multiplicative_epsilon_snapshots/" + instance + "_" + solver + "_" + str(seed) + ".txt"
+            filename = os.path.join(dirname, "multiplicative_epsilon_snapshots/" + instance + "_" + solver + "_" + str(seed) + ".txt")
             if os.path.exists(filename):
                 with open(filename) as csv_file:
                     data = csv.reader(csv_file, delimiter = ",")
@@ -90,8 +93,9 @@ for i in range(len(solvers)):
     plt.plot(x, y, label = solver_labels[solvers[i]], marker = (i + 3, 2, 0), color = colors[i], alpha = 0.80)
 plt.xlim(left = 0.0, right = max_time)
 plt.ylim(bottom = min_multiplicative_epsilon, top = max_multiplicative_epsilon)
-plt.legend(loc = 'best', fontsize = "large")
-plt.savefig("multiplicative_epsilon_snapshots/multiplicative_epsilon_mean_snapshots.png", format = "png")
+plt.legend(loc = "best", fontsize = "large")
+filename = os.path.join(dirname, "multiplicative_epsilon_snapshots/multiplicative_epsilon_mean_snapshots.png")
+plt.savefig(filename, format = "png")
 plt.close()
 
 plt.figure()
@@ -118,6 +122,7 @@ for i in range(len(solvers)):
     plt.plot(x, y1, label = solver_labels[solvers[i]], marker = (i + 3, 2, 0), color = colors[i], alpha = 0.75)
 plt.xlim(left = 0.0, right = max_time)
 plt.ylim(bottom = min_multiplicative_epsilon, top = max_multiplicative_epsilon)
-plt.legend(loc = 'best', fontsize = "large")
-plt.savefig("multiplicative_epsilon_snapshots/multiplicative_epsilon_quartiles_snapshots.png", format = "png")
+plt.legend(loc = "best", fontsize = "large")
+filename = os.path.join(dirname, "multiplicative_epsilon_snapshots/multiplicative_epsilon_quartiles_snapshots.png")
+plt.savefig(filename, format = "png")
 plt.close()

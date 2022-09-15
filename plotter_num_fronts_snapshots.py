@@ -3,6 +3,8 @@ import matplotlib.pyplot as plt
 import os
 from plotter_definitions import *
 
+dirname = os.path.dirname(__file__)
+
 for instance in instances:
     for version in versions:
         plt.figure()
@@ -10,7 +12,7 @@ for instance in instances:
         plt.xlabel("Time (s)", fontsize = "x-large")
         plt.ylabel("Non-dominated Fronts", fontsize = "x-large")
         for i in range(len(solvers)):
-            filename = "num_fronts_snapshots/" + instance + "_" + solvers[i] + "_" + version + ".txt"
+            filename = os.path.join(dirname, "num_fronts_snapshots/" + instance + "_" + solvers[i] + "_" + version + ".txt")
             if os.path.exists(filename):
                 x = []
                 y = []
@@ -22,6 +24,7 @@ for instance in instances:
                 plt.plot(x, y, label = solver_labels[solvers[i]], color = colors[i], marker = (i + 3, 2, 0), alpha = 0.80)
         plt.xlim(left = 0)
         plt.ylim(bottom = 0)
-        plt.legend(loc = 'best', fontsize = "large")
-        plt.savefig("num_fronts_snapshots/" + instance + "_" + version + ".png", format = "png")
+        plt.legend(loc = "best", fontsize = "large")
+        filename = os.path.join(dirname, "num_fronts_snapshots/" + instance + "_" + version + ".png")
+        plt.savefig(filename, format = "png")
         plt.close()

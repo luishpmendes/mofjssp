@@ -5,13 +5,15 @@ import statistics as stats
 from math import ceil, floor, sqrt
 from plotter_definitions import *
 
+dirname = os.path.dirname(__file__)
+
 min_igd_plus = 1.0
 max_igd_plus = 0.0
 max_time = 0.0
 for instance in instances:
     for solver in solvers:
         for seed in seeds:
-            filename = "igd_plus_snapshots/" + instance + "_" + solver + "_" + str(seed) + ".txt"
+            filename = os.path.join(dirname, "igd_plus_snapshots/" + instance + "_" + solver + "_" + str(seed) + ".txt")
             if os.path.exists(filename):
                 with open(filename) as csv_file:
                     data = csv.reader(csv_file, delimiter = ",")
@@ -36,7 +38,7 @@ max_igd_plus = min(max_igd_plus + round(0.025 * delta_igd_plus), 1.00)
 #         ax.set_ylabel("IGD+ x Time", fontsize = "large")
 #         ax.set_xlabel("Time (s)", fontsize = "large")
 #         for j in range(len(solvers)):
-#             filename = "igd_plus_snapshots/" + instances[i] + "_" + solvers[j] + "_" + version + ".txt"
+#             filename = os.path.join(dirname, "igd_plus_snapshots/" + instances[i] + "_" + solvers[j] + "_" + version + ".txt")
 #             if os.path.exists(filename):
 #                 x = []
 #                 y = []
@@ -48,9 +50,10 @@ max_igd_plus = min(max_igd_plus + round(0.025 * delta_igd_plus), 1.00)
 #                 ax.plot(x, y, label = solver_labels[solvers[j]], marker = (j + 3, 2, 0), color = colors[j], alpha = 0.80)
 #         ax.set_xlim(left = 0.0, right = max_time)
 #         ax.set_ylim(bottom = min_igd_plus, top = max_igd_plus)
-#         ax.legend(loc = 'best')
+#         ax.legend(loc = "best")
 #     fig.suptitle("MOFJSSP", fontsize = "xx-large")
-#     plt.savefig("igd_plus_snapshots/igd_plus_snapshots_" + version + ".png", format = "png")
+#     filename = os.path.join(dirname, "igd_plus_snapshots/igd_plus_snapshots_" + version + ".png")
+#     plt.savefig(filename, format = "png")
 #     plt.close(fig)
 
 igd_plus_per_solver = {}
@@ -66,7 +69,7 @@ for solver in solvers:
 for instance in instances:
     for solver in solvers:
         for seed in seeds:
-            filename = "igd_plus_snapshots/" + instance + "_" + solver + "_" + str(seed) + ".txt"
+            filename = os.path.join(dirname, "igd_plus_snapshots/" + instance + "_" + solver + "_" + str(seed) + ".txt")
             if os.path.exists(filename):
                 with open(filename) as csv_file:
                     data = csv.reader(csv_file, delimiter = ",")
@@ -90,8 +93,9 @@ for i in range(len(solvers)):
     plt.plot(x, y, label = solver_labels[solvers[i]], marker = (i + 3, 2, 0), color = colors[i], alpha = 0.80)
 plt.xlim(left = 0.0, right = max_time)
 plt.ylim(bottom = min_igd_plus, top = max_igd_plus)
-plt.legend(loc = 'best', fontsize = "large")
-plt.savefig("igd_plus_snapshots/igd_plus_mean_snapshots.png", format = "png")
+plt.legend(loc = "best", fontsize = "large")
+filename = os.path.join(dirname, "igd_plus_snapshots/igd_plus_mean_snapshots.png")
+plt.savefig(filename, format = "png")
 plt.close()
 
 plt.figure()
@@ -118,6 +122,7 @@ for i in range(len(solvers)):
     plt.plot(x, y1, label = solver_labels[solvers[i]], marker = (i + 3, 2, 0), color = colors[i], alpha = 0.75)
 plt.xlim(left = 0.0, right = max_time)
 plt.ylim(bottom = min_igd_plus, top = max_igd_plus)
-plt.legend(loc = 'best', fontsize = "large")
+plt.legend(loc = "best", fontsize = "large")
+filename = os.path.join(dirname, "igd_plus_snapshots/igd_plus_quartiles_snapshots.png")
 plt.savefig("igd_plus_snapshots/igd_plus_quartiles_snapshots.png", format = "png")
 plt.close()

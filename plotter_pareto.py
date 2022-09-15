@@ -4,6 +4,8 @@ import os
 import seaborn as sns
 from plotter_definitions import *
 
+dirname = os.path.dirname(__file__)
+
 for instance in instances:
     for version in versions:
         min_ys = []
@@ -12,7 +14,7 @@ for instance in instances:
             min_ys.append(-1)
             max_ys.append(-1)
         for solver in solvers:
-            filename = "pareto/" + instance + "_" + solver + "_" + version + ".txt"
+            filename = os.path.join(dirname, "pareto/" + instance + "_" + solver + "_" + version + ".txt")
             if os.path.exists(filename):
                 with open(filename) as csv_file:
                     data = csv.reader(csv_file, delimiter=" ")
@@ -31,7 +33,7 @@ for instance in instances:
         fig.set_size_inches(5.0 * m, 5.0 * m)
         fig.suptitle(instance, fontsize = "xx-large")
         for i in range(len(solvers)):
-            filename = "pareto/" + instance + "_" + solvers[i] + "_" + version + ".txt"
+            filename = os.path.join(dirname, "pareto/" + instance + "_" + solvers[i] + "_" + version + ".txt")
             if os.path.exists(filename):
                 ys = []
                 for j in range(m):
@@ -59,4 +61,5 @@ for instance in instances:
                             axs[j][k].legend(loc = "best", fontsize = "large")
                 del ys
         plt.subplots_adjust(wspace = 0.16 + 0.07 * m, hspace = 0.16 + 0.07 * m)
-        plt.savefig("pareto/" + instance + "_" + version + ".png", format = "png")
+        filename = os.path.join(dirname, "pareto/" + instance + "_" + version + ".png")
+        plt.savefig(filename, format = "png")
