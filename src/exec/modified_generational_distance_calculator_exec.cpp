@@ -41,7 +41,7 @@ double modified_inverted_generational_distance(
                                          front.front());
 
         for(unsigned j = 1; j < front.size(); j++) {
-            distance = modified_distance(senses, reference_front[j], front[i]);
+            distance = modified_distance(senses, reference_front[i], front[j]);
 
             if(distance < min_distance) {
                 min_distance = distance;
