@@ -6,17 +6,29 @@
 
 int main(int argc, char * argv[]) {
     Argument_Parser arg_parser(argc, argv);
-    std::vector<double> hypervolume_values;
+    std::vector<double> hypervolume_values, igd_plus_values, multiplicative_epsilon_values;
 
-    unsigned num_hypervolumes, index_best, index_median;
-    std::vector<std::pair<double, unsigned>> hypervolumes;
+    unsigned num_hypervolumes, index_best, index_median, num_igd_pluses, num_multiplicative_epsilons;
+    std::vector<std::pair<double, unsigned>> hypervolumes, igd_pluses, multiplicative_epsilons;
 
     for(num_hypervolumes = 0;
         arg_parser.option_exists("--hypervolume-" +
                                  std::to_string(num_hypervolumes));
         num_hypervolumes++) {}
 
+    for(num_igd_pluses = 0;
+        arg_parser.option_exists("--igd-plus-" +
+                                 std::to_string(num_igd_pluses));
+        num_igd_pluses++) {}
+    
+    for(num_multiplicative_epsilons = 0;
+        arg_parser.option_exists("--igd-plus-" +
+                                 std::to_string(num_multiplicative_epsilons));
+        num_multiplicative_epsilons++) {}
+
     hypervolumes.resize(num_hypervolumes);
+    igd_pluses.resize(num_igd_pluses);
+    multiplicative_epsilons.resize(num_multiplicative_epsilons);
 
     for(unsigned i = 0; i < num_hypervolumes; i++) {
         std::ifstream ifs;
@@ -37,6 +49,52 @@ int main(int argc, char * argv[]) {
         } else {
             throw std::runtime_error("File " +
                     arg_parser.option_value("--hypervolume-" +
+                        std::to_string(i)) + " not found.");
+        }
+    }
+
+    for(unsigned i = 0; i < num_igd_pluses; i++) {
+        std::ifstream ifs;
+        ifs.open(arg_parser.option_value("--igd-plus-" + std::to_string(i)));
+
+        if(ifs.is_open()) {
+            ifs >> igd_pluses[i].first;
+
+            if(ifs.eof() || ifs.fail() || ifs.bad()) {
+                throw std::runtime_error("Error reading file " +
+                        arg_parser.option_value("--igd-plus-" +
+                            std::to_string(i)) + ".");
+            }
+
+            igd_pluses[i].second = i;
+            ifs.close();
+            igd_plus_values.push_back(igd_pluses[i].first);
+        } else {
+            throw std::runtime_error("File " +
+                    arg_parser.option_value("--igd-plus-" +
+                        std::to_string(i)) + " not found.");
+        }
+    }
+
+    for(unsigned i = 0; i < num_multiplicative_epsilons; i++) {
+        std::ifstream ifs;
+        ifs.open(arg_parser.option_value("--multiplicative-epsilon-" + std::to_string(i)));
+
+        if(ifs.is_open()) {
+            ifs >> multiplicative_epsilons[i].first;
+
+            if(ifs.eof() || ifs.fail() || ifs.bad()) {
+                throw std::runtime_error("Error reading file " +
+                        arg_parser.option_value("--multiplicative-epsilon-" +
+                            std::to_string(i)) + ".");
+            }
+
+            multiplicative_epsilons[i].second = i;
+            ifs.close();
+            multiplicative_epsilon_values.push_back(multiplicative_epsilons[i].first);
+        } else {
+            throw std::runtime_error("File " +
+                    arg_parser.option_value("--multiplicative-epsilon-" +
                         std::to_string(i)) + " not found.");
         }
     }
@@ -63,9 +121,49 @@ int main(int argc, char * argv[]) {
         }
     }
 
-    std::sort(hypervolumes.begin(), hypervolumes.end());
-    index_best = hypervolumes.back().second;
-    index_median = hypervolumes[hypervolumes.size() / 2].second;
+    if(arg_parser.option_exists("--igd-pluses")) {
+        std::ofstream ofs;
+        ofs.open(arg_parser.option_value("--igd-pluses"));
+
+        if(ofs.is_open()) {
+            for(const std::pair<double, unsigned> & igd_plus : igd_pluses) {
+                ofs << igd_plus.first << std::endl;
+
+                if(ofs.eof() || ofs.fail() || ofs.bad()) {
+                    throw std::runtime_error("Error writing file " +
+                            arg_parser.option_value("--igd-pluses") + ".");
+                }
+            }
+
+            ofs.close();
+        } else {
+            throw std::runtime_error("File " +
+                    arg_parser.option_value("--igd-pluses") +
+                    " not created.");
+        }
+    }
+
+    if(arg_parser.option_exists("--multiplicative-epsilons")) {
+        std::ofstream ofs;
+        ofs.open(arg_parser.option_value("--multiplicative-epsilons"));
+
+        if(ofs.is_open()) {
+            for(const std::pair<double, unsigned> & multiplicative_epsilon : multiplicative_epsilons) {
+                ofs << multiplicative_epsilon.first << std::endl;
+
+                if(ofs.eof() || ofs.fail() || ofs.bad()) {
+                    throw std::runtime_error("Error writing file " +
+                            arg_parser.option_value("--multiplicative-epsilons") + ".");
+                }
+            }
+
+            ofs.close();
+        } else {
+            throw std::runtime_error("File " +
+                    arg_parser.option_value("--multiplicative_epsilons") +
+                    " not created.");
+        }
+    }
 
     if(arg_parser.option_exists("--hypervolume-statistics")) {
         std::ofstream ofs;
@@ -77,7 +175,7 @@ int main(int argc, char * argv[]) {
                 return acc + (val - hypervolume_mean) * (val - hypervolume_mean);
             }) / hypervolume_values.size();
             double hypervolume_std = std::sqrt(hypervolume_var);
-            
+
             ofs << hypervolume_mean << ", " << hypervolume_std << std::endl;
 
             if(ofs.eof() || ofs.fail() || ofs.bad()) {
@@ -93,6 +191,64 @@ int main(int argc, char * argv[]) {
                     " not created.");
         }
     }
+
+    if(arg_parser.option_exists("--igd-plus-statistics")) {
+        std::ofstream ofs;
+        ofs.open(arg_parser.option_value("--igd-plus-statistics"));
+
+        if(ofs.is_open()) {
+            double igd_plus_mean = std::accumulate(igd_plus_values.begin(), igd_plus_values.end(), 0.0) / igd_plus_values.size();
+            double igd_plus_var = std::accumulate(igd_plus_values.begin(), igd_plus_values.end(), 0.0, [igd_plus_mean](double acc, double val) {
+                return acc + (val - igd_plus_mean) * (val - igd_plus_mean);
+            }) / igd_plus_values.size();
+            double igd_plus_std = std::sqrt(igd_plus_var);
+
+            ofs << igd_plus_mean << ", " << igd_plus_std << std::endl;
+
+            if(ofs.eof() || ofs.fail() || ofs.bad()) {
+                throw std::runtime_error("Error writing file " +
+                        arg_parser.option_value("--igd-plus-statistics") +
+                        ".");
+            }
+
+            ofs.close();
+        } else {
+            throw std::runtime_error("File " +
+                    arg_parser.option_value("--igd-plus-statistics") +
+                    " not created.");
+        }
+    }
+
+    if(arg_parser.option_exists("--multiplicative-epsilon-statistics")) {
+        std::ofstream ofs;
+        ofs.open(arg_parser.option_value("--multiplicative-epsilon-statistics"));
+
+        if(ofs.is_open()) {
+            double multiplicative_epsilon_mean = std::accumulate(multiplicative_epsilon_values.begin(), multiplicative_epsilon_values.end(), 0.0) / multiplicative_epsilon_values.size();
+            double multiplicative_epsilon_var = std::accumulate(multiplicative_epsilon_values.begin(), multiplicative_epsilon_values.end(), 0.0, [multiplicative_epsilon_mean](double acc, double val) {
+                return acc + (val - multiplicative_epsilon_mean) * (val - multiplicative_epsilon_mean);
+            }) / multiplicative_epsilon_values.size();
+            double multiplicative_epsilon_std = std::sqrt(multiplicative_epsilon_var);
+
+            ofs << multiplicative_epsilon_mean << ", " << multiplicative_epsilon_std << std::endl;
+
+            if(ofs.eof() || ofs.fail() || ofs.bad()) {
+                throw std::runtime_error("Error writing file " +
+                        arg_parser.option_value("--multiplicative-epsilon-statistics") +
+                        ".");
+            }
+
+            ofs.close();
+        } else {
+            throw std::runtime_error("File " +
+                    arg_parser.option_value("--multiplicative-epsilon-statistics") +
+                    " not created.");
+        }
+    }
+
+    std::sort(hypervolumes.begin(), hypervolumes.end());
+    index_best = hypervolumes.back().second;
+    index_median = hypervolumes[hypervolumes.size() / 2].second;
 
     if(arg_parser.option_exists("--statistics-best") &&
        arg_parser.option_exists("--statistics-" + std::to_string(index_best))) {
