@@ -106,7 +106,8 @@ bool Solver::update_best_individuals(
 
     if (this->best_individuals.size() > this->max_num_solutions) {
         BRKGA::Population::crowdingSort<std::vector<double>>(
-                this->best_individuals);
+                this->best_individuals,
+                this->rng);
         this->best_individuals.resize(this->max_num_solutions);
         result = true;
     }
