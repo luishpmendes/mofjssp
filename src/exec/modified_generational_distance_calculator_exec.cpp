@@ -13,15 +13,15 @@ double modified_distance(const std::vector<BRKGA::Sense> & senses,
         delta = 0;
 
         if(senses[i] == BRKGA::Sense::MINIMIZE) {
-            if(reference_point[i] > point[i]) {
-                delta = reference_point[i] - point[i];
-            }
-        } else { // senses[i] == BRKGA::Sense::MAXIMIZE
             if(point[i] > reference_point[i]) {
                 delta = point[i] - reference_point[i];
             }
+        } else { // senses[i] == BRKGA::Sense::MAXIMIZE
+            if(reference_point[i] > point[i]) {
+                delta = reference_point[i] - point[i];
+            }
         }
-        
+
         distance += delta * delta;
     }
 
