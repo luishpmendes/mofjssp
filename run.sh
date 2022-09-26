@@ -1,7 +1,8 @@
 #!/bin/bash
 
 instances=(mk01 mk02 mk03 mk04 mk05 mk06 mk07 mk08 mk09 mk10)
-solvers=(nsga2 nspso moead mhaco ihs nsbrkga)
+# solvers=(nsga2 nspso moead mhaco ihs nsbrkga)
+solvers=(nsbrkga)
 seeds=(660561053 944703414 784358398 329424005 592324318)
 versions=(best median)
 
@@ -101,6 +102,8 @@ done
 eval $final_command
 
 wait
+
+solvers=(nsga2 nspso moead mhaco ihs nsbrkga)
 
 commands=()
 
