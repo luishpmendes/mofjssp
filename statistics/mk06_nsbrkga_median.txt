@@ -1,20 +1,20 @@
 Number of jobs: 10
 Total number of operations: 150
 Number of machines: 15
-Seed: 592324318
-Time limit: 1800
+Seed: 784358398
+Time limit: 3600
 Iterations limit: 4294967295
 Initial individuals: 0
 Maximum number of solutions: 500
 Maximum number of snapshots: 60
-Number of iterations: 97655
-Solutions obtained: 152
-Solving time: 1800.01
+Number of iterations: 208934
+Solutions obtained: 123
+Solving time: 3600.02
 Number of snapshots: 61
-Time between snapshots: 30
-Time when the last snapshot was taken: 1800
+Time between snapshots: 60
+Time when the last snapshot was taken: 3600.02
 Number of iterations between the snapshots: 71582788
-Iteration when the last snapshot was taken: 97655
+Iteration when the last snapshot was taken: 208934
 Number of individuals in each population: 300
 Minimum percentage of individuals to become the elite set: 0.1
 Maximum percentage of individuals to become the elite set: 0.5
@@ -35,13 +35,13 @@ The intensity of the shaking: 10
 Interval at which the populations are reset: 500
 The intensity of the reset: 0.5
 Number of threads to be used during parallel decoding: 1
-Last update generation: 97355
-Last update time: 1794.55
-Largest number of generations between improvements: 4648
+Last update generation: 207365
+Last update time: 3580.44
+Largest number of generations between improvements: 8416
 Total path relink time: 0
 Total path relink calls: 0
 Number of homogeneities: 0
 Improvements in the elite set: 0
 Best individual improvements: 0
-Total shakings calls: 175
-Total resets calls: 45
+Total shakings calls: 616
+Total resets calls: 176

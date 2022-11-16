@@ -2,19 +2,19 @@ Number of jobs: 20
 Total number of operations: 225
 Number of machines: 10
 Seed: 592324318
-Time limit: 1800
+Time limit: 3600
 Iterations limit: 4294967295
 Initial individuals: 0
 Maximum number of solutions: 500
 Maximum number of snapshots: 60
-Number of iterations: 68976
-Solutions obtained: 22
-Solving time: 1800.03
+Number of iterations: 97166
+Solutions obtained: 26
+Solving time: 3600.01
 Number of snapshots: 61
-Time between snapshots: 30
-Time when the last snapshot was taken: 1800.03
+Time between snapshots: 60
+Time when the last snapshot was taken: 3600.01
 Number of iterations between the snapshots: 71582788
-Iteration when the last snapshot was taken: 68976
+Iteration when the last snapshot was taken: 97166
 Population size: 300
 Method used to generate the weights: low discrepancy
 Decomposition method: tchebycheff
