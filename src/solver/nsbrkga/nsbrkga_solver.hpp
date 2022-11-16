@@ -81,13 +81,13 @@ class NSBRKGA_Solver : public Solver {
     /*****************************************
      * Percentage of the path to be computed.
      *****************************************/
-    double pr_percentage = 0.31;
+    double pr_percentage = 0.30;
 
     /***********************************************
      * Interval at which the path relink is applied
      * (0 means no path relinking).
      ***********************************************/
-    unsigned pr_interval = 0;
+    unsigned pr_interval = 200;
 
     /*********************************************************************
      * Interval at which the populations are shaken (0 means no shaking).

@@ -155,8 +155,8 @@ void NSBRKGA_Solver::solve() {
             this->large_offset = generations_without_improvement;
         }
 
-        if (this->pr_interval > 0 && generations_without_improvement > 0 &&
-                (generations_without_improvement % this->pr_interval == 0)) {
+        if (this->pr_interval > 0 && this->num_iterations > 0 &&
+                (this->num_iterations % this->pr_interval == 0)) {
             this->num_path_relink_calls++;
             const auto pr_start_time = std::chrono::steady_clock::now();
             auto result = algorithm.pathRelink(

@@ -33,7 +33,7 @@ int main() {
 
         solver.set_seed(2351389233);
         solver.time_limit = 5.0;
-        solver.iterations_limit = 100;
+        solver.iterations_limit = 1000;
         solver.max_num_solutions = 128;
         solver.population_size = 32;
         solver.max_num_snapshots = 16;
@@ -41,7 +41,7 @@ int main() {
         assert((solver.seed = 2351389233));
         assert(fabs(solver.time_limit - 5.0) <
             std::numeric_limits<double>::epsilon());
-        assert(solver.iterations_limit == 100);
+        assert(solver.iterations_limit == 1000);
         assert(solver.max_num_solutions == 128);
         assert(solver.population_size == 32);
         assert(solver.max_num_snapshots == 16);
@@ -64,9 +64,9 @@ int main() {
             std::numeric_limits<double>::epsilon());
         assert(solver.pr_selection ==
             BRKGA::PathRelinking::Selection::BESTSOLUTION);
-        assert(fabs(solver.pr_percentage - 0.31) <
+        assert(fabs(solver.pr_percentage - 0.30) <
             std::numeric_limits<double>::epsilon());
-        assert(solver.pr_interval == 0);
+        assert(solver.pr_interval == 200);
         assert(solver.shake_interval == 200);
         assert(solver.shake_intensity == 10);
         assert(solver.reset_interval == 500);
