@@ -1,20 +1,20 @@
 Number of jobs: 15
 Total number of operations: 90
 Number of machines: 8
-Seed: 784358398
+Seed: 660561053
 Time limit: 3600
 Iterations limit: 4294967295
 Initial individuals: 0
 Maximum number of solutions: 500
 Maximum number of snapshots: 60
-Number of iterations: 338306
-Solutions obtained: 76
+Number of iterations: 344559
+Solutions obtained: 102
 Solving time: 3600.01
 Number of snapshots: 61
 Time between snapshots: 60
 Time when the last snapshot was taken: 3600.01
 Number of iterations between the snapshots: 71582788
-Iteration when the last snapshot was taken: 338306
+Iteration when the last snapshot was taken: 344559
 Number of individuals in each population: 300
 Minimum percentage of individuals to become the elite set: 0.1
 Maximum percentage of individuals to become the elite set: 0.5
@@ -28,20 +28,20 @@ Number of independent parallel populations: 1
 Number of pairs of chromosomes to be tested to path-relinking: 100
 Minimum distance between chromosomes selected to path-relinking: 0.15
 Individual selection to path-relinking: BESTSOLUTION
-Percentage of the path to be computed: 0.31
-Interval at which the path relink is applied: 0
+Percentage of the path to be computed: 0.3
+Interval at which the path relink is applied: 200
 Interval at which the populations are shaken: 200
 The intensity of the shaking: 10
 Interval at which the populations are reset: 500
 The intensity of the reset: 0.5
 Number of threads to be used during parallel decoding: 1
-Last update generation: 323586
-Last update time: 3441.76
-Largest number of generations between improvements: 36681
-Total path relink time: 0
-Total path relink calls: 0
+Last update generation: 336915
+Last update time: 3517.43
+Largest number of generations between improvements: 33701
+Total path relink time: 1.23922
+Total path relink calls: 1722
 Number of homogeneities: 0
 Improvements in the elite set: 0
 Best individual improvements: 0
-Total shakings calls: 1496
-Total resets calls: 554
+Total shakings calls: 1527
+Total resets calls: 576

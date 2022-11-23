@@ -1,20 +1,20 @@
 Number of jobs: 15
 Total number of operations: 150
 Number of machines: 8
-Seed: 592324318
+Seed: 784358398
 Time limit: 3600
 Iterations limit: 4294967295
 Initial individuals: 0
 Maximum number of solutions: 500
 Maximum number of snapshots: 60
-Number of iterations: 209511
-Solutions obtained: 110
+Number of iterations: 195147
+Solutions obtained: 145
 Solving time: 3600.01
 Number of snapshots: 61
 Time between snapshots: 60
 Time when the last snapshot was taken: 3600.01
 Number of iterations between the snapshots: 71582788
-Iteration when the last snapshot was taken: 209511
+Iteration when the last snapshot was taken: 195147
 Number of individuals in each population: 300
 Minimum percentage of individuals to become the elite set: 0.1
 Maximum percentage of individuals to become the elite set: 0.5
@@ -28,20 +28,20 @@ Number of independent parallel populations: 1
 Number of pairs of chromosomes to be tested to path-relinking: 100
 Minimum distance between chromosomes selected to path-relinking: 0.15
 Individual selection to path-relinking: BESTSOLUTION
-Percentage of the path to be computed: 0.31
-Interval at which the path relink is applied: 0
+Percentage of the path to be computed: 0.3
+Interval at which the path relink is applied: 200
 Interval at which the populations are shaken: 200
 The intensity of the shaking: 10
 Interval at which the populations are reset: 500
 The intensity of the reset: 0.5
 Number of threads to be used during parallel decoding: 1
-Last update generation: 209446
-Last update time: 3599.25
-Largest number of generations between improvements: 14399
-Total path relink time: 0
-Total path relink calls: 0
+Last update generation: 191807
+Last update time: 3537.71
+Largest number of generations between improvements: 8568
+Total path relink time: 0.897815
+Total path relink calls: 975
 Number of homogeneities: 0
 Improvements in the elite set: 0
 Best individual improvements: 0
-Total shakings calls: 643
-Total resets calls: 210
+Total shakings calls: 570
+Total resets calls: 184
