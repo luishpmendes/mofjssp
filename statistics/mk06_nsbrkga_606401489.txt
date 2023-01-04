@@ -1,0 +1,47 @@
+Number of jobs: 10
+Total number of operations: 150
+Number of machines: 15
+Seed: 606401489
+Time limit: 3600
+Iterations limit: 4294967295
+Initial individuals: 0
+Maximum number of solutions: 500
+Maximum number of snapshots: 60
+Number of iterations: 193333
+Solutions obtained: 172
+Solving time: 3600.03
+Number of snapshots: 61
+Time between snapshots: 60
+Time when the last snapshot was taken: 3600.02
+Number of iterations between the snapshots: 71582788
+Iteration when the last snapshot was taken: 193333
+Number of individuals in each population: 300
+Minimum percentage of individuals to become the elite set: 0.1
+Maximum percentage of individuals to become the elite set: 0.5
+Mutation probability: 0.01
+Mutation distribution: 50
+Number of total parents for mating: 3
+Number of elite parents for mating: 2
+Type of bias that will be used: LOGINVERSE
+Type of diversity that will be used: AVERAGE_DISTANCE_TO_CENTROID
+Number of independent parallel populations: 1
+Number of pairs of chromosomes to be tested to path-relinking: 100
+Minimum distance between chromosomes selected to path-relinking: 0.15
+Individual selection to path-relinking: BESTSOLUTION
+Percentage of the path to be computed: 0.3
+Interval at which the path relink is applied: 200
+Interval at which the populations are shaken: 200
+The intensity of the shaking: 10
+Interval at which the populations are reset: 500
+The intensity of the reset: 0.5
+Number of threads to be used during parallel decoding: 1
+Last update generation: 178018
+Last update time: 3298.6
+Largest number of generations between improvements: 15315
+Total path relink time: 26.9094
+Total path relink calls: 966
+Number of homogeneities: 0
+Improvements in the elite set: 0
+Best individual improvements: 0
+Total shakings calls: 568
+Total resets calls: 186

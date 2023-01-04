@@ -1,0 +1,26 @@
+Number of jobs: 15
+Total number of operations: 106
+Number of machines: 4
+Seed: 999103007
+Time limit: 3600
+Iterations limit: 4294967295
+Initial individuals: 0
+Maximum number of solutions: 500
+Maximum number of snapshots: 60
+Number of iterations: 256230
+Solutions obtained: 53
+Solving time: 3600.01
+Number of snapshots: 61
+Time between snapshots: 60
+Time when the last snapshot was taken: 3600.01
+Number of iterations between the snapshots: 71582788
+Iteration when the last snapshot was taken: 256230
+Population size: 300
+Method used to generate the weights: low discrepancy
+Decomposition method: tchebycheff
+Size of the weight’s neighborhood: 20
+Crossover parameter in the Differential Evolution operator: 1
+Parameter for the Differential Evolution operator: 0.5
+Chance that the neighbourhood is considered at each generation, rather than the whole population: 0.9
+Maximum number of copies reinserted in the population: 2
+Diversity preservation mechanisms activated: 1
