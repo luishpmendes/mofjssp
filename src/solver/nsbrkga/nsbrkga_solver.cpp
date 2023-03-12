@@ -81,7 +81,7 @@ void NSBRKGA_Solver::solve() {
     params.num_independent_populations = this->num_populations;
     params.pr_number_pairs = this->pr_number_pairs;
     params.pr_minimum_distance = this->pr_min_dist;
-    params.pr_type = BRKGA::PathRelinking::Type::PERMUTATION;
+    params.pr_type = BRKGA::PathRelinking::Type::DIRECT;
     params.pr_selection = this->pr_selection;
     params.alpha_block_size = 0.1;
     params.pr_percentage = this->pr_percentage;
