@@ -205,7 +205,7 @@ void NSBRKGA_Solver::solve() {
         if (this->shake_interval > 0 && generations_without_improvement > 0 &&
                 (generations_without_improvement % this->shake_interval == 0)) {
             this->num_shakings++;
-            algorithm.shake(this->shake_intensity, BRKGA::ShakingType::SWAP);
+            algorithm.shake(this->shake_intensity);
         }
 
         if (this->reset_interval > 0 && generations_without_improvement > 0 &&
