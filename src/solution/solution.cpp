@@ -13,21 +13,17 @@ bool Solution::dominates(const std::vector<double> & valueA,
         return false;
     }
 
-    // Checks if valueA is at least as good as valueB
-    for (unsigned i = 0; i < valueA.size(); i++) {
+    bool at_least_as_good = true, better = false;
+
+    for (std::size_t i = 0; i < valueA.size(); i++) {
         if (valueA[i] > valueB[i] + std::numeric_limits<double>::epsilon()) {
-            return false;
+            at_least_as_good = false;
+        } else  if (valueA[i] < valueB[i] - std::numeric_limits<double>::epsilon()) {
+            better = true;
         }
     }
 
-    // Checks if valueA is better than valueB
-    for (unsigned i = 0; i < valueA.size(); i++) {
-        if (valueA[i] < valueB[i] - std::numeric_limits<double>::epsilon()) {
-            return true;
-        }
-    }
-
-    return false;
+    return at_least_as_good && better;
 }
 
 void Solution::compute_value() {
@@ -139,7 +135,7 @@ Solution::Solution(const Instance & instance,
     std::vector<unsigned> num_scheduled_operations_of_job(
             this->instance.num_jobs, 0);
     
-    for (unsigned i = 0; i < permutation.size(); i++) {
+    for (std::size_t i = 0; i < permutation.size(); i++) {
         const unsigned job = permutation[i].second,
                        operation = num_scheduled_operations_of_job[job],
                        machine = this->machine_of_operation[job][operation];
@@ -331,7 +327,7 @@ bool Solution::is_feasible() const {
     for (unsigned machine = 0;
          machine < this->instance.num_machines;
          machine++) {
-        for (unsigned i = 0;
+        for (std::size_t i = 0;
              i + 1 < this->operations_of_machine[machine].size();
              i++) {
             const unsigned job = this->operations_of_machine[machine][i].first;
@@ -362,7 +358,7 @@ bool Solution::is_feasible() const {
                 return false;
             }
 
-            for (unsigned i = 1;
+            for (std::size_t i = 1;
                 i < this->operations_of_machine[machine].size();
                 i++) {
                 const auto & [job, operation] =
@@ -445,7 +441,7 @@ std::istream & operator >>(std::istream & is, Solution & solution) {
     return is;
 }
 
-std::ostream & operator <<(std::ostream & os, Solution & solution) {
+std::ostream & operator <<(std::ostream & os, const Solution & solution) {
     for (unsigned job = 0; job < solution.instance.num_jobs; job++) {
         for (unsigned operation = 0;
              operation < solution.instance.num_operations[job];
