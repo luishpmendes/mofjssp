@@ -278,7 +278,7 @@ std::istream & operator >>(std::istream & is, Instance & instance) {
     return is;
 }
 
-std::ostream & operator <<(std::ostream & os, Instance & instance) {
+std::ostream & operator <<(std::ostream & os, const Instance & instance) {
     os << instance.num_jobs << instance.num_machines << std::endl;
 
     for (unsigned job = 0; job < instance.num_jobs; job++) {
@@ -288,9 +288,9 @@ std::ostream & operator <<(std::ostream & os, Instance & instance) {
             os << ' ' << instance.machines_of_operation[job][operation].size();
 
             for (const unsigned & machine : instance.machines_of_operation[job][operation]) {
-                os << ' ' << machine + 1 << ' ' << instance.processing_time[std::make_tuple(job,
-                                                                                            operation,
-                                                                                            machine)];
+                os << ' ' << machine + 1 << ' ' << instance.processing_time.at(std::make_tuple(job,
+                                                                                               operation,
+                                                                                               machine));
             }
 
             os << std::endl;
