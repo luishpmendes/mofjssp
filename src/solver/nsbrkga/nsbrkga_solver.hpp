@@ -60,7 +60,18 @@ class NSBRKGA_Solver : public Solver {
     /**********************************************
      * Number of independent parallel populations.
      **********************************************/
-    unsigned num_populations = 1;
+    unsigned num_populations = 3;
+
+    /**************************************************************************
+     * Interval at which the elite solutions are exchanged between populations
+     * (0 means no exchange).
+     **************************************************************************/
+    unsigned exchange_interval = 200;
+
+    /*******************************************************************
+     * Number of elite individuals to be exchanged between populations.
+     *******************************************************************/
+    unsigned num_exchange_individuals = 30;
 
     /*********************************************************************
      * Number of pairs of chromosomes to be tested to path-relinking.
@@ -87,7 +98,7 @@ class NSBRKGA_Solver : public Solver {
      * Interval at which the path relink is applied
      * (0 means no path relinking).
      ***********************************************/
-    unsigned pr_interval = 200;
+    unsigned pr_interval = 500;
 
     /*********************************************************************
      * Interval at which the populations are shaken (0 means no shaking).
