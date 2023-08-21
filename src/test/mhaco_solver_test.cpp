@@ -142,22 +142,54 @@ int main() {
         std::cout << solver << std::endl;
 
         std::cout << "Num non dominated snapshots: ";
-        for (unsigned i = 0;
+        for(unsigned i = 0;
             i < solver.num_non_dominated_snapshots.size() - 1;
             i++) {
-            std::cout << std::get<2>(solver.num_non_dominated_snapshots[i]).front()
-                    << " ";
+            std::cout << "(" 
+                    << std::get<0>(solver.num_non_dominated_snapshots[i])
+                    << ", "
+                    << std::get<1>(solver.num_non_dominated_snapshots[i])
+                    << ", "
+                    << std::accumulate(
+                std::get<2>(solver.num_non_dominated_snapshots[i]).begin(),
+                std::get<2>(solver.num_non_dominated_snapshots[i]).end(),
+                0) / std::get<2>(solver.num_non_dominated_snapshots[i]).size()
+                    << "), ";
         }
-        std::cout << std::get<2>(solver.num_non_dominated_snapshots.back()).front()
-                << std::endl;
+        std::cout << "("
+                << std::get<0>(solver.num_non_dominated_snapshots.back())
+                << ", "
+                << std::get<1>(solver.num_non_dominated_snapshots.back())
+                << ", "
+                << std::accumulate(
+            std::get<2>(solver.num_non_dominated_snapshots.back()).begin(),
+            std::get<2>(solver.num_non_dominated_snapshots.back()).end(),
+            0) / std::get<2>(solver.num_non_dominated_snapshots.back()).size()
+                << ")" << std::endl;
 
         std::cout << "Num fronts snapshots: ";
-        for (unsigned i = 0; i < solver.num_fronts_snapshots.size() - 1; i++) {
-            std::cout << std::get<2>(solver.num_fronts_snapshots[i]).front()
-                    << " ";
+        for(unsigned i = 0; i < solver.num_fronts_snapshots.size() - 1; i++) {
+            std::cout << "("
+                    << std::get<0>(solver.num_fronts_snapshots[i])
+                    << ", "
+                    << std::get<1>(solver.num_fronts_snapshots[i])
+                    << ", "
+                    << std::accumulate(
+                std::get<2>(solver.num_fronts_snapshots[i]).begin(),
+                std::get<2>(solver.num_fronts_snapshots[i]).end(),
+                0) / std::get<2>(solver.num_fronts_snapshots[i]).size()
+                    << "), ";
         }
-        std::cout << std::get<2>(solver.num_fronts_snapshots.back()).front()
-                << std::endl << std::endl;
+        std::cout << "("
+                << std::get<0>(solver.num_fronts_snapshots.back())
+                << ", "
+                << std::get<1>(solver.num_fronts_snapshots.back())
+                << ", "
+                << std::accumulate(
+            std::get<2>(solver.num_fronts_snapshots.back()).begin(),
+            std::get<2>(solver.num_fronts_snapshots.back()).end(),
+            0) / std::get<2>(solver.num_fronts_snapshots.back()).size()
+                << ")" << std::endl;
     }
 
     std::cout << "MHACO Solver Test PASSED" << std::endl;
