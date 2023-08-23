@@ -1,0 +1,22 @@
+Number of jobs: 15
+Total number of operations: 90
+Number of machines: 8
+Seed: 682375620
+Time limit: 600
+Iterations limit: 4294967295
+Initial individuals: 0
+Maximum number of solutions: 500
+Maximum number of snapshots: 60
+Number of iterations: 21094
+Solutions obtained: 89
+Solving time: 600.016
+Number of snapshots: 61
+Time between snapshots: 300
+Time when the last snapshot was taken: 600.014
+Number of iterations between the snapshots: 0
+Iteration when the last snapshot was taken: 21094
+Population size: 300
+Crossover probability: 0.95
+Distribution index for crossover: 10
+Mutation probability: 0.01
+Distribution index for mutation: 50
