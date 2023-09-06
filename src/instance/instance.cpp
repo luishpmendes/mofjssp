@@ -30,7 +30,7 @@ void Instance::compute_primal_bound() {
 Instance::Instance(const std::map<std::tuple<unsigned, unsigned, unsigned>, double> & processing_time) : 
         processing_time(processing_time),
         num_objectives(4),
-        senses(4, BRKGA::Sense::MINIMIZE),
+        senses(4, NSBRKGA::Sense::MINIMIZE),
         primal_bound(num_objectives, 0.0) {
     std::vector<unsigned> jobs;
     std::vector<std::vector<unsigned>> operations;
@@ -104,7 +104,7 @@ Instance Instance::operator = (const Instance & instance) {
     this->operations_of_machine = instance.operations_of_machine;
     this->processing_time = instance.processing_time;
     this->num_objectives = 4;
-    this->senses = std::vector<BRKGA::Sense>(this->num_objectives, BRKGA::Sense::MINIMIZE);
+    this->senses = std::vector<NSBRKGA::Sense>(this->num_objectives, NSBRKGA::Sense::MINIMIZE);
     this->primal_bound = instance.primal_bound;
     return *this;
 }
@@ -243,7 +243,7 @@ std::istream & operator >>(std::istream & is, Instance & instance) {
                                           std::vector<std::pair<unsigned, unsigned>>());
     instance.processing_time.clear();
     instance.num_objectives = 4;
-    instance.senses = std::vector<BRKGA::Sense>(instance.num_objectives, BRKGA::Sense::MINIMIZE);
+    instance.senses = std::vector<NSBRKGA::Sense>(instance.num_objectives, NSBRKGA::Sense::MINIMIZE);
 
     for (unsigned job = 0; job < instance.num_jobs; job++) {
         is >> instance.num_operations[job];

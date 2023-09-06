@@ -29,7 +29,7 @@ class Decoder {
 
     Decoder(const Instance & instance, unsigned num_threads);
 
-    std::vector<double> decode(BRKGA::Chromosome & chromosome, bool rewrite);
+    std::vector<double> decode(NSBRKGA::Chromosome & chromosome, bool rewrite);
 };
 
 }
