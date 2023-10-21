@@ -54,8 +54,8 @@ int main() {
             std::numeric_limits<double>::epsilon());
         assert(fabs(solver.mutation_distribution - 50.0) <
             std::numeric_limits<double>::epsilon());
-        assert(solver.num_total_parents == 5);
-        assert(solver.num_elite_parents == 3);
+        assert(solver.num_total_parents == 3);
+        assert(solver.num_elite_parents == 2);
         assert(solver.bias_type == NSBRKGA::BiasFunctionType::LOGINVERSE);
         assert(solver.diversity_type ==
             NSBRKGA::DiversityFunctionType::AVERAGE_DISTANCE_TO_CENTROID);
