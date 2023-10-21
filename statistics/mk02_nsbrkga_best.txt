@@ -1,29 +1,29 @@
 Number of jobs: 10
 Total number of operations: 58
 Number of machines: 6
-Seed: 355841728
+Seed: 682375620
 Time limit: 600
 Iterations limit: 4294967295
 Initial individuals: 0
 Maximum number of solutions: 500
 Maximum number of snapshots: 60
-Factor at which the time between snapshots are increased: 1.15151
+Factor at which the time between snapshots are increased: 1.15673
 Factor at which the iterations between snapshots are increased: 1
-Number of iterations: 30567
-Solutions obtained: 37
-Solving time: 600.016
+Number of iterations: 26854
+Solutions obtained: 51
+Solving time: 600.01
 Number of snapshots: 60
-Time next snapshot: 600.009
-Time when the last snapshot was taken: 600.016
+Time next snapshot: 600.015
+Time when the last snapshot was taken: 600.009
 Number of iteration of the next snapshot: 4294967295
-Iteration when the last snapshot was taken: 30567
+Iteration when the last snapshot was taken: 26854
 Number of individuals in each population: 300
 Minimum percentage of individuals to become the elite set: 0.1
 Maximum percentage of individuals to become the elite set: 0.5
 Mutation probability: 0.01
 Mutation distribution: 50
-Number of total parents for mating: 3
-Number of elite parents for mating: 2
+Number of total parents for mating: 5
+Number of elite parents for mating: 3
 Type of bias that will be used: LOGINVERSE
 Type of diversity that will be used: AVERAGE_DISTANCE_TO_CENTROID
 Number of independent parallel populations: 3
@@ -36,12 +36,12 @@ The intensity of the shaking: 0.33
 Interval at which the populations are reset: 500
 The intensity of the reset: 0.2
 Number of threads to be used during parallel decoding: 1
-Last update generation: 29413
-Last update time: 577.614
-Largest number of generations between improvements: 4926
+Last update generation: 26852
+Last update time: 599.965
+Largest number of generations between improvements: 8523
 Total path relink time: 0
 Total path relink calls: 0
 Improvements in the elite set: 0
 Best individual improvements: 0
-Total shakings calls: 128
-Total resets calls: 45
+Total shakings calls: 113
+Total resets calls: 43
