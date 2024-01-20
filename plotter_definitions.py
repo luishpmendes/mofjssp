@@ -32,5 +32,15 @@ instances_per_total_num_operations = {55 : ["mk01"],
                                       150 : ["mk03", "mk06"],
                                       225 : ["mk08"],
                                       240 : ["mk09", "mk10"]}
+total_num_operations_per_instance = {"mk01" : 55,
+                                     "mk02" : 58,
+                                     "mk03" : 150,
+                                     "mk04" : 90,
+                                     "mk05" : 106,
+                                     "mk06" : 150,
+                                     "mk07" : 100,
+                                     "mk08" : 225,
+                                     "mk09" : 240,
+                                     "mk10" : 240}
 num_snapshots = 30
 m = 4
