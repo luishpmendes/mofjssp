@@ -7,16 +7,16 @@ Iterations limit: 4294967295
 Initial individuals: 0
 Maximum number of solutions: 500
 Maximum number of snapshots: 30
-Factor at which the time between snapshots are increased: 1.41467
+Factor at which the time between snapshots are increased: 1.42177
 Factor at which the iterations between snapshots are increased: 1
-Number of iterations: 89990
-Solutions obtained: 132
+Number of iterations: 88430
+Solutions obtained: 40
 Solving time: 1800.01
 Number of snapshots: 30
-Time next snapshot: 1800.01
+Time next snapshot: 1800.04
 Time when the last snapshot was taken: 1800.01
 Number of iteration of the next snapshot: 4294967295
-Iteration when the last snapshot was taken: 89990
+Iteration when the last snapshot was taken: 88430
 Number of individuals in each population: 300
 Minimum percentage of individuals to become the elite set: 0.1
 Maximum percentage of individuals to become the elite set: 0.5
@@ -37,12 +37,12 @@ The intensity of the shaking: 0.33
 Interval at which the populations are reset: 500
 The intensity of the reset: 0.2
 Number of threads to be used during parallel decoding: 1
-Last update generation: 86969
-Last update time: 1732.33
-Largest number of generations between improvements: 5538
-Total path relink time: 3.28927
-Total path relink calls: 179
+Last update generation: 64974
+Last update time: 1357.2
+Largest number of generations between improvements: 25230
+Total path relink time: 3.32368
+Total path relink calls: 176
 Improvements in the elite set: 0
 Best individual improvements: 0
-Total shakings calls: 269
-Total resets calls: 77
+Total shakings calls: 418
+Total resets calls: 162
