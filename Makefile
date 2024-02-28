@@ -1,5 +1,5 @@
 CPP=g++
-CARGS=-std=c++17 -Wall -Werror -O0 -g3 -m64
+CARGS=-std=c++17 -O3 -g0 -m64
 BRKGAINC=-I ../nsbrkga/nsbrkga
 BOOSTINC=-I /opt/boost/include -L /opt/boost/lib -lboost_serialization
 PAGMOINC=-I /opt/pagmo/include -L /opt/pagmo/lib -Wl,-R/opt/pagmo/lib -lpagmo -ltbb -pthread
