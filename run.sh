@@ -118,56 +118,56 @@ wait
 
 solvers=(nsga2 nspso moead mhaco ihs nsbrkga-pr)
 
-commands=()
+# commands=()
 
-for ((i=0;i<num_processes;i++))
-do
-    commands[$i]="("
-done
+# for ((i=0;i<num_processes;i++))
+# do
+#     commands[$i]="("
+# done
 
-i=0
+# i=0
 
-for instance in ${instances[@]}
-do
-    command="${path}/bin/exec/reference_pareto_front_calculator_exec "
-    command+="--instance ${path}/instances/${instance}.txt "
-    command+="--max-num-solutions ${max_ref_solutions} "
-    j=0;
-    for solver in ${solvers[@]}
-    do
-        for seed in ${seeds[@]}
-        do
-            command+="--pareto-${j} ${path}/pareto/${instance}_${solver}_${seed}.txt "
-            command+="--best-solutions-snapshots-${j} ${path}/best_solutions_snapshots/${instance}_${solver}_${seed}_ "
-            command+="--reference-pareto ${path}/pareto/${instance}.txt "
-            j=$((j+1))
-        done
-    done
-    if [ $i -lt $num_processes ]
-    then
-        commands[$i]+="$command"
-    else
-        commands[$((i%num_processes))]+=" && $command"
-    fi
-    i=$((i+1))
-done
+# for instance in ${instances[@]}
+# do
+#     command="${path}/bin/exec/reference_pareto_front_calculator_exec "
+#     command+="--instance ${path}/instances/${instance}.txt "
+#     command+="--max-num-solutions ${max_ref_solutions} "
+#     j=0;
+#     for solver in ${solvers[@]}
+#     do
+#         for seed in ${seeds[@]}
+#         do
+#             command+="--pareto-${j} ${path}/pareto/${instance}_${solver}_${seed}.txt "
+#             command+="--best-solutions-snapshots-${j} ${path}/best_solutions_snapshots/${instance}_${solver}_${seed}_ "
+#             command+="--reference-pareto ${path}/pareto/${instance}.txt "
+#             j=$((j+1))
+#         done
+#     done
+#     if [ $i -lt $num_processes ]
+#     then
+#         commands[$i]+="$command"
+#     else
+#         commands[$((i%num_processes))]+=" && $command"
+#     fi
+#     i=$((i+1))
+# done
 
-for ((i=0;i<num_processes;i++))
-do
-    commands[$i]+=") &>> ${path}/log_${i}.txt"
-done
+# for ((i=0;i<num_processes;i++))
+# do
+#     commands[$i]+=") &>> ${path}/log_${i}.txt"
+# done
 
-final_command=""
+# final_command=""
 
-for ((i=0;i<num_processes;i++))
-do
-    command=${commands[$i]}
-    final_command+="$command & "
-done
+# for ((i=0;i<num_processes;i++))
+# do
+#     command=${commands[$i]}
+#     final_command+="$command & "
+# done
 
-eval $final_command
+# eval $final_command
 
-wait
+# wait
 
 commands=()
 
@@ -428,11 +428,11 @@ python3 ${path}/plotter_igd_plus_snapshots.py &
 python3 ${path}/plotter_multiplicative_epsilon.py &
 python3 ${path}/plotter_multiplicative_epsilon_snapshots.py &
 python3 ${path}/plotter_metrics.py &
-python3 ${path}/plotter_metrics_snapshots.py &
-python3 ${path}/plotter_num_non_dominated_snapshots.py &
-python3 ${path}/plotter_num_fronts_snapshots.py &
-python3 ${path}/plotter_num_elites_snapshots.py &
-python3 ${path}/plotter_pareto.py 
+python3 ${path}/plotter_metrics_snapshots.py 
+# python3 ${path}/plotter_num_non_dominated_snapshots.py &
+# python3 ${path}/plotter_num_fronts_snapshots.py &
+# python3 ${path}/plotter_num_elites_snapshots.py &
+# python3 ${path}/plotter_pareto.py 
 # python3 ${path}/plotter_best_solutions_snapshots.py &
 # python3 ${path}/plotter_populations_snapshots.py
 

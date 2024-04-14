@@ -28,6 +28,12 @@ int main() {
         ifs.close();
 
         assert(instance.is_valid());
+
+        assert(instance.primal_bound[2] >= 37);
+        std::cout << "primal_bound: " << std::endl;
+        for (unsigned i = 0; i < 4; i++) {
+            std::cout << (instance.primal_bound[i]) << std::endl;
+        }
     }
 
     std::cout << std::endl << "Instance Test PASSED" << std::endl;

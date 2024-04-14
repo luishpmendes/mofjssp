@@ -3,8 +3,6 @@
 #include <algorithm>
 #include <cmath>
 
-#include <iostream>
-
 namespace mofjssp {
 
 bool Solution::dominates(const std::vector<double> & valueA,
@@ -216,7 +214,6 @@ bool Solution::is_feasible() const {
     }
 
     if (this->value.size() != this->instance.num_objectives) {
-        std::cout << "f" << std::endl;
         return false;
     }
 
@@ -386,30 +383,23 @@ bool Solution::is_feasible() const {
     }
 
     if (this->value[0] > this->value[1]) {
-        std::cout << "a" << std::endl;
         return false;
     }
 
     if (this->value[0] < this->value[2]) {
-        std::cout << "b" << std::endl;
         return false;
     }
 
     if (this->value[0] > this->value[3]) {
-        std::cout << "c" << std::endl;
         return false;
     }
 
     if (this->value[1] < this->value[3]) {
-        std::cout << "d" << std::endl;
         return false;
     }
 
     for (unsigned i = 0; i < this->instance.num_objectives; i++) {
         if (this->value[i] > this->instance.primal_bound[i]) {
-            std::cout << this->value[i] << " > " << this->instance.primal_bound[i] << std::endl;
-            std::cout << "e" << std::endl;
-            std::cout << "i: " << i << std::endl;
             return false;
         }
     }

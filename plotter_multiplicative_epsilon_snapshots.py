@@ -119,7 +119,7 @@ for snapshot in range(num_snapshots):
     pt.half_violinplot(data = multiplicative_epsilon_per_snapshot[snapshot], palette = colors, orient = "h", width = 0.6, cut = 0.0, inner = None)
     sns.stripplot(data = multiplicative_epsilon_per_snapshot[snapshot], palette = colors, orient = "h", size = 2, zorder = 0)
     sns.boxplot(data = multiplicative_epsilon_per_snapshot[snapshot], orient = "h", width = 0.20, color = "black", zorder = 10, showcaps = True, boxprops = {'facecolor' : 'none', "zorder" : 10}, showfliers = True, whiskerprops = {'linewidth' : 2, "zorder" : 10}, flierprops = {'markersize' : 2})
-    plt.xlim(left = 0.0, right = 1.0)
+    # plt.ylim(bottom = min_multiplicative_epsilon, top = max_multiplicative_epsilon)
     plt.xticks(ticks = [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0], fontsize = "large")
     plt.yticks(ticks = list(range(len(solvers))), labels = [solver_labels[solver] for solver in solvers], fontsize = "large")
     filename = os.path.join(dirname, "multiplicative_epsilon_snapshots/snapshot_" + str(snapshot) + ".png")

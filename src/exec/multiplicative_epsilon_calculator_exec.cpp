@@ -10,15 +10,15 @@ double multiplicative_epsilon_indicator(
         const std::vector<std::vector<double>> & front) {
     double epsilon = 0.0, min_max_ratio, max_ratio, ratio;
 
-    for(unsigned i = 0; i < front.size(); i++) {
-        for(unsigned j = 0; j < reference_front.size(); j++) {
+    for(unsigned i = 0; i < reference_front.size(); i++) {
+        for(unsigned j = 0; j < front.size(); j++) {
             max_ratio = 0.0;
 
             for(unsigned k = 0; k < senses.size(); k++) {
                 if(senses[k] == NSBRKGA::Sense::MINIMIZE) {
-                    ratio = reference_front[j][k] / front[i][k];
+                    ratio = front[j][k] / reference_front[i][k];
                 } else { // senses[k] == NSBRKGA::Sense::MAXIMIZE
-                    ratio = front[i][k] / reference_front[j][k];
+                    ratio = reference_front[i][k] / front[j][k];
                 }
 
                 if(max_ratio < ratio) {
@@ -43,6 +43,23 @@ double multiplicative_epsilon_indicator(
     return epsilon;
 }
 
+static inline
+double inverted_multiplicative_epsilon_indicator(
+        const std::vector<NSBRKGA::Sense> & senses,
+        const std::vector<std::vector<double>> & reference_front,
+        const std::vector<std::vector<double>> & front) {
+    return 1.0 / multiplicative_epsilon_indicator(senses, reference_front, front);
+}
+
+static inline
+double normalized_inverted_multiplicative_epsilon_indicator(
+        const double & reference_inverted_epsilon,
+        const std::vector<NSBRKGA::Sense> & senses,
+        const std::vector<std::vector<double>> & reference_front,
+        const std::vector<std::vector<double>> & front) {
+    return inverted_multiplicative_epsilon_indicator(senses, reference_front, front) / reference_inverted_epsilon;
+}
+
 int main(int argc, char * argv[]) {
     Argument_Parser arg_parser(argc, argv);
 
@@ -62,15 +79,15 @@ int main(int argc, char * argv[]) {
                     arg_parser.option_value("--instance") + " not found.");
         }
 
+        std::vector<double> reference_point = instance.primal_bound;
         std::vector<std::vector<double>> reference_pareto;
+        double reference_inverted_epsilon;
         std::vector<std::vector<std::vector<double>>> paretos;
         std::vector<std::vector<unsigned>> iteration_snapshots;
         std::vector<std::vector<double>> time_snapshots;
         std::vector<std::vector<std::vector<std::vector<double>>>>
             best_solutions_snapshots;
         unsigned num_solvers;
-        std::vector<double> multiplicative_epsilons;
-        std::vector<std::vector<double>> multiplicative_epsilon_snapshots;
 
         ifs.open(arg_parser.option_value("--reference-pareto"));
 
@@ -93,6 +110,11 @@ int main(int argc, char * argv[]) {
                     " not found.");
         }
 
+        reference_inverted_epsilon = inverted_multiplicative_epsilon_indicator(
+                instance.senses, reference_pareto, reference_pareto);
+        
+        assert(reference_inverted_epsilon > 0.0);
+
         for(num_solvers = 0;
             arg_parser.option_exists("--pareto-" +
                                      std::to_string(num_solvers)) ||
@@ -108,9 +130,6 @@ int main(int argc, char * argv[]) {
         iteration_snapshots.resize(num_solvers);
         time_snapshots.resize(num_solvers);
         best_solutions_snapshots.resize(num_solvers);
-        multiplicative_epsilons.resize(num_solvers);
-        multiplicative_epsilon_snapshots.resize(num_solvers, std::vector<double>());
-        multiplicative_epsilon_snapshots.assign(num_solvers, std::vector<double>());
 
         for(unsigned i = 0; i < num_solvers; i++) {
             if(arg_parser.option_exists("--pareto-" + std::to_string(i))) {
@@ -184,39 +203,21 @@ int main(int argc, char * argv[]) {
         }
 
         for(unsigned i = 0; i < num_solvers; i++) {
-            double multiplicative_epsilon = multiplicative_epsilon_indicator(
-                    instance.senses, reference_pareto, paretos[i]);
-
-            // assert(multiplicative_epsilon >= 0.0);
-            // assert(multiplicative_epsilon <= 1.0);
-
-            multiplicative_epsilons[i] = multiplicative_epsilon;
-        }
-
-        for(unsigned i = 0; i < num_solvers; i++) {
-            for(unsigned j = 0;
-                j < best_solutions_snapshots[i].size();
-                j++) {
-                double multiplicative_epsilon
-                        = multiplicative_epsilon_indicator(
-                                instance.senses,
-                                reference_pareto,
-                                best_solutions_snapshots[i][j]);
-
-                // assert(multiplicative_epsilon >= 0.0);
-                // assert(multiplicative_epsilon <= 1.0);
-
-                multiplicative_epsilon_snapshots[i].push_back(multiplicative_epsilon);
-            }
-        }
-
-        for(unsigned i = 0; i < num_solvers; i++) {
             std::ofstream ofs;
             ofs.open(arg_parser.option_value("--multiplicative-epsilon-" +
                                              std::to_string(i)));
 
             if(ofs.is_open()) {
-                ofs << multiplicative_epsilons[i] << std::endl;
+                double normalized_inverted_multiplicative_epsilon = normalized_inverted_multiplicative_epsilon_indicator(
+                        reference_inverted_epsilon,
+                        instance.senses,
+                        reference_pareto,
+                        paretos[i]);
+
+                assert(normalized_inverted_multiplicative_epsilon >= 0.0);
+                assert(normalized_inverted_multiplicative_epsilon <= 1.0);
+
+                ofs << normalized_inverted_multiplicative_epsilon << std::endl;
 
                 if(ofs.eof() || ofs.fail() || ofs.bad()) {
                     throw std::runtime_error("Error writing file " +
@@ -242,9 +243,18 @@ int main(int argc, char * argv[]) {
                 for(unsigned j = 0;
                     j < best_solutions_snapshots[i].size();
                     j++) {
+                    double normalized_inverted_multiplicative_epsilon = normalized_inverted_multiplicative_epsilon_indicator(
+                            reference_inverted_epsilon,
+                            instance.senses,
+                            reference_pareto,
+                            best_solutions_snapshots[i][j]);
+
+                    assert(normalized_inverted_multiplicative_epsilon >= 0.0);
+                    assert(normalized_inverted_multiplicative_epsilon <= 1.0);
+
                     ofs << iteration_snapshots[i][j] << ","
                         << time_snapshots[i][j] << ","
-                        << multiplicative_epsilon_snapshots[i][j] << std::endl;
+                        << normalized_inverted_multiplicative_epsilon << std::endl;
 
                     if(ofs.eof() || ofs.fail() || ofs.bad()) {
                         throw std::runtime_error("Error writing file " +

@@ -54,6 +54,18 @@ double modified_inverted_generational_distance(
     return igd_plus / reference_front.size();
 }
 
+static inline
+double normalized_modified_inverted_generational_distance(
+        const double & reference_igd_plus,
+        const std::vector<NSBRKGA::Sense> & senses,
+        const std::vector<std::vector<double>> & reference_front,
+        const std::vector<std::vector<double>> & front) {
+    double igd_plus = modified_inverted_generational_distance(senses,
+                                                              reference_front,
+                                                              front);
+    return igd_plus / reference_igd_plus;
+}
+
 int main(int argc, char * argv[]) {
     Argument_Parser arg_parser(argc, argv);
 
@@ -73,19 +85,15 @@ int main(int argc, char * argv[]) {
                     arg_parser.option_value("--instance") + " not found.");
         }
 
+        std::vector<double> reference_point = instance.primal_bound;
         std::vector<std::vector<double>> reference_pareto;
+        double reference_igd_plus;
         std::vector<std::vector<std::vector<double>>> paretos;
         std::vector<std::vector<unsigned>> iteration_snapshots;
         std::vector<std::vector<double>> time_snapshots;
         std::vector<std::vector<std::vector<std::vector<double>>>>
             best_solutions_snapshots;
         unsigned num_solvers;
-        std::vector<double> min_value(instance.num_objectives,
-                                      std::numeric_limits<double>::max()),
-                            max_value = instance.primal_bound;
-        std::vector<double> igd_pluses;
-        std::vector<std::vector<double>> igd_plus_snapshots;
-        double max_igd_plus = 0.0;
 
         ifs.open(arg_parser.option_value("--reference-pareto"));
 
@@ -96,12 +104,6 @@ int main(int argc, char * argv[]) {
 
                 for(unsigned j = 0; j < instance.num_objectives; j++) {
                     iss >> value[j];
-
-                    if(min_value[j] > value[j]) {
-                        min_value[j] = value[j];
-                    }
-
-                    assert(value[j] <= max_value[j]);
                 }
 
                 reference_pareto.push_back(value);
@@ -113,6 +115,13 @@ int main(int argc, char * argv[]) {
                     arg_parser.option_value("--reference-pareto") +
                     " not found.");
         }
+
+        reference_igd_plus = modified_inverted_generational_distance(
+                instance.senses,
+                reference_pareto,
+                {reference_point});
+
+        assert(reference_igd_plus > 0.0);
 
         for(num_solvers = 0;
             arg_parser.option_exists("--pareto-" +
@@ -129,9 +138,6 @@ int main(int argc, char * argv[]) {
         iteration_snapshots.resize(num_solvers);
         time_snapshots.resize(num_solvers);
         best_solutions_snapshots.resize(num_solvers);
-        igd_pluses.resize(num_solvers);
-        igd_plus_snapshots.resize(num_solvers, std::vector<double>());
-        igd_plus_snapshots.assign(num_solvers, std::vector<double>());
 
         for(unsigned i = 0; i < num_solvers; i++) {
             if(arg_parser.option_exists("--pareto-" + std::to_string(i))) {
@@ -145,12 +151,6 @@ int main(int argc, char * argv[]) {
 
                         for(unsigned j = 0; j < instance.num_objectives; j++) {
                             iss >> value[j];
-
-                            if(min_value[j] > value[j]) {
-                                min_value[j] = value[j];
-                            }
-
-                            assert(value[j] <= max_value[j]);
                         }
 
                         paretos[i].push_back(value);
@@ -197,12 +197,6 @@ int main(int argc, char * argv[]) {
                                 j < instance.num_objectives;
                                 j++) {
                                 iss >> value[j];
-
-                                if(min_value[j] > value[j]) {
-                                    min_value[j] = value[j];
-                                }
-
-                                assert(value[j] <= max_value[j]);
                             }
 
                             best_solutions_snapshots[i].back().push_back(value);
@@ -216,98 +210,17 @@ int main(int argc, char * argv[]) {
             }
         }
 
-        std::vector<std::vector<double>> normalized_reference_pareto(
-                        reference_pareto.size());
-
-        for(unsigned i = 0; i < reference_pareto.size(); i++) {
-            normalized_reference_pareto[i] = std::vector<double>(
-                    reference_pareto[i].size(), 0.0);
-
-            for(unsigned j = 0; j < instance.num_objectives; j++) {
-                normalized_reference_pareto[i][j] =
-                    (reference_pareto[i][j] - min_value[j]) /
-                    (max_value[j] - min_value[j]);
-                assert(normalized_reference_pareto[i][j] >= 0.0);
-                assert(normalized_reference_pareto[i][j] <= 1.0);
-            }
-        }
-
-        for(unsigned i = 0; i < num_solvers; i++) {
-            std::vector<std::vector<double>> normalized_pareto(
-                paretos[i].size());
-
-            for(unsigned j = 0; j < paretos[i].size(); j++) {
-                normalized_pareto[j] = std::vector<double>(
-                        paretos[i][j].size(), 0.0);
-
-                for(unsigned k = 0; k < instance.num_objectives; k++) {
-                    normalized_pareto[j][k] =
-                        (paretos[i][j][k] - min_value[k]) /
-                        (max_value[k] - min_value[k]);
-                    assert(normalized_pareto[j][k] >= 0.0);
-                    assert(normalized_pareto[j][k] <= 1.0);
-                }
-            }
-
-            double igd_plus = modified_inverted_generational_distance(
-                    instance.senses,
-                    normalized_reference_pareto,
-                    normalized_pareto);
-
-            assert(igd_plus >= 0.0);
-
-            igd_pluses[i] = igd_plus;
-
-            if (max_igd_plus < igd_plus) {
-                max_igd_plus = igd_plus;
-            }
-        }
-
-        for(unsigned i = 0; i < num_solvers; i++) {
-            for(unsigned j = 0;
-                j < best_solutions_snapshots[i].size();
-                j++) {
-                std::vector<std::vector<double>>
-                    normalized_pareto_snapshot(
-                            best_solutions_snapshots[i][j].size());
-
-                for(unsigned k = 0;
-                    k < best_solutions_snapshots[i][j].size();
-                    k++) {
-                    normalized_pareto_snapshot[k] = std::vector<double>(
-                            best_solutions_snapshots[i][j][k].size(), 0.0);
-
-                    for(unsigned l = 0; l < instance.num_objectives; l++) {
-                        normalized_pareto_snapshot[k][l] =
-                            (best_solutions_snapshots[i][j][k][l] -
-                                min_value[l]) / (max_value[l] - min_value[l]);
-                        assert(normalized_pareto_snapshot[k][l] >= 0.0);
-                        assert(normalized_pareto_snapshot[k][l] <= 1.0);
-                    }
-                }
-
-                double igd_plus = modified_inverted_generational_distance(
-                        instance.senses,
-                        normalized_reference_pareto,
-                        normalized_pareto_snapshot);
-
-                assert(igd_plus >= 0.0);
-
-                igd_plus_snapshots[i].push_back(igd_plus);
-
-                if (max_igd_plus < igd_plus) {
-                    max_igd_plus = igd_plus;
-                }
-            }
-        }
-
         for(unsigned i = 0; i < num_solvers; i++) {
             std::ofstream ofs;
             ofs.open(arg_parser.option_value("--igd-plus-" +
                                              std::to_string(i)));
 
             if(ofs.is_open()) {
-                double normalized_igd_plus = igd_pluses[i] / max_igd_plus;
+                double normalized_igd_plus = normalized_modified_inverted_generational_distance(
+                        reference_igd_plus,
+                        instance.senses,
+                        reference_pareto,
+                        paretos[i]);
 
                 assert(normalized_igd_plus >= 0.0);
                 assert(normalized_igd_plus <= 1.0);
@@ -338,8 +251,11 @@ int main(int argc, char * argv[]) {
                 for(unsigned j = 0;
                     j < best_solutions_snapshots[i].size();
                     j++) {
-                    double normalized_igd_plus = igd_plus_snapshots[i][j] /
-                        max_igd_plus;
+                    double normalized_igd_plus = normalized_modified_inverted_generational_distance(
+                            reference_igd_plus,
+                            instance.senses,
+                            reference_pareto,
+                            best_solutions_snapshots[i][j]);
 
                     assert(normalized_igd_plus >= 0.0);
                     assert(normalized_igd_plus <= 1.0);
