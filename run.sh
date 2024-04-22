@@ -169,109 +169,109 @@ solvers=(nsga2 nspso moead mhaco ihs nsbrkga-pr)
 
 # wait
 
-commands=()
+# commands=()
 
-for ((i=0;i<num_processes;i++))
-do
-    commands[$i]="("
-done
+# for ((i=0;i<num_processes;i++))
+# do
+#     commands[$i]="("
+# done
 
-i=0
+# i=0
 
-for instance in ${instances[@]}
-do
-    command="${path}/bin/exec/hypervolume_calculator_exec "
-    command+="--instance ${path}/instances/${instance}.txt "
-    command+="--reference-pareto ${path}/pareto/${instance}.txt "
-    j=0;
-    for solver in ${solvers[@]}
-    do
-        for seed in ${seeds[@]}
-        do
-            command+="--pareto-${j} ${path}/pareto/${instance}_${solver}_${seed}.txt "
-            command+="--best-solutions-snapshots-${j} ${path}/best_solutions_snapshots/${instance}_${solver}_${seed}_ "
-            command+="--hypervolume-${j} ${path}/hypervolume/${instance}_${solver}_${seed}.txt "
-            command+="--hypervolume-snapshots-${j} ${path}/hypervolume_snapshots/${instance}_${solver}_${seed}.txt "
-            j=$((j+1))
-        done
-    done
-    if [ $i -lt $num_processes ]
-    then
-        commands[$i]+="$command"
-    else
-        commands[$((i%num_processes))]+=" && $command"
-    fi
-    i=$((i+1))
-done
+# for instance in ${instances[@]}
+# do
+#     command="${path}/bin/exec/hypervolume_calculator_exec "
+#     command+="--instance ${path}/instances/${instance}.txt "
+#     command+="--reference-pareto ${path}/pareto/${instance}.txt "
+#     j=0;
+#     for solver in ${solvers[@]}
+#     do
+#         for seed in ${seeds[@]}
+#         do
+#             command+="--pareto-${j} ${path}/pareto/${instance}_${solver}_${seed}.txt "
+#             command+="--best-solutions-snapshots-${j} ${path}/best_solutions_snapshots/${instance}_${solver}_${seed}_ "
+#             command+="--hypervolume-${j} ${path}/hypervolume/${instance}_${solver}_${seed}.txt "
+#             command+="--hypervolume-snapshots-${j} ${path}/hypervolume_snapshots/${instance}_${solver}_${seed}.txt "
+#             j=$((j+1))
+#         done
+#     done
+#     if [ $i -lt $num_processes ]
+#     then
+#         commands[$i]+="$command"
+#     else
+#         commands[$((i%num_processes))]+=" && $command"
+#     fi
+#     i=$((i+1))
+# done
 
-for ((i=0;i<num_processes;i++))
-do
-    commands[$i]+=") &>> ${path}/log_${i}.txt"
-done
+# for ((i=0;i<num_processes;i++))
+# do
+#     commands[$i]+=") &>> ${path}/log_${i}.txt"
+# done
 
-final_command=""
+# final_command=""
 
-for ((i=0;i<num_processes;i++))
-do
-    command=${commands[$i]}
-    final_command+="$command & "
-done
+# for ((i=0;i<num_processes;i++))
+# do
+#     command=${commands[$i]}
+#     final_command+="$command & "
+# done
 
-eval $final_command
+# eval $final_command
 
-wait
+# wait
 
-commands=()
+# commands=()
 
-for ((i=0;i<num_processes;i++))
-do
-    commands[$i]="("
-done
+# for ((i=0;i<num_processes;i++))
+# do
+#     commands[$i]="("
+# done
 
-i=0
+# i=0
 
-for instance in ${instances[@]}
-do
-    command="${path}/bin/exec/modified_generational_distance_calculator_exec "
-    command+="--instance ${path}/instances/${instance}.txt "
-    command+="--reference-pareto ${path}/pareto/${instance}.txt "
-    j=0;
-    for solver in ${solvers[@]}
-    do
-        for seed in ${seeds[@]}
-        do
-            command+="--pareto-${j} ${path}/pareto/${instance}_${solver}_${seed}.txt "
-            command+="--best-solutions-snapshots-${j} ${path}/best_solutions_snapshots/${instance}_${solver}_${seed}_ "
-            command+="--igd-plus-${j} ${path}/igd_plus/${instance}_${solver}_${seed}.txt "
-            command+="--igd-plus-snapshots-${j} ${path}/igd_plus_snapshots/${instance}_${solver}_${seed}.txt "
-            j=$((j+1))
-        done
-    done
-    if [ $i -lt $num_processes ]
-    then
-        commands[$i]+="$command"
-    else
-        commands[$((i%num_processes))]+=" && $command"
-    fi
-    i=$((i+1))
-done
+# for instance in ${instances[@]}
+# do
+#     command="${path}/bin/exec/modified_generational_distance_calculator_exec "
+#     command+="--instance ${path}/instances/${instance}.txt "
+#     command+="--reference-pareto ${path}/pareto/${instance}.txt "
+#     j=0;
+#     for solver in ${solvers[@]}
+#     do
+#         for seed in ${seeds[@]}
+#         do
+#             command+="--pareto-${j} ${path}/pareto/${instance}_${solver}_${seed}.txt "
+#             command+="--best-solutions-snapshots-${j} ${path}/best_solutions_snapshots/${instance}_${solver}_${seed}_ "
+#             command+="--igd-plus-${j} ${path}/igd_plus/${instance}_${solver}_${seed}.txt "
+#             command+="--igd-plus-snapshots-${j} ${path}/igd_plus_snapshots/${instance}_${solver}_${seed}.txt "
+#             j=$((j+1))
+#         done
+#     done
+#     if [ $i -lt $num_processes ]
+#     then
+#         commands[$i]+="$command"
+#     else
+#         commands[$((i%num_processes))]+=" && $command"
+#     fi
+#     i=$((i+1))
+# done
 
-for ((i=0;i<num_processes;i++))
-do
-    commands[$i]+=") &>> ${path}/log_${i}.txt"
-done
+# for ((i=0;i<num_processes;i++))
+# do
+#     commands[$i]+=") &>> ${path}/log_${i}.txt"
+# done
 
-final_command=""
+# final_command=""
 
-for ((i=0;i<num_processes;i++))
-do
-    command=${commands[$i]}
-    final_command+="$command & "
-done
+# for ((i=0;i<num_processes;i++))
+# do
+#     command=${commands[$i]}
+#     final_command+="$command & "
+# done
 
-eval $final_command
+# eval $final_command
 
-wait
+# wait
 
 commands=()
 
@@ -421,10 +421,10 @@ eval $final_command
 
 wait
 
-python3 ${path}/plotter_hypervolume.py &
-python3 ${path}/plotter_hypervolume_snapshots.py &
-python3 ${path}/plotter_igd_plus.py &
-python3 ${path}/plotter_igd_plus_snapshots.py &
+# python3 ${path}/plotter_hypervolume.py &
+# python3 ${path}/plotter_hypervolume_snapshots.py &
+# python3 ${path}/plotter_igd_plus.py &
+# python3 ${path}/plotter_igd_plus_snapshots.py &
 python3 ${path}/plotter_multiplicative_epsilon.py &
 python3 ${path}/plotter_multiplicative_epsilon_snapshots.py &
 python3 ${path}/plotter_metrics.py &
@@ -454,16 +454,16 @@ wait
 #     done
 # done
 
-ffmpeg -y -r 5 -i ${path}/hypervolume_snapshots/snapshot_%d.png -c:v libx264 -vf fps=60 -pix_fmt yuv420p ${path}/hypervolume_snapshots/hypervolume.mp4 &
-ffmpeg -y -r 5 -i ${path}/igd_plus_snapshots/snapshot_%d.png -c:v libx264 -vf fps=60 -pix_fmt yuv420p ${path}/igd_plus_snapshots/igd_plus.mp4 &
+# ffmpeg -y -r 5 -i ${path}/hypervolume_snapshots/snapshot_%d.png -c:v libx264 -vf fps=60 -pix_fmt yuv420p ${path}/hypervolume_snapshots/hypervolume.mp4 &
+# ffmpeg -y -r 5 -i ${path}/igd_plus_snapshots/snapshot_%d.png -c:v libx264 -vf fps=60 -pix_fmt yuv420p ${path}/igd_plus_snapshots/igd_plus.mp4 &
 ffmpeg -y -r 5 -i ${path}/multiplicative_epsilon_snapshots/snapshot_%d.png -c:v libx264 -vf fps=60 -pix_fmt yuv420p ${path}/multiplicative_epsilon_snapshots/multiplicative_epsilon.mp4 &
 ffmpeg -y -r 5 -i ${path}/metrics_snapshots/raincloud_%d.png -c:v libx264 -vf fps=60 -pix_fmt yuv420p ${path}/metrics_snapshots/raincloud.mp4 &
 ffmpeg -y -r 5 -i ${path}/metrics_snapshots/scatter_%d.png -c:v libx264 -vf fps=60 -pix_fmt yuv420p ${path}/metrics_snapshots/scatter.mp4
 
 wait
 
-rm ${path}/hypervolume_snapshots/snapshot_*.png &
-rm ${path}/igd_plus_snapshots/snapshot_*.png &
+# rm ${path}/hypervolume_snapshots/snapshot_*.png &
+# rm ${path}/igd_plus_snapshots/snapshot_*.png &
 rm ${path}/multiplicative_epsilon_snapshots/snapshot_*.png &
 rm ${path}/metrics_snapshots/raincloud_*.png &
 rm ${path}/metrics_snapshots/scatter_*.png

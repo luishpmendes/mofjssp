@@ -44,20 +44,11 @@ double multiplicative_epsilon_indicator(
 }
 
 static inline
-double inverted_multiplicative_epsilon_indicator(
+double inverse_multiplicative_epsilon_indicator(
         const std::vector<NSBRKGA::Sense> & senses,
         const std::vector<std::vector<double>> & reference_front,
         const std::vector<std::vector<double>> & front) {
     return 1.0 / multiplicative_epsilon_indicator(senses, reference_front, front);
-}
-
-static inline
-double normalized_inverted_multiplicative_epsilon_indicator(
-        const double & reference_inverted_epsilon,
-        const std::vector<NSBRKGA::Sense> & senses,
-        const std::vector<std::vector<double>> & reference_front,
-        const std::vector<std::vector<double>> & front) {
-    return inverted_multiplicative_epsilon_indicator(senses, reference_front, front) / reference_inverted_epsilon;
 }
 
 int main(int argc, char * argv[]) {
@@ -81,7 +72,6 @@ int main(int argc, char * argv[]) {
 
         std::vector<double> reference_point = instance.primal_bound;
         std::vector<std::vector<double>> reference_pareto;
-        double reference_inverted_epsilon;
         std::vector<std::vector<std::vector<double>>> paretos;
         std::vector<std::vector<unsigned>> iteration_snapshots;
         std::vector<std::vector<double>> time_snapshots;
@@ -109,11 +99,6 @@ int main(int argc, char * argv[]) {
                     arg_parser.option_value("--reference-pareto") +
                     " not found.");
         }
-
-        reference_inverted_epsilon = inverted_multiplicative_epsilon_indicator(
-                instance.senses, reference_pareto, reference_pareto);
-        
-        assert(reference_inverted_epsilon > 0.0);
 
         for(num_solvers = 0;
             arg_parser.option_exists("--pareto-" +
@@ -208,16 +193,15 @@ int main(int argc, char * argv[]) {
                                              std::to_string(i)));
 
             if(ofs.is_open()) {
-                double normalized_inverted_multiplicative_epsilon = normalized_inverted_multiplicative_epsilon_indicator(
-                        reference_inverted_epsilon,
+                double inverse_multiplicative_epsilon = inverse_multiplicative_epsilon_indicator(
                         instance.senses,
                         reference_pareto,
                         paretos[i]);
 
-                assert(normalized_inverted_multiplicative_epsilon >= 0.0);
-                assert(normalized_inverted_multiplicative_epsilon <= 1.0);
+                assert(inverse_multiplicative_epsilon >= 0.0);
+                assert(inverse_multiplicative_epsilon <= 1.0);
 
-                ofs << normalized_inverted_multiplicative_epsilon << std::endl;
+                ofs << inverse_multiplicative_epsilon << std::endl;
 
                 if(ofs.eof() || ofs.fail() || ofs.bad()) {
                     throw std::runtime_error("Error writing file " +
@@ -243,18 +227,17 @@ int main(int argc, char * argv[]) {
                 for(unsigned j = 0;
                     j < best_solutions_snapshots[i].size();
                     j++) {
-                    double normalized_inverted_multiplicative_epsilon = normalized_inverted_multiplicative_epsilon_indicator(
-                            reference_inverted_epsilon,
+                    double inverse_multiplicative_epsilon = inverse_multiplicative_epsilon_indicator(
                             instance.senses,
                             reference_pareto,
                             best_solutions_snapshots[i][j]);
 
-                    assert(normalized_inverted_multiplicative_epsilon >= 0.0);
-                    assert(normalized_inverted_multiplicative_epsilon <= 1.0);
+                    assert(inverse_multiplicative_epsilon >= 0.0);
+                    assert(inverse_multiplicative_epsilon <= 1.0);
 
                     ofs << iteration_snapshots[i][j] << ","
                         << time_snapshots[i][j] << ","
-                        << normalized_inverted_multiplicative_epsilon << std::endl;
+                        << inverse_multiplicative_epsilon << std::endl;
 
                     if(ofs.eof() || ofs.fail() || ofs.bad()) {
                         throw std::runtime_error("Error writing file " +
