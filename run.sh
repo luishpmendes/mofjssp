@@ -1,8 +1,8 @@
 #!/bin/bash
 
 instances=(mk01 mk02 mk03 mk04 mk05 mk06 mk07 mk08 mk09 mk10)
-# solvers=(nsga2 nspso moead mhaco ihs nsbrkga nsbrkga-pr)
-solvers=(nsbrkga nsbrkga-pr)
+# solvers=(nsga2 nspso moead mhaco ihs nsbrkga)
+solvers=(nsbrkga)
 seeds=(305089489 511812191 608055156 467424509 944441939 414977408 819312498 562386085 287613914 755772793)
 versions=(best median)
 
@@ -33,245 +33,237 @@ mkdir -p ${path}/multiplicative_epsilon_snapshots
 mkdir -p ${path}/metrics
 mkdir -p ${path}/metrics_snapshots
 
-# commands=()
+commands=()
 
-# for ((i=0;i<num_processes;i++))
-# do
-#     commands[$i]="("
-# done
+for ((i=0;i<num_processes;i++))
+do
+    commands[$i]="("
+done
 
-# i=0
+i=0
 
-# for instance in ${instances[@]}
-# do
-#     for solver in ${solvers[@]}
-#     do
-#         for seed in ${seeds[@]}
-#         do
-#             if [ $solver = "nsbrkga-pr" ]
-#             then
-#                 command="${path}/bin/exec/nsbrkga_solver_exec "
-#             else
-#                 command="${path}/bin/exec/${solver}_solver_exec "
-#             fi
-#             command+="--instance ${path}/instances/${instance}.txt "
-#             command+="--seed ${seed} "
-#             command+="--time-limit ${time_limit} "
-#             command+="--max-num-solutions ${max_num_solutions} "
-#             command+="--max-num-snapshots ${max_num_snapshots} "
-#             command+="--population-size ${population_size} "
-#             command+="--statistics ${path}/statistics/${instance}_${solver}_${seed}.txt "
-#             command+="--solutions ${path}/solutions/${instance}_${solver}_${seed}_ "
-#             command+="--pareto ${path}/pareto/${instance}_${solver}_${seed}.txt "
-#             command+="--best-solutions-snapshots ${path}/best_solutions_snapshots/${instance}_${solver}_${seed}_ "
-#             command+="--num-non-dominated-snapshots ${path}/num_non_dominated_snapshots/${instance}_${solver}_${seed}.txt "
-#             command+="--num-fronts-snapshots ${path}/num_fronts_snapshots/${instance}_${solver}_${seed}.txt "
-#             command+="--populations-snapshots ${path}/populations_snapshots/${instance}_${solver}_${seed}_ "
-#             if [ $solver = "nspso" ]
-#             then
-#                 command+="--memory "
-#             fi
-#             if [ $solver = "moead" ]
-#             then
-#                 command+="--preserve-diversity "
-#             fi
-#             if [ $solver = "mhaco" ]
-#             then
-#                 command+="--memory "
-#             fi
-#             if [ $solver = "nsbrkga" ]
-#             then
-#                 command+="--num-elites-snapshots ${path}/num_elites_snapshots/${instance}_${solver}_${seed}.txt "
-#             fi
-#             if [ $solver = "nsbrkga-pr" ]
-#             then
-#                 command+="--num-elites-snapshots ${path}/num_elites_snapshots/${instance}_${solver}_${seed}.txt "
-#                 command+="--pr-interval 500 "
-#             fi
-#             if [ $i -lt $num_processes ]
-#             then
-#                 commands[$i]+="$command"
-#             else
-#                 commands[$((i%num_processes))]+=" && $command"
-#             fi
-#             i=$((i+1))
-#         done
-#     done
-# done
+for instance in ${instances[@]}
+do
+    for solver in ${solvers[@]}
+    do
+        for seed in ${seeds[@]}
+        do
 
-# for ((i=0;i<num_processes;i++))
-# do
-#     commands[$i]+=") &> ${path}/log_${i}.txt"
-# done
+            command="${path}/bin/exec/${solver}_solver_exec "
+            command+="--instance ${path}/instances/${instance}.txt "
+            command+="--seed ${seed} "
+            command+="--time-limit ${time_limit} "
+            command+="--max-num-solutions ${max_num_solutions} "
+            command+="--max-num-snapshots ${max_num_snapshots} "
+            command+="--population-size ${population_size} "
+            command+="--statistics ${path}/statistics/${instance}_${solver}_${seed}.txt "
+            command+="--solutions ${path}/solutions/${instance}_${solver}_${seed}_ "
+            command+="--pareto ${path}/pareto/${instance}_${solver}_${seed}.txt "
+            command+="--best-solutions-snapshots ${path}/best_solutions_snapshots/${instance}_${solver}_${seed}_ "
+            command+="--num-non-dominated-snapshots ${path}/num_non_dominated_snapshots/${instance}_${solver}_${seed}.txt "
+            command+="--num-fronts-snapshots ${path}/num_fronts_snapshots/${instance}_${solver}_${seed}.txt "
+            command+="--populations-snapshots ${path}/populations_snapshots/${instance}_${solver}_${seed}_ "
+            if [ $solver = "nspso" ]
+            then
+                command+="--memory "
+            fi
+            if [ $solver = "moead" ]
+            then
+                command+="--preserve-diversity "
+            fi
+            if [ $solver = "mhaco" ]
+            then
+                command+="--memory "
+            fi
+            if [ $solver = "nsbrkga" ]
+            then
+                command+="--num-elites-snapshots ${path}/num_elites_snapshots/${instance}_${solver}_${seed}.txt "
+                command+="--pr-interval 500 "
+            fi
+            if [ $i -lt $num_processes ]
+            then
+                commands[$i]+="$command"
+            else
+                commands[$((i%num_processes))]+=" && $command"
+            fi
+            i=$((i+1))
+        done
+    done
+done
 
-# final_command=""
+for ((i=0;i<num_processes;i++))
+do
+    commands[$i]+=") &> ${path}/log_${i}.txt"
+done
 
-# for ((i=0;i<num_processes;i++))
-# do
-#     command=${commands[$i]}
-#     final_command+="$command & "
-# done
+final_command=""
 
-# eval $final_command
+for ((i=0;i<num_processes;i++))
+do
+    command=${commands[$i]}
+    final_command+="$command & "
+done
+
+eval $final_command
 
 wait
 
-solvers=(nsga2 nspso moead mhaco ihs nsbrkga-pr)
+solvers=(nsga2 nspso moead mhaco ihs nsbrkga)
 
-# commands=()
+commands=()
 
-# for ((i=0;i<num_processes;i++))
-# do
-#     commands[$i]="("
-# done
+for ((i=0;i<num_processes;i++))
+do
+    commands[$i]="("
+done
 
-# i=0
+i=0
 
-# for instance in ${instances[@]}
-# do
-#     command="${path}/bin/exec/reference_pareto_front_calculator_exec "
-#     command+="--instance ${path}/instances/${instance}.txt "
-#     command+="--max-num-solutions ${max_ref_solutions} "
-#     j=0;
-#     for solver in ${solvers[@]}
-#     do
-#         for seed in ${seeds[@]}
-#         do
-#             command+="--pareto-${j} ${path}/pareto/${instance}_${solver}_${seed}.txt "
-#             command+="--best-solutions-snapshots-${j} ${path}/best_solutions_snapshots/${instance}_${solver}_${seed}_ "
-#             command+="--reference-pareto ${path}/pareto/${instance}.txt "
-#             j=$((j+1))
-#         done
-#     done
-#     if [ $i -lt $num_processes ]
-#     then
-#         commands[$i]+="$command"
-#     else
-#         commands[$((i%num_processes))]+=" && $command"
-#     fi
-#     i=$((i+1))
-# done
+for instance in ${instances[@]}
+do
+    command="${path}/bin/exec/reference_pareto_front_calculator_exec "
+    command+="--instance ${path}/instances/${instance}.txt "
+    command+="--max-num-solutions ${max_ref_solutions} "
+    j=0;
+    for solver in ${solvers[@]}
+    do
+        for seed in ${seeds[@]}
+        do
+            command+="--pareto-${j} ${path}/pareto/${instance}_${solver}_${seed}.txt "
+            command+="--best-solutions-snapshots-${j} ${path}/best_solutions_snapshots/${instance}_${solver}_${seed}_ "
+            command+="--reference-pareto ${path}/pareto/${instance}.txt "
+            j=$((j+1))
+        done
+    done
+    if [ $i -lt $num_processes ]
+    then
+        commands[$i]+="$command"
+    else
+        commands[$((i%num_processes))]+=" && $command"
+    fi
+    i=$((i+1))
+done
 
-# for ((i=0;i<num_processes;i++))
-# do
-#     commands[$i]+=") &>> ${path}/log_${i}.txt"
-# done
+for ((i=0;i<num_processes;i++))
+do
+    commands[$i]+=") &>> ${path}/log_${i}.txt"
+done
 
-# final_command=""
+final_command=""
 
-# for ((i=0;i<num_processes;i++))
-# do
-#     command=${commands[$i]}
-#     final_command+="$command & "
-# done
+for ((i=0;i<num_processes;i++))
+do
+    command=${commands[$i]}
+    final_command+="$command & "
+done
 
-# eval $final_command
+eval $final_command
 
-# wait
+wait
 
-# commands=()
+commands=()
 
-# for ((i=0;i<num_processes;i++))
-# do
-#     commands[$i]="("
-# done
+for ((i=0;i<num_processes;i++))
+do
+    commands[$i]="("
+done
 
-# i=0
+i=0
 
-# for instance in ${instances[@]}
-# do
-#     command="${path}/bin/exec/hypervolume_calculator_exec "
-#     command+="--instance ${path}/instances/${instance}.txt "
-#     command+="--reference-pareto ${path}/pareto/${instance}.txt "
-#     j=0;
-#     for solver in ${solvers[@]}
-#     do
-#         for seed in ${seeds[@]}
-#         do
-#             command+="--pareto-${j} ${path}/pareto/${instance}_${solver}_${seed}.txt "
-#             command+="--best-solutions-snapshots-${j} ${path}/best_solutions_snapshots/${instance}_${solver}_${seed}_ "
-#             command+="--hypervolume-${j} ${path}/hypervolume/${instance}_${solver}_${seed}.txt "
-#             command+="--hypervolume-snapshots-${j} ${path}/hypervolume_snapshots/${instance}_${solver}_${seed}.txt "
-#             j=$((j+1))
-#         done
-#     done
-#     if [ $i -lt $num_processes ]
-#     then
-#         commands[$i]+="$command"
-#     else
-#         commands[$((i%num_processes))]+=" && $command"
-#     fi
-#     i=$((i+1))
-# done
+for instance in ${instances[@]}
+do
+    command="${path}/bin/exec/hypervolume_calculator_exec "
+    command+="--instance ${path}/instances/${instance}.txt "
+    command+="--reference-pareto ${path}/pareto/${instance}.txt "
+    j=0;
+    for solver in ${solvers[@]}
+    do
+        for seed in ${seeds[@]}
+        do
+            command+="--pareto-${j} ${path}/pareto/${instance}_${solver}_${seed}.txt "
+            command+="--best-solutions-snapshots-${j} ${path}/best_solutions_snapshots/${instance}_${solver}_${seed}_ "
+            command+="--hypervolume-${j} ${path}/hypervolume/${instance}_${solver}_${seed}.txt "
+            command+="--hypervolume-snapshots-${j} ${path}/hypervolume_snapshots/${instance}_${solver}_${seed}.txt "
+            j=$((j+1))
+        done
+    done
+    if [ $i -lt $num_processes ]
+    then
+        commands[$i]+="$command"
+    else
+        commands[$((i%num_processes))]+=" && $command"
+    fi
+    i=$((i+1))
+done
 
-# for ((i=0;i<num_processes;i++))
-# do
-#     commands[$i]+=") &>> ${path}/log_${i}.txt"
-# done
+for ((i=0;i<num_processes;i++))
+do
+    commands[$i]+=") &>> ${path}/log_${i}.txt"
+done
 
-# final_command=""
+final_command=""
 
-# for ((i=0;i<num_processes;i++))
-# do
-#     command=${commands[$i]}
-#     final_command+="$command & "
-# done
+for ((i=0;i<num_processes;i++))
+do
+    command=${commands[$i]}
+    final_command+="$command & "
+done
 
-# eval $final_command
+eval $final_command
 
-# wait
+wait
 
-# commands=()
+commands=()
 
-# for ((i=0;i<num_processes;i++))
-# do
-#     commands[$i]="("
-# done
+for ((i=0;i<num_processes;i++))
+do
+    commands[$i]="("
+done
 
-# i=0
+i=0
 
-# for instance in ${instances[@]}
-# do
-#     command="${path}/bin/exec/modified_generational_distance_calculator_exec "
-#     command+="--instance ${path}/instances/${instance}.txt "
-#     command+="--reference-pareto ${path}/pareto/${instance}.txt "
-#     j=0;
-#     for solver in ${solvers[@]}
-#     do
-#         for seed in ${seeds[@]}
-#         do
-#             command+="--pareto-${j} ${path}/pareto/${instance}_${solver}_${seed}.txt "
-#             command+="--best-solutions-snapshots-${j} ${path}/best_solutions_snapshots/${instance}_${solver}_${seed}_ "
-#             command+="--igd-plus-${j} ${path}/igd_plus/${instance}_${solver}_${seed}.txt "
-#             command+="--igd-plus-snapshots-${j} ${path}/igd_plus_snapshots/${instance}_${solver}_${seed}.txt "
-#             j=$((j+1))
-#         done
-#     done
-#     if [ $i -lt $num_processes ]
-#     then
-#         commands[$i]+="$command"
-#     else
-#         commands[$((i%num_processes))]+=" && $command"
-#     fi
-#     i=$((i+1))
-# done
+for instance in ${instances[@]}
+do
+    command="${path}/bin/exec/modified_generational_distance_calculator_exec "
+    command+="--instance ${path}/instances/${instance}.txt "
+    command+="--reference-pareto ${path}/pareto/${instance}.txt "
+    j=0;
+    for solver in ${solvers[@]}
+    do
+        for seed in ${seeds[@]}
+        do
+            command+="--pareto-${j} ${path}/pareto/${instance}_${solver}_${seed}.txt "
+            command+="--best-solutions-snapshots-${j} ${path}/best_solutions_snapshots/${instance}_${solver}_${seed}_ "
+            command+="--igd-plus-${j} ${path}/igd_plus/${instance}_${solver}_${seed}.txt "
+            command+="--igd-plus-snapshots-${j} ${path}/igd_plus_snapshots/${instance}_${solver}_${seed}.txt "
+            j=$((j+1))
+        done
+    done
+    if [ $i -lt $num_processes ]
+    then
+        commands[$i]+="$command"
+    else
+        commands[$((i%num_processes))]+=" && $command"
+    fi
+    i=$((i+1))
+done
 
-# for ((i=0;i<num_processes;i++))
-# do
-#     commands[$i]+=") &>> ${path}/log_${i}.txt"
-# done
+for ((i=0;i<num_processes;i++))
+do
+    commands[$i]+=") &>> ${path}/log_${i}.txt"
+done
 
-# final_command=""
+final_command=""
 
-# for ((i=0;i<num_processes;i++))
-# do
-#     command=${commands[$i]}
-#     final_command+="$command & "
-# done
+for ((i=0;i<num_processes;i++))
+do
+    command=${commands[$i]}
+    final_command+="$command & "
+done
 
-# eval $final_command
+eval $final_command
 
-# wait
+wait
 
 commands=()
 
@@ -364,11 +356,6 @@ do
             command+="--num-elites-snapshots-best ${path}/num_elites_snapshots/${instance}_${solver}_best.txt "
             command+="--num-elites-snapshots-median ${path}/num_elites_snapshots/${instance}_${solver}_median.txt "
         fi
-        if [ $solver = "nsbrkga-pr" ]
-        then
-            command+="--num-elites-snapshots-best ${path}/num_elites_snapshots/${instance}_${solver}_best.txt "
-            command+="--num-elites-snapshots-median ${path}/num_elites_snapshots/${instance}_${solver}_median.txt "
-        fi
         j=0;
         for seed in ${seeds[@]}
         do
@@ -385,10 +372,6 @@ do
             command+="--populations-snapshots-${j} ${path}/populations_snapshots/${instance}_${solver}_${seed}_ "
             command+="--num-fronts-snapshots-${j} ${path}/num_fronts_snapshots/${instance}_${solver}_${seed}.txt "
             if [ $solver = "nsbrkga" ]
-            then
-                command+="--num-elites-snapshots-${j} ${path}/num_elites_snapshots/${instance}_${solver}_${seed}.txt "
-            fi
-            if [ $solver = "nsbrkga-pr" ]
             then
                 command+="--num-elites-snapshots-${j} ${path}/num_elites_snapshots/${instance}_${solver}_${seed}.txt "
             fi
@@ -421,49 +404,49 @@ eval $final_command
 
 wait
 
-# python3 ${path}/plotter_hypervolume.py &
-# python3 ${path}/plotter_hypervolume_snapshots.py &
-# python3 ${path}/plotter_igd_plus.py &
-# python3 ${path}/plotter_igd_plus_snapshots.py &
+python3 ${path}/plotter_hypervolume.py &
+python3 ${path}/plotter_hypervolume_snapshots.py &
+python3 ${path}/plotter_igd_plus.py &
+python3 ${path}/plotter_igd_plus_snapshots.py &
 python3 ${path}/plotter_multiplicative_epsilon.py &
 python3 ${path}/plotter_multiplicative_epsilon_snapshots.py &
 python3 ${path}/plotter_metrics.py &
-python3 ${path}/plotter_metrics_snapshots.py 
-# python3 ${path}/plotter_num_non_dominated_snapshots.py &
-# python3 ${path}/plotter_num_fronts_snapshots.py &
-# python3 ${path}/plotter_num_elites_snapshots.py &
-# python3 ${path}/plotter_pareto.py 
-# python3 ${path}/plotter_best_solutions_snapshots.py &
-# python3 ${path}/plotter_populations_snapshots.py
+python3 ${path}/plotter_metrics_snapshots.py &
+python3 ${path}/plotter_num_non_dominated_snapshots.py &
+python3 ${path}/plotter_num_fronts_snapshots.py &
+python3 ${path}/plotter_num_elites_snapshots.py &
+python3 ${path}/plotter_pareto.py &
+python3 ${path}/plotter_best_solutions_snapshots.py &
+python3 ${path}/plotter_populations_snapshots.py
 
 wait
 
-# for instance in ${instances[@]}
-# do
-#     for version in ${versions[@]}
-#     do
-#         ffmpeg -y -r 5 -i ${path}/best_solutions_snapshots/${instance}_${version}_%d.png -c:v libx264 -vf fps=60 -pix_fmt yuv420p ${path}/best_solutions_snapshots/${instance}_${version}.mp4 &
-#         ffmpeg -y -r 5 -i ${path}/populations_snapshots/${instance}_${version}_%d.png -c:v libx264 -vf fps=60 -pix_fmt yuv420p ${path}/populations_snapshots/${instance}_${version}.mp4
+for instance in ${instances[@]}
+do
+    for version in ${versions[@]}
+    do
+        ffmpeg -y -r 5 -i ${path}/best_solutions_snapshots/${instance}_${version}_%d.png -c:v libx264 -vf fps=60 -pix_fmt yuv420p ${path}/best_solutions_snapshots/${instance}_${version}.mp4 &
+        ffmpeg -y -r 5 -i ${path}/populations_snapshots/${instance}_${version}_%d.png -c:v libx264 -vf fps=60 -pix_fmt yuv420p ${path}/populations_snapshots/${instance}_${version}.mp4
 
-#         wait
+        wait
 
-#         rm ${path}/best_solutions_snapshots/${instance}_${version}_*.png &
-#         rm ${path}/populations_snapshots/${instance}_${version}_*.png
+        rm ${path}/best_solutions_snapshots/${instance}_${version}_*.png &
+        rm ${path}/populations_snapshots/${instance}_${version}_*.png
 
-#         wait
-#     done
-# done
+        wait
+    done
+done
 
-# ffmpeg -y -r 5 -i ${path}/hypervolume_snapshots/snapshot_%d.png -c:v libx264 -vf fps=60 -pix_fmt yuv420p ${path}/hypervolume_snapshots/hypervolume.mp4 &
-# ffmpeg -y -r 5 -i ${path}/igd_plus_snapshots/snapshot_%d.png -c:v libx264 -vf fps=60 -pix_fmt yuv420p ${path}/igd_plus_snapshots/igd_plus.mp4 &
+ffmpeg -y -r 5 -i ${path}/hypervolume_snapshots/snapshot_%d.png -c:v libx264 -vf fps=60 -pix_fmt yuv420p ${path}/hypervolume_snapshots/hypervolume.mp4 &
+ffmpeg -y -r 5 -i ${path}/igd_plus_snapshots/snapshot_%d.png -c:v libx264 -vf fps=60 -pix_fmt yuv420p ${path}/igd_plus_snapshots/igd_plus.mp4 &
 ffmpeg -y -r 5 -i ${path}/multiplicative_epsilon_snapshots/snapshot_%d.png -c:v libx264 -vf fps=60 -pix_fmt yuv420p ${path}/multiplicative_epsilon_snapshots/multiplicative_epsilon.mp4 &
 ffmpeg -y -r 5 -i ${path}/metrics_snapshots/raincloud_%d.png -c:v libx264 -vf fps=60 -pix_fmt yuv420p ${path}/metrics_snapshots/raincloud.mp4 &
 ffmpeg -y -r 5 -i ${path}/metrics_snapshots/scatter_%d.png -c:v libx264 -vf fps=60 -pix_fmt yuv420p ${path}/metrics_snapshots/scatter.mp4
 
 wait
 
-# rm ${path}/hypervolume_snapshots/snapshot_*.png &
-# rm ${path}/igd_plus_snapshots/snapshot_*.png &
+rm ${path}/hypervolume_snapshots/snapshot_*.png &
+rm ${path}/igd_plus_snapshots/snapshot_*.png &
 rm ${path}/multiplicative_epsilon_snapshots/snapshot_*.png &
 rm ${path}/metrics_snapshots/raincloud_*.png &
 rm ${path}/metrics_snapshots/scatter_*.png
