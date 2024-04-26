@@ -24,7 +24,7 @@ class NSBRKGA_Solver : public Solver {
     /********************************************************************
      * Maximum percentage of individuals to become the elite set (0, 1].
      ********************************************************************/
-    double max_elites_percentage = 0.50;
+    double max_elites_percentage = 0.30;
 
     /***********************************
      * Mutation probability.

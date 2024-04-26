@@ -48,7 +48,7 @@ int main() {
         assert(solver.max_num_snapshots == 16);
         assert(fabs(solver.min_elites_percentage - 0.10) <
             std::numeric_limits<double>::epsilon());
-        assert(fabs(solver.max_elites_percentage - 0.50) <
+        assert(fabs(solver.max_elites_percentage - 0.30) <
             std::numeric_limits<double>::epsilon());
         assert(fabs(solver.mutation_probability - 0.01) <
             std::numeric_limits<double>::epsilon());
