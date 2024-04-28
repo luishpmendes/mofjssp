@@ -241,7 +241,7 @@ void NSBRKGA_Solver::solve() {
         if (this->shake_interval > 0 && generations_without_improvement > 0 &&
                 (generations_without_improvement % this->shake_interval == 0)) {
             this->num_shakings++;
-            algorithm.shake(this->shake_intensity);
+            algorithm.shake(this->shake_intensity, this->shake_distribution);
         }
 
         if (this->reset_interval > 0 && generations_without_improvement > 0 &&
@@ -301,6 +301,8 @@ std::ostream & operator <<(std::ostream & os, const NSBRKGA_Solver & solver) {
        << solver.shake_interval << std::endl
        << "The intensity of the shaking: "
        << solver.shake_intensity << std::endl
+       << "The distribution of the shaking: "
+       << solver.shake_distribution << std::endl
        << "Interval at which the populations are reset: "
        << solver.reset_interval << std::endl
        << "The intensity of the reset: "

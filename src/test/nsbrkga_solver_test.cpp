@@ -50,9 +50,9 @@ int main() {
             std::numeric_limits<double>::epsilon());
         assert(fabs(solver.max_elites_percentage - 0.30) <
             std::numeric_limits<double>::epsilon());
-        assert(fabs(solver.mutation_probability - 0.01) <
+        assert(fabs(solver.mutation_probability - 0.05) <
             std::numeric_limits<double>::epsilon());
-        assert(fabs(solver.mutation_distribution - 50.0) <
+        assert(fabs(solver.mutation_distribution - 20.0) <
             std::numeric_limits<double>::epsilon());
         assert(solver.num_total_parents == 3);
         assert(solver.num_elite_parents == 2);
@@ -70,6 +70,8 @@ int main() {
         assert(solver.pr_interval == 0);
         assert(solver.shake_interval == 200);
         assert(fabs(solver.shake_intensity - 0.33) < 
+            std::numeric_limits<double>::epsilon());
+        assert(fabs(solver.shake_distribution - 10.0) < 
             std::numeric_limits<double>::epsilon());
         assert(solver.reset_interval == 500);
         assert(fabs(solver.reset_intensity - 0.20) <
