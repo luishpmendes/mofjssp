@@ -29,12 +29,12 @@ class NSBRKGA_Solver : public Solver {
     /***********************************
      * Mutation probability.
      ***********************************/
-    double mutation_probability = 0.05;
+    double mutation_probability = 0.01;
 
     /************************************
      * Mutation distribution.
      ************************************/
-    double mutation_distribution = 20.0;
+    double mutation_distribution = 50.0;
 
     /**************************************
      * Number of total parents for mating.
@@ -110,7 +110,7 @@ class NSBRKGA_Solver : public Solver {
     /************************************
      * Shaking distribution.
      ************************************/
-    double shake_distribution = 10.0;
+    double shake_distribution = 20.0;
 
     /******************************************************************
      * Interval at which the populations are reset (0 means no reset).
