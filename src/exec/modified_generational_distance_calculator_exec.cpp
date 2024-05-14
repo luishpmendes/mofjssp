@@ -25,7 +25,7 @@ double modified_distance(const std::vector<NSBRKGA::Sense> & senses,
         distance += delta * delta;
     }
 
-    return distance;
+    return sqrt(distance);
 }
 
 static inline
