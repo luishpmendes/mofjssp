@@ -155,6 +155,11 @@ int main (int argc, char * argv[]) {
                 std::stod(arg_parser.option_value("--shake-intensity"));
         }
 
+        if(arg_parser.option_exists("--shake-distribution")) {
+            solver.shake_distribution =
+                std::stod(arg_parser.option_value("--shake-distribution"));
+        }
+
         if(arg_parser.option_exists("--reset-interval")) {
             solver.reset_interval =
                 std::stoul(arg_parser.option_value("--reset-interval"));
@@ -487,6 +492,7 @@ int main (int argc, char * argv[]) {
                   << "--pr-interval <pr_interval> "
                   << "--shake-interval <shake_interval> "
                   << "--shake-intensity <shake_intensity> "
+                  << "--shake-distribution <shake_distribution> "
                   << "--reset-interval <reset_interval> "
                   << "--reset-intensity <reset_intensity> "
                   << "--num-threads <num_threads> "
