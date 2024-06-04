@@ -264,7 +264,6 @@ std::istream & operator >>(std::istream & is, Instance & instance) {
                 double processing_time;
 
                 is >> machine >> processing_time;
-                machine--;
 
                 instance.machines_of_operation[job][operation].push_back(machine);
                 instance.operations_of_machine[machine].push_back(std::make_pair(job, operation));

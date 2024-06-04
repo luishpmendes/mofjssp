@@ -16,7 +16,12 @@ int main() {
                                        "instances/mk07.txt",
                                        "instances/mk08.txt",
                                        "instances/mk09.txt",
-                                       "instances/mk10.txt"}) {
+                                       "instances/mk10.txt",
+                                       "instances/mk11.txt",
+                                       "instances/mk12.txt",
+                                       "instances/mk13.txt",
+                                       "instances/mk14.txt",
+                                       "instances/mk15.txt"}) {
         std::cout << filename << std::endl;
 
         ifs.open(filename);
@@ -30,10 +35,6 @@ int main() {
         assert(instance.is_valid());
 
         assert(instance.primal_bound[2] >= 37);
-        std::cout << "primal_bound: " << std::endl;
-        for (unsigned i = 0; i < 4; i++) {
-            std::cout << (instance.primal_bound[i]) << std::endl;
-        }
     }
 
     std::cout << std::endl << "Instance Test PASSED" << std::endl;
