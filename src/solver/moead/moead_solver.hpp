@@ -19,7 +19,7 @@ class MOEAD_Solver : public Solver {
      * Method used to generate the weights, one of “grid”,
      * “low discrepancy” or “random”.
      ******************************************************/
-    std::string weight_generation = "low discrepancy";
+    std::string weight_generation = "random";
 
     /******************************************************************
      * Decomposition method: one of “weighted”, “tchebycheff” or “bi”.

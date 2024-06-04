@@ -63,7 +63,7 @@ class MHACO_Solver : public Solver {
      * Memory parameter. If true, memory is activated
      * in the algorithm for multiple calls.
      *************************************************/
-    bool memory = false;
+    bool memory = true;
 
     /*********************************************
      * Constructs a new solver.

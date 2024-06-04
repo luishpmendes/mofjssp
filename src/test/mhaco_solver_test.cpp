@@ -52,7 +52,7 @@ int main() {
         assert(solver.n_gen_mark == 7);
         assert(solver.eval_stop == 0);
         assert(fabs(solver.focus - 0.0) < std::numeric_limits<double>::epsilon());
-        assert(!solver.memory);
+        assert(solver.memory);
 
         solver.solve();
 

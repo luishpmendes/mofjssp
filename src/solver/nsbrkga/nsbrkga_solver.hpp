@@ -14,7 +14,7 @@ class NSBRKGA_Solver : public Solver {
     /********************************************
      * Number of individuals in each population.
      ********************************************/
-    unsigned population_size = 300;
+    unsigned population_size = 100;
 
     /********************************************************************
      * Minimum percentage of individuals to become the elite set (0, 1].
@@ -71,7 +71,7 @@ class NSBRKGA_Solver : public Solver {
     /*******************************************************************
      * Number of elite individuals to be exchanged between populations.
      *******************************************************************/
-    unsigned num_exchange_individuals = 30;
+    unsigned num_exchange_individuals = 10;
 
     /***********************************************
      * Type of path relinking that will be used.
