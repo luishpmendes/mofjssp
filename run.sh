@@ -1,15 +1,13 @@
 #!/bin/bash
 
 instances=(mk01 mk02 mk03 mk04 mk05 mk06 mk07 mk08 mk09 mk10 mk11 mk12 mk13 mk14 mk15)
-# solvers=(nsga2 nspso moead mhaco ihs nsbrkga)
-solvers=(nsbrkga)
+solvers=(nsga2 nspso moead mhaco ihs nsbrkga)
 seeds=(305089489 511812191 608055156 467424509 944441939 414977408 819312498 562386085 287613914 755772793)
 versions=(best median)
 
 num_processes=6
 
-time_limit=1800
-population_size=300
+time_limit=900
 max_num_solutions=500
 max_num_snapshots=30
 max_ref_solutions=800
@@ -55,7 +53,6 @@ do
             command+="--time-limit ${time_limit} "
             command+="--max-num-solutions ${max_num_solutions} "
             command+="--max-num-snapshots ${max_num_snapshots} "
-            command+="--population-size ${population_size} "
             command+="--statistics ${path}/statistics/${instance}_${solver}_${seed}.txt "
             command+="--solutions ${path}/solutions/${instance}_${solver}_${seed}_ "
             command+="--pareto ${path}/pareto/${instance}_${solver}_${seed}.txt "
@@ -78,7 +75,6 @@ do
             if [ $solver = "nsbrkga" ]
             then
                 command+="--num-elites-snapshots ${path}/num_elites_snapshots/${instance}_${solver}_${seed}.txt "
-                command+="--pr-interval 500 "
             fi
             if [ $i -lt $num_processes ]
             then
