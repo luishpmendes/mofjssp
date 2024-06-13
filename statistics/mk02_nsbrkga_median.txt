@@ -1,23 +1,23 @@
 Number of jobs: 10
 Total number of operations: 58
 Number of machines: 6
-Seed: 511812191
-Time limit: 1800
+Seed: 287613914
+Time limit: 900
 Iterations limit: 4294967295
 Initial individuals: 0
 Maximum number of solutions: 500
 Maximum number of snapshots: 30
-Factor at which the time between snapshots are increased: 1.45285
+Factor at which the time between snapshots are increased: 1.47208
 Factor at which the iterations between snapshots are increased: 1
-Number of iterations: 84289
-Solutions obtained: 24
-Solving time: 1800.02
+Number of iterations: 170765
+Solutions obtained: 29
+Solving time: 900.001
 Number of snapshots: 30
-Time next snapshot: 1800.01
-Time when the last snapshot was taken: 1800.01
+Time next snapshot: 900.011
+Time when the last snapshot was taken: 900.001
 Number of iteration of the next snapshot: 4294967295
-Iteration when the last snapshot was taken: 84289
-Number of individuals in each population: 300
+Iteration when the last snapshot was taken: 170765
+Number of individuals in each population: 100
 Minimum percentage of individuals to become the elite set: 0.1
 Maximum percentage of individuals to become the elite set: 0.3
 Mutation probability: 0.01
@@ -28,22 +28,22 @@ Type of bias that will be used: SQRT
 Type of diversity that will be used: AVERAGE_DISTANCE_TO_CENTROID
 Number of independent parallel populations: 3
 Interval at which the elite solutions are exchanged between populations: 200
-Number of elite individuals to be exchanged between populations: 30
+Number of elite individuals to be exchanged between populations: 10
 Type of path relink that will be used: BINARY_SEARCH
 Percentage of the path to be computed: 0.2
-Interval at which the path relink is applied: 500
+Interval at which the path relink is applied: 0
 Interval at which the populations are shaken: 200
 The intensity of the shaking: 0.33
 The distribution of the shaking: 20
 Interval at which the populations are reset: 500
 The intensity of the reset: 0.2
 Number of threads to be used during parallel decoding: 1
-Last update generation: 28691
-Last update time: 598.158
-Largest number of generations between improvements: 55598
-Total path relink time: 1.44153
-Total path relink calls: 168
+Last update generation: 155195
+Last update time: 818.387
+Largest number of generations between improvements: 84030
+Total path relink time: 0
+Total path relink calls: 0
 Improvements in the elite set: 0
 Best individual improvements: 0
-Total shakings calls: 410
-Total resets calls: 163
+Total shakings calls: 827
+Total resets calls: 322

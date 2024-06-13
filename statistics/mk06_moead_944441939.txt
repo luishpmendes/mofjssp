@@ -1,24 +1,24 @@
 Number of jobs: 10
 Total number of operations: 150
-Number of machines: 15
+Number of machines: 10
 Seed: 944441939
-Time limit: 1800
+Time limit: 900
 Iterations limit: 4294967295
 Initial individuals: 0
 Maximum number of solutions: 500
 Maximum number of snapshots: 30
-Factor at which the time between snapshots are increased: 1.42115
+Factor at which the time between snapshots are increased: 1.39573
 Factor at which the iterations between snapshots are increased: 1
-Number of iterations: 55841
-Solutions obtained: 107
-Solving time: 1800.03
+Number of iterations: 46044
+Solutions obtained: 47
+Solving time: 900.018
 Number of snapshots: 30
-Time next snapshot: 1800.03
-Time when the last snapshot was taken: 1800.03
+Time next snapshot: 900.032
+Time when the last snapshot was taken: 900.014
 Number of iteration of the next snapshot: 4294967295
-Iteration when the last snapshot was taken: 55841
+Iteration when the last snapshot was taken: 46044
 Population size: 300
-Method used to generate the weights: low discrepancy
+Method used to generate the weights: random
 Decomposition method: tchebycheff
 Size of the weight’s neighborhood: 20
 Crossover parameter in the Differential Evolution operator: 1

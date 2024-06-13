@@ -2,21 +2,21 @@ Number of jobs: 20
 Total number of operations: 240
 Number of machines: 15
 Seed: 819312498
-Time limit: 1800
+Time limit: 900
 Iterations limit: 4294967295
 Initial individuals: 0
 Maximum number of solutions: 500
 Maximum number of snapshots: 30
-Factor at which the time between snapshots are increased: 1.39823
+Factor at which the time between snapshots are increased: 1.36372
 Factor at which the iterations between snapshots are increased: 1
-Number of iterations: 54416
-Solutions obtained: 86
-Solving time: 1800.02
+Number of iterations: 20200
+Solutions obtained: 72
+Solving time: 900.043
 Number of snapshots: 30
-Time next snapshot: 1800.05
-Time when the last snapshot was taken: 1800.01
+Time next snapshot: 900.069
+Time when the last snapshot was taken: 900.036
 Number of iteration of the next snapshot: 4294967295
-Iteration when the last snapshot was taken: 54416
+Iteration when the last snapshot was taken: 20200
 Population size: 300
 Number of solutions stored in the solution archive: 63
 Convergence speed: 1
