@@ -1,7 +1,8 @@
 #!/bin/bash
 
 instances=(mk01 mk02 mk03 mk04 mk05 mk06 mk07 mk08 mk09 mk10 mk11 mk12 mk13 mk14 mk15)
-solvers=(nsga2 nspso moead mhaco ihs nsbrkga)
+# solvers=(nsga2 nspso moead mhaco ihs nsbrkga)
+solvers=(nsbrkga)
 seeds=(305089489 511812191 608055156 467424509 944441939 414977408 819312498 562386085 287613914 755772793)
 versions=(best median)
 
