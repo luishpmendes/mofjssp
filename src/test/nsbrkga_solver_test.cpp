@@ -37,7 +37,11 @@ int main() {
         solver.max_num_solutions = 128;
         solver.population_size = 32;
         solver.max_num_snapshots = 16;
+        solver.exchange_interval = 20;
         solver.num_exchange_individuals = 3;
+        solver.pr_interval = 50;
+        solver.shake_interval = 20;
+        solver.reset_interval = 50;
 
         assert((solver.seed = 2351389233));
         assert(fabs(solver.time_limit - 5.0) <
@@ -60,20 +64,20 @@ int main() {
         assert(solver.diversity_type ==
             NSBRKGA::DiversityFunctionType::AVERAGE_DISTANCE_TO_CENTROID);
         assert(solver.num_populations == 3);
-        assert(solver.exchange_interval == 200);
+        assert(solver.exchange_interval == 20);
         assert(solver.num_exchange_individuals == 3);
         assert(solver.pr_type == NSBRKGA::PathRelinking::Type::BINARY_SEARCH);
         assert(typeid(*solver.pr_dist_func) ==
                 typeid(NSBRKGA::EuclideanDistance));
         assert(fabs(solver.pr_percentage - 0.20) <
                 std::numeric_limits<double>::epsilon());
-        assert(solver.pr_interval == 0);
-        assert(solver.shake_interval == 200);
+        assert(solver.pr_interval == 50);
+        assert(solver.shake_interval == 20);
         assert(fabs(solver.shake_intensity - 0.33) < 
             std::numeric_limits<double>::epsilon());
         assert(fabs(solver.shake_distribution - 20.0) < 
             std::numeric_limits<double>::epsilon());
-        assert(solver.reset_interval == 500);
+        assert(solver.reset_interval == 50);
         assert(fabs(solver.reset_intensity - 0.20) <
             std::numeric_limits<double>::epsilon());
         assert(solver.num_threads == 1);
