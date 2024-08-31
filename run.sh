@@ -15,7 +15,7 @@ max_ref_solutions=800
 path=$(dirname $(realpath $0))
 
 mkdir -p ${path}/statistics
-mkdir -p ${path}/solutions
+# mkdir -p ${path}/solutions
 mkdir -p ${path}/pareto
 mkdir -p ${path}/best_solutions_snapshots
 mkdir -p ${path}/num_non_dominated_snapshots
@@ -54,7 +54,7 @@ do
             command+="--max-num-solutions ${max_num_solutions} "
             command+="--max-num-snapshots ${max_num_snapshots} "
             command+="--statistics ${path}/statistics/${instance}_${solver}_${seed}.txt "
-            command+="--solutions ${path}/solutions/${instance}_${solver}_${seed}_ "
+            # command+="--solutions ${path}/solutions/${instance}_${solver}_${seed}_ "
             command+="--pareto ${path}/pareto/${instance}_${solver}_${seed}.txt "
             command+="--best-solutions-snapshots ${path}/best_solutions_snapshots/${instance}_${solver}_${seed}_ "
             command+="--num-non-dominated-snapshots ${path}/num_non_dominated_snapshots/${instance}_${solver}_${seed}.txt "
