@@ -1,10 +1,12 @@
 import csv
+from functools import partial
 import matplotlib.pyplot as plt
+from matplotlib.ticker import FormatStrFormatter
+import numpy as np
 import seaborn as sns
 import ptitprince as pt
 import os
 import statistics as stats
-from math import ceil, floor, sqrt
 from plotter_definitions import *
 
 dirname = os.path.dirname(__file__)
@@ -60,13 +62,13 @@ for instance in instances:
                         hypervolume[i].append(float(row[0]))
                     csv_file.close()
 
-plt.figure(figsize = (11, 11))
-plt.title("Multi-Objective Flexible Job-Shop Scheduling Problem", fontsize = "xx-large")
-plt.xlabel("Hypervolume Ratio", fontsize = "x-large")
+plt.figure()
+plt.xlabel("Hypervolume Ratio")
 pt.half_violinplot(data = hypervolume, palette = colors, orient = "h", width = 0.6, cut = 0.0, inner = None)
 sns.stripplot(data = hypervolume, palette = colors, orient = "h", size = 2, zorder = 0)
 sns.boxplot(data = hypervolume, orient = "h", width = 0.20, color = "black", zorder = 10, showcaps = True, boxprops = {'facecolor' : 'none', "zorder" : 10}, showfliers = True, whiskerprops = {'linewidth' : 2, "zorder" : 10}, flierprops = {'markersize' : 2})
-plt.yticks(ticks = list(range(len(solvers))), labels = [solver_labels[solver] for solver in solvers], fontsize = "large")
+plt.yticks(ticks = list(range(len(solvers))), labels = [solver_labels[solver] for solver in solvers])
+plt.tight_layout()
 filename = os.path.join(dirname, "hypervolume/hypervolume.png")
 plt.savefig(filename, format = "png")
 plt.close()
@@ -91,27 +93,28 @@ for num_jobs in nums_jobs:
                         csv_file.close()
 
 plt.figure()
-plt.title("MOFJSSP", fontsize = "xx-large")
-plt.xlabel("Number of Jobs", fontsize = "x-large")
-plt.ylabel("Hypervolume Ratio", fontsize = "x-large")
-plt.xticks(nums_jobs)
+plt.xlabel("Number of Jobs")
+plt.ylabel("Hypervolume Ratio")
+plt.grid(alpha=0.5, color='gray', linestyle='dashed', linewidth=0.5, which='both')
 for i in range(len(solvers)):
     y = []
     for num_jobs in nums_jobs:
         y.append(stats.mean(hypervolume_per_num_jobs[solvers[i]][num_jobs]))
     plt.plot(nums_jobs, y, label = solver_labels[solvers[i]], marker = (i + 3, 2, 0), color = colors[i], alpha = 0.80)
-plt.xlim(left = max(min(nums_jobs) - 1, 0), right = max(nums_jobs) + 1)
-plt.ylim(bottom = min_hypervolume, top = max_hypervolume)
-plt.legend(loc = "best", fontsize = "large")
+plt.yscale("function", functions=(partial(np.power, 10.0), np.log10))
+plt.legend(loc = "best")
+plt.gca().xaxis.set_major_formatter(FormatStrFormatter('%d'))
+plt.gca().yaxis.set_major_formatter(FormatStrFormatter('%.2f'))
+plt.gca().yaxis.set_minor_formatter(FormatStrFormatter('%.2f'))
+plt.tight_layout()
 filename = os.path.join(dirname, "hypervolume/hypervolume_mean_per_num_jobs.png")
 plt.savefig(filename, format = "png")
 plt.close()
 
 plt.figure()
-plt.title("MOFJSSP", fontsize = "xx-large")
-plt.xlabel("Number of Jobs", fontsize = "x-large")
-plt.ylabel("Hypervolume Ratio", fontsize = "x-large")
-plt.xticks(nums_jobs)
+plt.xlabel("Number of Jobs")
+plt.ylabel("Hypervolume Ratio")
+plt.grid(alpha=0.5, color='gray', linestyle='dashed', linewidth=0.5, which='both')
 for i in range(len(solvers)):
     y0 = []
     y2 = []
@@ -126,9 +129,13 @@ for i in range(len(solvers)):
         quantiles = stats.quantiles(hypervolume_per_num_jobs[solvers[i]][num_jobs])
         y1.append(quantiles[1])
     plt.plot(nums_jobs, y1, label = solver_labels[solvers[i]], marker = (i + 3, 2, 0), color = colors[i], alpha = 0.75)
-plt.xlim(left = max(min(nums_jobs) - 1, 0), right = max(nums_jobs) + 1)
-plt.ylim(bottom = min_hypervolume, top = max_hypervolume)
-plt.legend(loc = "best", fontsize = "x-large")
+plt.yscale("function", functions=(partial(np.power, 10.0), np.log10))
+plt.legend(loc = "best")
+plt.legend(loc = "best")
+plt.gca().xaxis.set_major_formatter(FormatStrFormatter('%d'))
+plt.gca().yaxis.set_major_formatter(FormatStrFormatter('%.2f'))
+plt.gca().yaxis.set_minor_formatter(FormatStrFormatter('%.2f'))
+plt.tight_layout()
 filename = os.path.join(dirname, "hypervolume/hypervolume_quartiles_per_num_jobs.png")
 plt.savefig(filename, format = "png")
 plt.close()
@@ -153,27 +160,27 @@ for num_machines in nums_machines:
                         csv_file.close()
 
 plt.figure()
-plt.title("MOFJSSP", fontsize = "xx-large")
-plt.xlabel("Number of Machines", fontsize = "x-large")
-plt.ylabel("Hypervolume Ratio", fontsize = "x-large")
-plt.xticks(nums_machines)
+plt.xlabel("Number of Machines")
+plt.ylabel("Hypervolume Ratio")
+plt.grid(alpha=0.5, color='gray', linestyle='dashed', linewidth=0.5, which='both')
 for i in range(len(solvers)):
     y = []
     for num_machines in nums_machines:
         y.append(stats.mean(hypervolume_per_num_machines[solvers[i]][num_machines]))
     plt.plot(nums_machines, y, label = solver_labels[solvers[i]], marker = (i + 3, 2, 0), color = colors[i], alpha = 0.80)
-plt.xlim(left = max(min(nums_machines) - 1, 0), right = max(nums_machines) + 1)
-plt.ylim(bottom = min_hypervolume, top = max_hypervolume)
-plt.legend(loc = "best", fontsize = "large")
+plt.yscale("function", functions=(partial(np.power, 10.0), np.log10))
+plt.legend(loc = "lower left")
+plt.gca().xaxis.set_major_formatter(FormatStrFormatter('%d'))
+plt.gca().yaxis.set_major_formatter(FormatStrFormatter('%.2f'))
+plt.tight_layout()
 filename = os.path.join(dirname, "hypervolume/hypervolume_mean_per_num_machines.png")
 plt.savefig(filename, format = "png")
 plt.close()
 
 plt.figure()
-plt.title("MOFJSSP", fontsize = "xx-large")
-plt.xlabel("Number of Machines", fontsize = "x-large")
-plt.ylabel("Hypervolume Ratio", fontsize = "x-large")
-plt.xticks(nums_machines)
+plt.xlabel("Number of Machines")
+plt.ylabel("Hypervolume Ratio")
+plt.grid(alpha=0.5, color='gray', linestyle='dashed', linewidth=0.5, which='both')
 for i in range(len(solvers)):
     y0 = []
     y2 = []
@@ -188,9 +195,11 @@ for i in range(len(solvers)):
         quantiles = stats.quantiles(hypervolume_per_num_machines[solvers[i]][num_machines])
         y1.append(quantiles[1])
     plt.plot(nums_machines, y1, label = solver_labels[solvers[i]], marker = (i + 3, 2, 0), color = colors[i], alpha = 0.75)
-plt.xlim(left = max(min(nums_machines) - 1, 0), right = max(nums_machines) + 1)
-plt.ylim(bottom = min_hypervolume, top = max_hypervolume)
-plt.legend(loc = "best", fontsize = "large")
+plt.yscale("function", functions=(partial(np.power, 10.0), np.log10))
+plt.legend(loc = "best")
+plt.gca().xaxis.set_major_formatter(FormatStrFormatter('%d'))
+plt.gca().yaxis.set_major_formatter(FormatStrFormatter('%.2f'))
+plt.tight_layout()
 filename = os.path.join(dirname, "hypervolume/hypervolume_quartiles_per_num_machines.png")
 plt.savefig(filename, format = "png")
 plt.close()
@@ -215,27 +224,27 @@ for total_num_operations in total_nums_operations:
                         csv_file.close()
 
 plt.figure()
-plt.title("MOFJSSP", fontsize = "xx-large")
-plt.xlabel("Total Number of Operations", fontsize = "x-large")
-plt.ylabel("Hypervolume Ratio", fontsize = "x-large")
-plt.xticks(total_nums_operations)
+plt.xlabel("Total Number of Operations")
+plt.ylabel("Hypervolume Ratio")
+plt.grid(alpha=0.5, color='gray', linestyle='dashed', linewidth=0.5, which='both')
 for i in range(len(solvers)):
     y = []
     for total_num_operations in total_nums_operations:
         y.append(stats.mean(hypervolume_per_total_num_operations[solvers[i]][total_num_operations]))
     plt.plot(total_nums_operations, y, label = solver_labels[solvers[i]], marker = (i + 3, 2, 0), color = colors[i], alpha = 0.80)
-plt.xlim(left = max(min(total_nums_operations) - 1, 0), right = max(total_nums_operations) + 1)
-plt.ylim(bottom = min_hypervolume, top = max_hypervolume)
-plt.legend(loc = "best", fontsize = "large")
+plt.yscale("function", functions=(partial(np.power, 10.0), np.log10))
+plt.legend(loc = "lower left")
+plt.gca().xaxis.set_major_formatter(FormatStrFormatter('%d'))
+plt.gca().yaxis.set_major_formatter(FormatStrFormatter('%.2f'))
+plt.tight_layout()
 filename = os.path.join(dirname, "hypervolume/hypervolume_mean_per_total_num_operations.png")
 plt.savefig(filename, format = "png")
 plt.close()
 
 plt.figure()
-plt.title("MOFJSSP", fontsize = "xx-large")
-plt.xlabel("Total Number of Operations", fontsize = "x-large")
-plt.ylabel("Hypervolume Ratio", fontsize = "x-large")
-plt.xticks(total_nums_operations)
+plt.xlabel("Total Number of Operations")
+plt.ylabel("Hypervolume Ratio")
+plt.grid(alpha=0.5, color='gray', linestyle='dashed', linewidth=0.5, which='both')
 for i in range(len(solvers)):
     y0 = []
     y2 = []
@@ -250,9 +259,11 @@ for i in range(len(solvers)):
         quantiles = stats.quantiles(hypervolume_per_total_num_operations[solvers[i]][total_num_operations])
         y1.append(quantiles[1])
     plt.plot(total_nums_operations, y1, label = solver_labels[solvers[i]], marker = (i + 3, 2, 0), color = colors[i], alpha = 0.75)
-plt.xlim(left = max(min(total_nums_operations) - 1, 0), right = max(total_nums_operations) + 1)
-plt.ylim(bottom = min_hypervolume, top = max_hypervolume)
-plt.legend(loc = "best", fontsize = "large")
+plt.yscale("function", functions=(partial(np.power, 10.0), np.log10))
+plt.legend(loc = "best")
+plt.gca().xaxis.set_major_formatter(FormatStrFormatter('%d'))
+plt.gca().yaxis.set_major_formatter(FormatStrFormatter('%.2f'))
+plt.tight_layout()
 filename = os.path.join(dirname, "hypervolume/hypervolume_quartiles_per_total_num_operations.png")
 plt.savefig(filename, format = "png")
 plt.close()
