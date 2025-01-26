@@ -23,26 +23,26 @@ delta_igd_plus = max_igd_plus - min_igd_plus
 min_igd_plus = max(min_igd_plus - round(0.025 * delta_igd_plus), 0.00)
 max_igd_plus = min(max_igd_plus + round(0.025 * delta_igd_plus), 1.00)
 
-# for instance in instances:
-#     plt.figure(figsize = (11, 11))
-#     plt.title(instance, fontsize = "xx-large")
-#     plt.xlabel("Normalized Modified Inverted Generational Distance", fontsize = "x-large")
-#     xs = []
-#     for solver in solvers:
-#         filename = os.path.join(dirname, "igd_plus/" + instance + "_" + solver + ".txt")
-#         x = []
-#         with open(filename) as csv_file:
-#             data = csv.reader(csv_file)
-#             for row in data:
-#                 x.append(float(row[0]))
-#         xs.append(x)
-#     pt.half_violinplot(data = xs, palette = colors, orient = "h", width = 0.6, cut = 0.0, inner = None)
-#     sns.stripplot(data = xs, palette = colors, orient = "h", size = 2, zorder = 0)
-#     sns.boxplot(data = xs, orient = "h", width = 0.20, color = "black", zorder = 10, showcaps = True, boxprops = {'facecolor' : 'none', "zorder" : 10}, showfliers = True, whiskerprops = {'linewidth' : 2, "zorder" : 10}, flierprops = {'markersize' : 2})
-#     plt.yticks(ticks = list(range(len(solvers))), labels = [solver_labels[solver] for solver in solvers], fontsize = "large")
-#     filename = os.path.join(dirname, "igd_plus/" + instance + ".png")
-#     plt.savefig(filename, format = "png")
-#     plt.close()
+for instance in instances:
+    plt.figure(figsize = (11, 11))
+    plt.title(instance, fontsize = "xx-large")
+    plt.xlabel("Normalized Modified Inverted Generational Distance", fontsize = "x-large")
+    xs = []
+    for solver in solvers:
+        filename = os.path.join(dirname, "igd_plus/" + instance + "_" + solver + ".txt")
+        x = []
+        with open(filename) as csv_file:
+            data = csv.reader(csv_file)
+            for row in data:
+                x.append(float(row[0]))
+        xs.append(x)
+    pt.half_violinplot(data = xs, palette = colors, orient = "h", width = 0.6, cut = 0.0, inner = None)
+    sns.stripplot(data = xs, palette = colors, orient = "h", size = 2, zorder = 0)
+    sns.boxplot(data = xs, orient = "h", width = 0.20, color = "black", zorder = 10, showcaps = True, boxprops = {'facecolor' : 'none', "zorder" : 10}, showfliers = True, whiskerprops = {'linewidth' : 2, "zorder" : 10}, flierprops = {'markersize' : 2})
+    plt.yticks(ticks = list(range(len(solvers))), labels = [solver_labels[solver] for solver in solvers], fontsize = "large")
+    filename = os.path.join(dirname, "igd_plus/" + instance + ".png")
+    plt.savefig(filename, format = "png")
+    plt.close()
 
 igd_plus = []
 
@@ -61,14 +61,18 @@ for instance in instances:
                     csv_file.close()
 
 plt.figure()
-plt.xlabel("Normalized Modified Inverted Generational Distance")
+plt.xlabel(fontsize="large", xlabel="Normalized Modified Inverted Generational Distance")
+plt.tick_params(axis="x", which="both", labelsize="large")
+plt.grid(alpha=0.5, color="gray", linestyle="dashed", linewidth=0.5, which="both")
 pt.half_violinplot(data = igd_plus, palette = colors, orient = "h", width = 0.6, cut = 0.0, inner = None)
 sns.stripplot(data = igd_plus, palette = colors, orient = "h", size = 2, zorder = 0)
 sns.boxplot(data = igd_plus, orient = "h", width = 0.2, color = "black", zorder = 10, showcaps = True, boxprops = {'facecolor' : 'none', "zorder" : 10}, showfliers = True, whiskerprops = {'linewidth' : 2, "zorder" : 10}, flierprops = {'markersize' : 2})
-plt.yticks(ticks = list(range(len(solvers))), labels = [solver_labels[solver] for solver in solvers])
+plt.yticks(fontsize="large", ticks=list(range(len(solvers))), labels=[solver_labels[solver] for solver in solvers])
 plt.tight_layout()
 filename = os.path.join(dirname, "igd_plus/igd_plus.png")
-plt.savefig(filename, format = "png")
+plt.savefig(bbox_inches='tight', fname=filename, format="png")
+filename = os.path.join(dirname, "igd_plus/igd_plus.pdf")
+plt.savefig(bbox_inches='tight', fname=filename, format="pdf")
 plt.close()
 
 igd_plus_per_num_jobs = {}
@@ -91,8 +95,9 @@ for num_jobs in nums_jobs:
                         csv_file.close()
 
 plt.figure()
-plt.xlabel("Number of Jobs")
-plt.ylabel("Normalized Modified Inverted Generational Distance")
+plt.xlabel(fontsize="large", xlabel="Number of Jobs")
+plt.ylabel(fontsize="large", ylabel="Normalized Modified Inverted Generational Distance")
+plt.tick_params(axis="both", which="both", labelsize="large")
 plt.grid(alpha=0.5, color='gray', linestyle='dashed', linewidth=0.5, which='both')
 for i in range(len(solvers)):
     y = []
@@ -103,15 +108,18 @@ plt.yscale("log")
 plt.gca().xaxis.set_major_formatter(FormatStrFormatter('%d'))
 plt.gca().yaxis.set_major_formatter(FormatStrFormatter('%.3f'))
 plt.gca().yaxis.set_minor_formatter(FormatStrFormatter('%.3f'))
-plt.legend(loc = "upper left")
+plt.legend(fontsize="large", loc="upper left")
 plt.tight_layout()
 filename = os.path.join(dirname, "igd_plus/igd_plus_mean_per_num_jobs.png")
-plt.savefig(filename, format = "png")
+plt.savefig(bbox_inches='tight', fname=filename, format="png")
+filename = os.path.join(dirname, "igd_plus/igd_plus_mean_per_num_jobs.pdf")
+plt.savefig(bbox_inches='tight', fname=filename, format="pdf")
 plt.close()
 
 plt.figure()
-plt.xlabel("Number of Jobs")
-plt.ylabel("Normalized Modified Inverted Generational Distance")
+plt.xlabel(fontsize="large", xlabel="Number of Jobs")
+plt.ylabel(fontsize="large", ylabel="Normalized Modified Inverted Generational Distance")
+plt.tick_params(axis="both", which="both", labelsize="large")
 plt.grid(alpha=0.5, color='gray', linestyle='dashed', linewidth=0.5, which='both')
 for i in range(len(solvers)):
     y0 = []
@@ -131,10 +139,12 @@ plt.yscale("log")
 plt.gca().xaxis.set_major_formatter(FormatStrFormatter('%d'))
 plt.gca().yaxis.set_major_formatter(FormatStrFormatter('%.3f'))
 plt.gca().yaxis.set_minor_formatter(FormatStrFormatter('%.3f'))
-plt.legend(loc = "best")
+plt.legend(fontsize="large", loc="best")
 plt.tight_layout()
 filename = os.path.join(dirname, "igd_plus/igd_plus_quartiles_per_num_jobs.png")
-plt.savefig(filename, format = "png")
+plt.savefig(bbox_inches='tight', fname=filename, format="png")
+filename = os.path.join(dirname, "igd_plus/igd_plus_quartiles_per_num_jobs.pdf")
+plt.savefig(bbox_inches='tight', fname=filename, format="pdf")
 plt.close()
 
 igd_plus_per_num_machines = {}
@@ -157,8 +167,9 @@ for num_machines in nums_machines:
                         csv_file.close()
 
 plt.figure()
-plt.xlabel("Number of Machines")
-plt.ylabel("Normalized Modified Inverted Generational Distance")
+plt.xlabel(fontsize="large", xlabel="Number of Machines")
+plt.ylabel(fontsize="large", ylabel="Normalized Modified Inverted Generational Distance")
+plt.tick_params(axis="both", which="both", labelsize="large")
 plt.grid(alpha=0.5, color='gray', linestyle='dashed', linewidth=0.5, which='both')
 for i in range(len(solvers)):
     y = []
@@ -169,15 +180,18 @@ plt.yscale("log")
 plt.gca().xaxis.set_major_formatter(FormatStrFormatter('%d'))
 plt.gca().yaxis.set_major_formatter(FormatStrFormatter('%.3f'))
 plt.gca().yaxis.set_minor_formatter(FormatStrFormatter('%.3f'))
-plt.legend(loc = "best")
+plt.legend(fontsize="large", loc="best")
 plt.tight_layout()
 filename = os.path.join(dirname, "igd_plus/igd_plus_mean_per_num_machines.png")
-plt.savefig(filename, format = "png")
+plt.savefig(bbox_inches='tight', fname=filename, format="png")
+filename = os.path.join(dirname, "igd_plus/igd_plus_mean_per_num_machines.pdf")
+plt.savefig(bbox_inches='tight', fname=filename, format="pdf")
 plt.close()
 
 plt.figure()
-plt.xlabel("Number of Machines")
-plt.ylabel("Normalized Modified Inverted Generational Distance")
+plt.xlabel(fontsize="large", xlabel="Number of Machines")
+plt.ylabel(fontsize="large", ylabel="Normalized Modified Inverted Generational Distance")
+plt.tick_params(axis="both", which="both", labelsize="large")
 plt.grid(alpha=0.5, color='gray', linestyle='dashed', linewidth=0.5, which='both')
 for i in range(len(solvers)):
     y0 = []
@@ -197,10 +211,12 @@ plt.yscale("log")
 plt.gca().xaxis.set_major_formatter(FormatStrFormatter('%d'))
 plt.gca().yaxis.set_major_formatter(FormatStrFormatter('%.3f'))
 plt.gca().yaxis.set_minor_formatter(FormatStrFormatter('%.3f'))
-plt.legend(loc = "upper center")
+plt.legend(fontsize="large", loc="upper center")
 plt.tight_layout()
 filename = os.path.join(dirname, "igd_plus/igd_plus_quartiles_per_num_machines.png")
-plt.savefig(filename, format = "png")
+plt.savefig(bbox_inches='tight', fname=filename, format="png")
+filename = os.path.join(dirname, "igd_plus/igd_plus_quartiles_per_num_machines.pdf")
+plt.savefig(bbox_inches='tight', fname=filename, format="pdf")
 plt.close()
 
 igd_plus_per_total_num_operations = {}
@@ -223,8 +239,9 @@ for total_num_operations in total_nums_operations:
                         csv_file.close()
 
 plt.figure()
-plt.xlabel("Total Number of Operations")
-plt.ylabel("Normalized Modified Inverted Generational Distance")
+plt.xlabel(fontsize="large", xlabel="Total Number of Operations")
+plt.ylabel(fontsize="large", ylabel="Normalized Modified Inverted Generational Distance")
+plt.tick_params(axis="both", which="both", labelsize="large")
 plt.grid(alpha=0.5, color='gray', linestyle='dashed', linewidth=0.5, which='both')
 for i in range(len(solvers)):
     y = []
@@ -235,15 +252,18 @@ plt.yscale("log")
 plt.gca().xaxis.set_major_formatter(FormatStrFormatter('%d'))
 plt.gca().yaxis.set_major_formatter(FormatStrFormatter('%.3f'))
 plt.gca().yaxis.set_minor_formatter(FormatStrFormatter('%.3f'))
-plt.legend(loc = "upper left")
+plt.legend(fontsize="large", loc="upper left")
 plt.tight_layout()
 filename = os.path.join(dirname, "igd_plus/igd_plus_mean_per_total_num_operations.png")
-plt.savefig(filename, format = "png")
+plt.savefig(bbox_inches='tight', fname=filename, format="png")
+filename = os.path.join(dirname, "igd_plus/igd_plus_mean_per_total_num_operations.pdf")
+plt.savefig(bbox_inches='tight', fname=filename, format="pdf")
 plt.close()
 
 plt.figure()
-plt.xlabel("Total Number of Operations")
-plt.ylabel("Normalized Modified Inverted Generational Distance")
+plt.xlabel(fontsize="large", xlabel="Total Number of Operations")
+plt.ylabel(fontsize="large", ylabel="Normalized Modified Inverted Generational Distance")
+plt.tick_params(axis="both", which="both", labelsize="large")
 plt.grid(alpha=0.5, color='gray', linestyle='dashed', linewidth=0.5, which='both')
 for i in range(len(solvers)):
     y0 = []
@@ -263,8 +283,10 @@ plt.yscale("log")
 plt.gca().xaxis.set_major_formatter(FormatStrFormatter('%d'))
 plt.gca().yaxis.set_major_formatter(FormatStrFormatter('%.3f'))
 plt.gca().yaxis.set_minor_formatter(FormatStrFormatter('%.3f'))
-plt.legend(loc = "upper left")
+plt.legend(fontsize="large", loc="upper left")
 plt.tight_layout()
 filename = os.path.join(dirname, "igd_plus/igd_plus_quartiles_per_total_num_operations.png")
-plt.savefig(filename, format = "png")
+plt.savefig(bbox_inches='tight', fname=filename, format="png")
+filename = os.path.join(dirname, "igd_plus/igd_plus_quartiles_per_total_num_operations.pdf")
+plt.savefig(bbox_inches='tight', fname=filename, format="pdf")
 plt.close()
